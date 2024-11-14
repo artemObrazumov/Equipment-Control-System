@@ -21,7 +21,7 @@ public class NamedEquipment {
     @Column(name = "unique_name")
     private String uniqueName;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "equipment_id", referencedColumnName = "id")
     private Equipment equipment;
 }
