@@ -1,5 +1,6 @@
 package com.quackaboutit.equipmentapp.users.entity;
 
+import com.quackaboutit.equipmentapp.unit.entity.Unit;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -36,6 +37,10 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
+
+    @OneToOne
+    @JoinColumn(name = "unit_id", referencedColumnName = "id")
+    private Unit unit;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
