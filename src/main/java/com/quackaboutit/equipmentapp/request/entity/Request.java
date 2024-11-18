@@ -1,6 +1,8 @@
 package com.quackaboutit.equipmentapp.request.entity;
 
+import com.quackaboutit.equipmentapp.Workplace.entity.Workplace;
 import com.quackaboutit.equipmentapp.unit.entity.Unit;
+import com.quackaboutit.equipmentapp.users.entity.User;
 import com.quackaboutit.equipmentapp.utils.DurationConverter;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,16 +26,20 @@ public class Request {
     @SequenceGenerator(name = "request_id_seq", sequenceName = "request_id_seq", allocationSize = 1)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "unit_id")
     private Unit unit;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "workplace_id")
+    private Workplace workplace;
+
+    @Column(name = "user_asked_id")
+    private User userAsked;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "requested_equipment")
     private List<RequestedEquipment> requestedEquipment;
-
-    @Column(name = "arrival_time")
-    private LocalDateTime arrivalTime;
 
     @Convert(converter = DurationConverter.class)
     @Column(name = "work_duration")

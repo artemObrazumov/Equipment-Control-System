@@ -1,5 +1,6 @@
-package com.quackaboutit.equipmentapp.unit.entity;
+package com.quackaboutit.equipmentapp.bases.entity;
 
+import com.quackaboutit.equipmentapp.unit.entity.Unit;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,14 +10,18 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "units")
-public class Unit {
+@Table(name = "bases")
+public class Base {
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "unit_id_seq")
     @SequenceGenerator(name = "unit_id_seq", sequenceName = "unit_id_seq", allocationSize = 1)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "unit_id", referencedColumnName = "id")
+    private Unit unit;
 
     @Column(name = "name")
     private String name;

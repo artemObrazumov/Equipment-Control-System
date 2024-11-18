@@ -23,7 +23,4 @@ public class Equipment {
 
     @Column(name = "image")
     private String image;
-
-    @Column(name = "measurement")
-    private String measurement;
 }

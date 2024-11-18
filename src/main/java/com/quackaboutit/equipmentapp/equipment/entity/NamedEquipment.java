@@ -1,5 +1,6 @@
 package com.quackaboutit.equipmentapp.equipment.entity;
 
+import com.quackaboutit.equipmentapp.bases.entity.Base;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,6 +21,10 @@ public class NamedEquipment {
 
     @Column(name = "unique_name")
     private String uniqueName;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "base_id", referencedColumnName = "id")
+    private Base base;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "equipment_id", referencedColumnName = "id")

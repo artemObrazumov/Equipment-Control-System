@@ -5,6 +5,8 @@ import com.quackaboutit.equipmentapp.users.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Builder
 @Getter
@@ -24,9 +26,9 @@ public class RequestedEquipment {
     @JoinColumn(name = "equipment_id")
     private Equipment equipment;
 
+    @Column(name = "arrival_time")
+    private LocalDateTime arrivalTime;
+
     @Column(name = "quantity")
     private Integer quantity;
-
-    @Column(name = "user_asked_id")
-    private User userAsked;
 }
