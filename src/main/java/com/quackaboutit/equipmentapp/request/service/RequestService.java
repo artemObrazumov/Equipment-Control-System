@@ -29,7 +29,7 @@ public class RequestService {
     private final WorkplaceRepository workplaceRepository;
     private final RequestEquipmentRepository requestEquipmentRepository;
     private final EquipmentRepository equipmentRepository;
-
+    
     public List<ResponseRequest> getRequests(Long userId){
         List<Request> requests = requestRepository.findAllByCreatorId(userId);
         ArrayList<ResponseRequest> responseRequest = new ArrayList<>();
@@ -43,7 +43,10 @@ public class RequestService {
         List<RequestedEquipment> requestedEquipment = new ArrayList<>(); 
         req.getEquipmentInRequest().forEach(eq -> {
             Equipment equipment = equipmentRepository.findById(eq.getEquipmentId()).get();
-            requestedEquipment.add(EquipmentInRequest.fromEquipmentInRequest(eq, equipment));
+            var tmp = EquipmentInRequest.fromEquipmentInRequest(eq, equipment);
+            
+            requestEquipmentRepository.save(tmp);
+            requestedEquipment.add(tmp);
         });
 
         Request request = new Request(null, RequestState.FUTURE, curUser.getUnit(),
