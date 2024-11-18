@@ -3,13 +3,16 @@ package com.quackaboutit.equipmentapp.request.controller;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.quackaboutit.equipmentapp.request.dto.RequestForRequest;
 import com.quackaboutit.equipmentapp.request.dto.ResponseRequest;
 import com.quackaboutit.equipmentapp.request.service.RequestService;
 import com.quackaboutit.equipmentapp.users.service.JwtService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -26,8 +29,7 @@ public class RequestController {
     }
 
     @PostMapping
-    private List<ResponseRequest> postRequests(){
-        return requestService.getRequests(
-            jwtService.getUserFromSecurityContextHolder().getId());
+    private ResponseRequest postRequest(@Valid @RequestBody RequestForRequest req){
+        return requestService.postRequest(req, jwtService.getUserFromSecurityContextHolder());
     }
 }
