@@ -23,9 +23,6 @@ public class Base {
     @JoinColumn(name = "unit_id", referencedColumnName = "id")
     private Unit unit;
 
-    @Column(name = "name")
-    private String name;
-
     @Column(name = "address")
     private String address;
 
