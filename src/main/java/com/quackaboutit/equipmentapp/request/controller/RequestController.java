@@ -15,8 +15,8 @@ import com.quackaboutit.equipmentapp.users.service.JwtService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-@RestController
-@RequestMapping("/requests")
+//@RestController
+//@RequestMapping("/requests")
 @RequiredArgsConstructor
 public class RequestController {
     private final RequestService requestService;

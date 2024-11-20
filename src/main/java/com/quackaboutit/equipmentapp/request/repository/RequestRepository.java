@@ -13,6 +13,6 @@ import jakarta.transaction.Transactional;
 @Repository
 @Transactional
 public interface RequestRepository extends JpaRepository<Request, Long>{
-    @Query("SELECT n FROM requests n WHERE n.creator.id = :CreatorId")
+    @Query("SELECT n FROM Request n WHERE n.creator.id = :CreatorId")
     List<Request> findAllByCreatorId(@Param("CreatorId") Long CreatorId);
 }

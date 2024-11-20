@@ -35,11 +35,11 @@ public class Request {
     @JoinColumn(name = "workplace_id")
     private Workplace workplace;
 
-    @Column(name = "user_creator_id")
+    @JoinColumn(name = "user_creator_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private User creator;
 
-    @Column(name = "user_editor_id")
+    @JoinColumn(name = "user_editor_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private User editor;
 
