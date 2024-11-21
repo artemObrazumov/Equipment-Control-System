@@ -18,4 +18,12 @@ public class Workplace {
     @SequenceGenerator(name = "request_id_seq", sequenceName = "request_id_seq", allocationSize = 1)
     private Long id;
 
+    @Column(name = "latitude")
+    private Double latitude;
+
+    @Column(name = "longitude")
+    private Double longitude;
+
+    @Column(name = "address")
+    private String address;
 }
