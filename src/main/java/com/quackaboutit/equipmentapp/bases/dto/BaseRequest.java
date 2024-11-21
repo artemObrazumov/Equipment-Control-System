@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 public class BaseRequest {
     @NotNull
-    private Unit unit;
+    private Long unitId;
 
     @NotBlank
     @NotNull

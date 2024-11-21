@@ -23,6 +23,7 @@ public class BaseResponse {
     private Double longitude;
 
     public static BaseResponse fromBaseToResponse(Base base){
-        return new BaseResponse(base.getId(), base.getUnit(), base.getAddress(), base.getLatitude(), base.getLongitude());
+        return new BaseResponse(base.getId(), base.getUnit(), 
+        base.getAddress(), base.getLatitude(), base.getLongitude());
     }
 }
