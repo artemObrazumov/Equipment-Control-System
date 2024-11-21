@@ -1,7 +1,5 @@
 package com.quackaboutit.equipmentapp.bases.dto;
 
-import com.quackaboutit.equipmentapp.unit.entity.Unit;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

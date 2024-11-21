@@ -13,8 +13,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class UnitResponse {
-
-    @NotBlank
     @NotNull
     private Long id;
 
@@ -26,11 +24,9 @@ public class UnitResponse {
     @NotNull
     private String address;
 
-    @NotBlank
     @NotNull
     private Double latitude;
 
-    @NotBlank
     @NotNull
     private Double longitude;
 

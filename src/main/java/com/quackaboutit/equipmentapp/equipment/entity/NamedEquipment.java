@@ -22,11 +22,11 @@ public class NamedEquipment {
     @Column(name = "unique_name")
     private String uniqueName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "base_id", referencedColumnName = "id")
     private Base base;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "equipment_id", referencedColumnName = "id")
     private Equipment equipment;
 }

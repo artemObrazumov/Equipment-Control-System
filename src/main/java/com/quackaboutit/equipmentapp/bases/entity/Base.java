@@ -15,11 +15,11 @@ public class Base {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "unit_id_seq")
-    @SequenceGenerator(name = "unit_id_seq", sequenceName = "unit_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "base_id_seq")
+    @SequenceGenerator(name = "base_id_seq", sequenceName = "base_id_seq", allocationSize = 1)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "unit_id", referencedColumnName = "id")
     private Unit unit;
 

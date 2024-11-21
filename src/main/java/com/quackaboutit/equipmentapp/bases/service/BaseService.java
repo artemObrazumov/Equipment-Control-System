@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.quackaboutit.equipmentapp.bases.repository.BaseRepository;
+import com.quackaboutit.equipmentapp.unit.dto.UnitResponse;
 import com.quackaboutit.equipmentapp.unit.entity.Unit;
 import com.quackaboutit.equipmentapp.unit.exceptions.UnitNotFound;
 import com.quackaboutit.equipmentapp.unit.repository.UnitRepository;
@@ -26,8 +27,9 @@ public class BaseService {
     public List<BaseResponse> findBases(){
         List<Base> bases = baseRepository.findAll();
         List<BaseResponse> baseResponses = new ArrayList<>();
-        bases.forEach(base ->{
+        bases.forEach(base -> {
             baseResponses.add(BaseResponse.fromBaseToResponse(base));
+            System.out.println(base.getUnit().getId());
         });
 
         return baseResponses;

@@ -38,7 +38,7 @@ public class User implements UserDetails {
     @Column(name = "role", nullable = false)
     private Role role;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "unit_id", referencedColumnName = "id")
     private Unit unit;
 

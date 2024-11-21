@@ -27,23 +27,23 @@ public class Request {
     @Column(name = "state")
     private RequestState state;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "unit_id")
     private Unit unit;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "workplace_id")
     private Workplace workplace;
 
     @JoinColumn(name = "user_creator_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private User creator;
 
     @JoinColumn(name = "user_editor_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private User editor;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany
     @JoinColumn(name = "requested_equipment")
     private List<RequestedEquipment> requestedEquipment;
 
