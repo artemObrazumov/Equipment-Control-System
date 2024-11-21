@@ -1,4 +1,4 @@
-package com.quackaboutit.equipmentapp.Workplace.entity;
+package com.quackaboutit.equipmentapp.workplace.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,6 +17,10 @@ public class Workplace {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "request_id_seq")
     @SequenceGenerator(name = "request_id_seq", sequenceName = "request_id_seq", allocationSize = 1)
     private Long id;
+
+    //@Enumerated(EnumType.STRING) - затестить
+    @Column(name = "state")
+    private WorkplaceState state;
 
     @Column(name = "latitude")
     private Double latitude;

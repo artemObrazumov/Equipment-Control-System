@@ -1,8 +1,9 @@
 package com.quackaboutit.equipmentapp.request.entity;
 
-import com.quackaboutit.equipmentapp.Workplace.entity.Workplace;
 import com.quackaboutit.equipmentapp.unit.entity.Unit;
 import com.quackaboutit.equipmentapp.users.entity.User;
+import com.quackaboutit.equipmentapp.workplace.entity.Workplace;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -53,3 +54,4 @@ public class Request {
     @Column(name = "arrivaldate")
     private LocalDateTime arrivalDate;
 }
+
