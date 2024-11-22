@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.quackaboutit.equipmentapp.bases.dto.BaseRequest;
 import com.quackaboutit.equipmentapp.bases.dto.BaseResponse;
+import com.quackaboutit.equipmentapp.bases.dto.BaseUpdateRequest;
 import com.quackaboutit.equipmentapp.bases.service.BaseService;
 
 import jakarta.validation.Valid;
@@ -34,7 +35,7 @@ public class BaseController {
     }
 
     @PutMapping("/{id}") 
-    public void updateBaseById(@PathVariable Long id, @Valid @RequestBody BaseRequest request){
+    public void updateBaseById(@PathVariable Long id, @Valid @RequestBody BaseUpdateRequest request){
         baseService.update(id, request);
     }
 
