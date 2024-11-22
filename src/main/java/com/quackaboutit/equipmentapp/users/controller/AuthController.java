@@ -3,7 +3,7 @@ package com.quackaboutit.equipmentapp.users.controller;
 import com.quackaboutit.equipmentapp.users.repository.UserRepository;
 import com.quackaboutit.equipmentapp.users.request.SignInRequest;
 import com.quackaboutit.equipmentapp.users.request.SignUpRequest;
-import com.quackaboutit.equipmentapp.users.response.JwtAuthResponse;
+import com.quackaboutit.equipmentapp.users.response.AuthResponse;
 import com.quackaboutit.equipmentapp.users.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,13 +24,13 @@ public class AuthController {
 
     @Operation(summary = "User registration")
     @PostMapping("/sign-up")
-    public JwtAuthResponse signUp(@RequestBody @Valid SignUpRequest request) {
+    public AuthResponse signUp(@RequestBody @Valid SignUpRequest request) {
         return authenticationService.signUp(request);
     }
 
     @Operation(summary = "User authorization")
     @PostMapping("/sign-in")
-    public JwtAuthResponse signIn(@RequestBody @Valid SignInRequest request) {
+    public AuthResponse signIn(@RequestBody @Valid SignInRequest request) {
         return authenticationService.signIn(request);
     }
 }
