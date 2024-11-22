@@ -46,9 +46,13 @@ public class BaseService {
             null, unit, request.getAddress(), request.getLatitude(), request.getLongitude()
         )));
     }
-    
+
     public void update(Long id, BaseUpdateRequest request){
         baseRepository.updateBase(request.getAddress(), 
             request.getLatitude(), request.getLongitude(), id);
+    }
+
+    public void delete(Long id){
+        baseRepository.deleteById(id);
     }
 }
