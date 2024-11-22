@@ -5,9 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
+@Repository
 public interface UnitRepository extends JpaRepository<Unit, Long> {
     @Modifying
     @Query("UPDATE Unit u SET u.name = :name, u.address = :address, u.latitude = :latitude, u.longitude = :longitude WHERE u.id = :id")

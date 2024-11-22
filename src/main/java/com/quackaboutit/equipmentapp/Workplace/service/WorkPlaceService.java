@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.quackaboutit.equipmentapp.workplace.dto.WorkplaceRequest;
 import com.quackaboutit.equipmentapp.workplace.dto.WorkplaceResponse;
+import com.quackaboutit.equipmentapp.workplace.dto.WorkplaceUpdateRequest;
 import com.quackaboutit.equipmentapp.workplace.entity.Workplace;
 import com.quackaboutit.equipmentapp.workplace.entity.WorkplaceState;
 import com.quackaboutit.equipmentapp.workplace.exceptions.WorkplaceNotFound;
@@ -41,5 +42,14 @@ public class WorkPlaceService {
         return WorkplaceResponse.fromWorkplacetoResponce(workplaceRepository.save(new Workplace(
             null, WorkplaceState.IDLE, req.getLatitude(), req.getLongitude(), req.getAddress()
         )));  
+    }
+
+    public void update(Long id, WorkplaceUpdateRequest request){
+        workplaceRepository.updateWorkplace(request.getAddress(), 
+        request.getLatitude(), request.getLongitude(), id);
+    }
+
+    public void delete(Long id){
+        workplaceRepository.deleteById(id);
     }
 }
