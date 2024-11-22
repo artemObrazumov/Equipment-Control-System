@@ -35,7 +35,7 @@ public class WorkplaceResponse {
     @NotNull
     private WorkplaceState state;
 
-    public static WorkplaceResponse fromWorkspacetoResponce(Workplace wrkspc){
+    public static WorkplaceResponse fromWorkplacetoResponce(Workplace wrkspc){
         return new WorkplaceResponse(wrkspc.getId(), wrkspc.getLatitude(), 
         wrkspc.getLongitude(), wrkspc.getAddress(), wrkspc.getState());
     }

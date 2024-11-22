@@ -24,7 +24,7 @@ public class WorkPlaceService {
         List<Workplace> workplaces = workplaceRepository.findAll();
         List<WorkplaceResponse> workplaceResponses = new ArrayList<>();
         workplaces.forEach(workplace -> {
-            workplaceResponses.add(WorkplaceResponse.fromWorkspacetoResponce(workplace));
+            workplaceResponses.add(WorkplaceResponse.fromWorkplacetoResponce(workplace));
         });
 
         return workplaceResponses;
@@ -33,12 +33,12 @@ public class WorkPlaceService {
     public WorkplaceResponse findWorkplacesById(Long Id) throws WorkplaceNotFound{
         Optional<Workplace> workplace = workplaceRepository.findById(Id);
         if(workplace.isPresent())
-            return WorkplaceResponse.fromWorkspacetoResponce(workplace.get());
+            return WorkplaceResponse.fromWorkplacetoResponce(workplace.get());
         throw new WorkplaceNotFound();
     }
 
     public WorkplaceResponse create(WorkplaceRequest req){ 
-        return WorkplaceResponse.fromWorkspacetoResponce(workplaceRepository.create(new Workplace(
+        return WorkplaceResponse.fromWorkplacetoResponce(workplaceRepository.save(new Workplace(
             null, WorkplaceState.IDLE, req.getLatitude(), req.getLongitude(), req.getAddress()
         )));  
     }
