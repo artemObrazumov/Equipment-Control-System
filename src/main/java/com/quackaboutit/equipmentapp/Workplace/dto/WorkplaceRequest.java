@@ -13,12 +13,6 @@ import lombok.Setter;
 @Getter
 public class WorkplaceRequest {
     @NotNull
-    private Long Id;
-    
-    @NotNull
-    private WorkplaceState state;
-
-    @NotNull
     private Double latitude;
 
     @NotNull

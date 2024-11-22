@@ -21,7 +21,10 @@ import lombok.Setter;
 public class WorkplaceResponse {
     @NotNull
     private Long id;
-    
+
+    @NotNull
+    private WorkplaceState state;
+
     @NotNull
     private Double latitude;
 
@@ -32,11 +35,8 @@ public class WorkplaceResponse {
     @NotBlank
     private String address;
 
-    @NotNull
-    private WorkplaceState state;
-
     public static WorkplaceResponse fromWorkplacetoResponce(Workplace wrkspc){
-        return new WorkplaceResponse(wrkspc.getId(), wrkspc.getLatitude(), 
-        wrkspc.getLongitude(), wrkspc.getAddress(), wrkspc.getState());
+        return new WorkplaceResponse(wrkspc.getId(), wrkspc.getState(), wrkspc.getLatitude(), 
+        wrkspc.getLongitude(), wrkspc.getAddress());
     }
 }

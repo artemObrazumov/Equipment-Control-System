@@ -12,12 +12,12 @@ import com.quackaboutit.equipmentapp.workplace.dto.WorkplaceRequest;
 import com.quackaboutit.equipmentapp.workplace.dto.WorkplaceResponse;
 import com.quackaboutit.equipmentapp.workplace.service.WorkPlaceService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/workspaces")
+@RequestMapping("/workplaces")
 @RequiredArgsConstructor
 public class WorkpaceController {
     private final WorkPlaceService workPlaceService;
