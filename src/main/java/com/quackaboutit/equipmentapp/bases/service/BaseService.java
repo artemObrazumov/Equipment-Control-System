@@ -42,12 +42,20 @@ public class BaseService {
         
         throw new BaseNotFound();
     }
-    public BaseResponse create(BaseRequest req) throws UnitNotFound {
-        Optional<Unit> unit = unitRepository.findById(req.getUnitId());
+    public BaseResponse create(BaseRequest request) throws UnitNotFound {
+        Optional<Unit> unit = unitRepository.findById(request.getUnitId());
         if(unit.isPresent())
             return BaseResponse.fromBaseToResponse(baseRepository.save(new Base(
-                null, unit.get(), req.getAddress(), req.getLatitude(), req.getLongitude()
+                null, unit.get(), request.getAddress(), request.getLatitude(), request.getLongitude()
             )));
         throw new UnitNotFound();
+    }
+
+    public void update(Long id, BaseRequest request) throws UnitNotFound{
+        Unit unit = unitRepository.findById(
+            request.getUnitId()).orElseThrow(() -> new UnitNotFound());
+        
+        baseRepository.updateBase(request.getAddress(), 
+            request.getLatitude(), request.getLongitude(), id);
     }
 }
