@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.quackaboutit.equipmentapp.Workplace.repository.WorkplaceRepository;
 import com.quackaboutit.equipmentapp.equipment.entity.Equipment;
 import com.quackaboutit.equipmentapp.equipment.repository.EquipmentRepository;
 import com.quackaboutit.equipmentapp.request.dto.EquipmentInRequest;
@@ -18,6 +17,7 @@ import com.quackaboutit.equipmentapp.request.entity.RequestedEquipment;
 import com.quackaboutit.equipmentapp.request.repository.RequestEquipmentRepository;
 import com.quackaboutit.equipmentapp.request.repository.RequestRepository;
 import com.quackaboutit.equipmentapp.users.entity.User;
+import com.quackaboutit.equipmentapp.workplace.repository.WorkplaceRepository;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
