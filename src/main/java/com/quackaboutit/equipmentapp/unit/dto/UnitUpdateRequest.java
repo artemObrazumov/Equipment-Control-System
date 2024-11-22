@@ -14,10 +14,6 @@ public class UnitUpdateRequest {
     @NotNull
     private String address;
 
-    @NotBlank
-    @NotNull
-    private String name;
-
     @NotNull
     private Double latitude;
 

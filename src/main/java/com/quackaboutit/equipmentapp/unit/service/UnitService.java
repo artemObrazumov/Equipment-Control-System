@@ -22,7 +22,7 @@ public class UnitService {
     private final UnitRepository unitRepository;
 
     public UnitResponse create(UnitRequest request) {
-        return UnitResponse.fromUnit(unitRepository.save(new Unit(null, request.getName(),
+        return UnitResponse.fromUnit(unitRepository.save(new Unit(null,
                 request.getAddress(), request.getLatitude(), request.getLongitude())));
     }
 
@@ -42,7 +42,7 @@ public class UnitService {
     }
 
     public void update(Long id, UnitUpdateRequest request){
-        unitRepository.updateUnit(request.getAddress(), request.getName(),
+        unitRepository.updateUnit(request.getAddress(),
         request.getLatitude(), request.getLongitude(), id);
     }
 

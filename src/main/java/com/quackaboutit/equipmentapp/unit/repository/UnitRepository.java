@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface UnitRepository extends JpaRepository<Unit, Long> {
     @Modifying
-    @Query("UPDATE Unit u SET u.name = :name, u.address = :address, u.latitude = :latitude, u.longitude = :longitude WHERE u.id = :id")
-    void updateUnit(@Param("address") String address, @Param("name") String name, @Param("latitude") Double latitude, 
+    @Query("UPDATE Unit u SET u.address = :address, u.latitude = :latitude, u.longitude = :longitude WHERE u.id = :id")
+    void updateUnit(@Param("address") String address, @Param("latitude") Double latitude, 
     @Param("longitude") Double longitude, @Param("id") Long id); 
 }
