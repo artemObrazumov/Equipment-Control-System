@@ -18,10 +18,6 @@ public class UnitResponse {
 
     @NotBlank
     @NotNull
-    private String name;
-
-    @NotBlank
-    @NotNull
     private String address;
 
     @NotNull
@@ -31,7 +27,7 @@ public class UnitResponse {
     private Double longitude;
 
     public static UnitResponse fromUnit(Unit unit) {
-        return new UnitResponse(unit.getId(), unit.getName(),
+        return new UnitResponse(unit.getId(),
                 unit.getAddress(), unit.getLatitude(), unit.getLongitude());
     }
 }

@@ -3,10 +3,6 @@ package com.quackaboutit.equipmentapp.workplace.dto;
 import com.quackaboutit.equipmentapp.workplace.entity.Workplace;
 import com.quackaboutit.equipmentapp.workplace.entity.WorkplaceState;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

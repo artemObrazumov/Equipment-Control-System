@@ -13,10 +13,6 @@ public class UnitRequest {
 
     @NotBlank
     @NotNull
-    private String name;
-
-    @NotBlank
-    @NotNull
     private String address;
 
     @NotNull
