@@ -18,9 +18,6 @@ public class Unit {
     @SequenceGenerator(name = "unit_id_seq", sequenceName = "unit_id_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name = "name")
-    private String name;
-
     @Column(name = "address")
     private String address;
 

@@ -1,4 +1,4 @@
-package com.quackaboutit.equipmentapp.workplace.dto;
+package com.quackaboutit.equipmentapp.equipment.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -9,15 +9,12 @@ import lombok.Setter;
 @Data
 @Setter
 @Getter
-public class WorkplaceRequest {
-    
+public class EquipmentRequest {
+    @NotBlank
     @NotNull
-    private Double latitude;
-
-    @NotNull
-    private Double longitude;
+    private String name;
 
     @NotBlank
     @NotNull
-    private String address;
+    private String image;
 }

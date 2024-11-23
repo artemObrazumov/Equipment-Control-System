@@ -2,7 +2,9 @@ package com.quackaboutit.equipmentapp.unit.service;
 
 import com.quackaboutit.equipmentapp.unit.dto.UnitRequest;
 import com.quackaboutit.equipmentapp.unit.dto.UnitResponse;
+import com.quackaboutit.equipmentapp.unit.dto.UnitUpdateRequest;
 import com.quackaboutit.equipmentapp.unit.entity.Unit;
+import com.quackaboutit.equipmentapp.unit.exceptions.UnitNotFound;
 import com.quackaboutit.equipmentapp.unit.repository.UnitRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +22,7 @@ public class UnitService {
     private final UnitRepository unitRepository;
 
     public UnitResponse create(UnitRequest request) {
-        return UnitResponse.fromUnit(unitRepository.save(new Unit(null, request.getName(),
+        return UnitResponse.fromUnit(unitRepository.save(new Unit(null,
                 request.getAddress(), request.getLatitude(), request.getLongitude())));
     }
 
@@ -33,11 +35,19 @@ public class UnitService {
         return unitResponses;
     }
 
-    public UnitResponse findUnitById(Long id) {
-        Optional<Unit> unit = unitRepository.findById(id);
-        if (unit.isPresent()) {
-            return UnitResponse.fromUnit(unit.get());
-        }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Unit not exists");
+    public UnitResponse findUnitById(Long id) throws UnitNotFound {
+        Unit unit = unitRepository.findById(id).orElseThrow(() -> new UnitNotFound());
+        
+        return UnitResponse.fromUnit(unit);
     }
+
+    public void update(Long id, UnitUpdateRequest request){
+        unitRepository.updateUnit(request.getAddress(),
+        request.getLatitude(), request.getLongitude(), id);
+    }
+
+    public void delete(Long id){
+        unitRepository.deleteById(id);
+    }
+    
 }
