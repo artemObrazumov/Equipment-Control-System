@@ -15,4 +15,7 @@ import jakarta.transaction.Transactional;
 public interface RequestRepository extends JpaRepository<Request, Long>{
     @Query("SELECT n FROM Request n WHERE n.creator.id = :CreatorId")
     List<Request> findAllByCreatorId(@Param("CreatorId") Long CreatorId);
+
+    @Query("SELECT COUNT(r) FROM Request r WHERE r.state = SENT AND r.creator.id = :userId")
+    Integer countSentByUser(@Param("userId") Long id);
 }

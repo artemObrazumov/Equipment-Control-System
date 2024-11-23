@@ -1,8 +1,5 @@
 package com.quackaboutit.equipmentapp.users.response;
 
-import com.quackaboutit.equipmentapp.users.entity.Role;
-import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,12 +10,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthResponse {
+public class WorkerItemResponse {
 
     @NotNull
-    @NotBlank
-    private String token;
+    private Long id;
 
     @NotNull
-    private Role userRole;
+    private String currentWorkPlaceAddress;
+
+    @NotNull
+    private Integer sentRequest;
 }

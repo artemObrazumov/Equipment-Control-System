@@ -51,7 +51,7 @@ public class Request {
     @Column(name = "distance")
     private Double distance;
 
-    @Column(name = "arrivaldate")
+    @Column(name = "arrival_date")
     private LocalDateTime arrivalDate;
 }
 
