@@ -10,7 +10,6 @@ import lombok.Setter;
 @Setter
 @Getter
 public class WorkplaceRequest {
-    
     @NotNull
     private Double latitude;
 
