@@ -3,6 +3,7 @@ package com.quackaboutit.equipmentapp.equipment.controller;
 import java.util.List;
 
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +30,11 @@ public class NamedEquipmentController {
         return namedEquipmentService.findNamedEquipments();
     }
 
+    @GetMapping("/{id}")
+    private NamedEquipmentResponse findNamedEquipmentById(@PathVariable Long id){
+        return namedEquipmentService.findNamedEquipmentById(id);
+    }
+
     @PostMapping
     private NamedEquipmentResponse createfindNamedEquipments(@Valid @RequestBody NamedEquipmentRequest request){
         return namedEquipmentService.create(request);
@@ -37,5 +43,10 @@ public class NamedEquipmentController {
     @PutMapping("/{id}")
     private void updateNamedEquipment(@PathVariable Long id, @Valid @RequestBody NamedEquipmentRequest request){
         namedEquipmentService.update(id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    private void deleteNamedEquipment(@PathVariable Long id){
+        namedEquipmentService.delete(id);
     }
 }

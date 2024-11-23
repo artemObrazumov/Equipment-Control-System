@@ -38,6 +38,12 @@ public class NamedEquipmentService {
         return namedEquipmentResponses;
     }
 
+    public NamedEquipmentResponse findNamedEquipmentById(Long id) throws EquipmentNotFound{
+        return NamedEquipmentResponse.fromNamedEquipmentToResponse(
+            namedEquipmentRepository.findById(id).orElseThrow(() -> new EquipmentNotFound())
+        );
+    } 
+
     public NamedEquipmentResponse create(NamedEquipmentRequest request) throws RuntimeException{
         LicensePlate.checkLicensePlate(request.getLicensePlate());
         
@@ -61,5 +67,9 @@ public class NamedEquipmentService {
 
         namedEquipmentRepository.updateNamedEquipment(request.getLicensePlate()
         , base, equipmentType, id);
+    }
+
+    public void delete(Long id){
+        namedEquipmentRepository.deleteById(id);
     }
 }
