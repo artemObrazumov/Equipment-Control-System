@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +15,7 @@ import com.quackaboutit.equipmentapp.equipment.dto.NamedEquipmentRequest;
 import com.quackaboutit.equipmentapp.equipment.dto.NamedEquipmentResponse;
 import com.quackaboutit.equipmentapp.equipment.service.NamedEquipmentService;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -27,7 +30,12 @@ public class NamedEquipmentController {
     }
 
     @PostMapping
-    private NamedEquipmentResponse createfindNamedEquipments(@Validated @RequestBody NamedEquipmentRequest request){
+    private NamedEquipmentResponse createfindNamedEquipments(@Valid @RequestBody NamedEquipmentRequest request){
         return namedEquipmentService.create(request);
+    }
+
+    @PutMapping("/{id}")
+    private void updateNamedEquipment(@PathVariable Long id, @Valid @RequestBody NamedEquipmentRequest request){
+        namedEquipmentService.update(id, request);
     }
 }

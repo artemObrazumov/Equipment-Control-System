@@ -19,7 +19,7 @@ public class NamedEquipment {
     @SequenceGenerator(name = "named_equipment_id_seq", sequenceName = "named_equipment_id_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name = "license_plate")
+    @Column(name = "license_plate", unique = true)
     private String licensePlate;
 
     @ManyToOne

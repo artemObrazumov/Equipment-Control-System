@@ -50,4 +50,16 @@ public class NamedEquipmentService {
             new NamedEquipment(null, request.getLicensePlate(), base, equipmentType)
         ));
     }
+
+    public void update(Long id, NamedEquipmentRequest request){
+        LicensePlate.checkLicensePlate(request.getLicensePlate());
+        
+        Base base = baseRepository.findById(request.getBaseId())
+            .orElseThrow(() -> new BaseNotFound());
+        EquipmentType equipmentType = equipmentTypeRepository.findById(request.getEquipmentTypeId())
+            .orElseThrow(() -> new EquipmentNotFound());
+
+        namedEquipmentRepository.updateNamedEquipment(request.getLicensePlate()
+        , base, equipmentType, id);
+    }
 }
