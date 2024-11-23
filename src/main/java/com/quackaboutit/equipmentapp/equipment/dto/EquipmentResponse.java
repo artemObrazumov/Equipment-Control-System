@@ -14,6 +14,9 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 public class EquipmentResponse {
+    @NotNull
+    private Long id;
+
     @NotBlank
     @NotNull
     private String name;
@@ -23,6 +26,6 @@ public class EquipmentResponse {
     private String image;
 
     public static EquipmentResponse fromEquipmentToResponse(Equipment equipment){
-        return new EquipmentResponse(equipment.getName(), equipment.getImage());
+        return new EquipmentResponse(equipment.getId(), equipment.getName(), equipment.getImage());
     }
 }

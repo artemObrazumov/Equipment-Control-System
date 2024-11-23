@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.quackaboutit.equipmentapp.equipment.dto.EquipmentRequest;
 import com.quackaboutit.equipmentapp.equipment.dto.EquipmentResponse;
 import com.quackaboutit.equipmentapp.equipment.entity.Equipment;
 import com.quackaboutit.equipmentapp.equipment.exceptions.EquipmentNotFound;
@@ -31,5 +32,10 @@ public class EquipmentService {
         Equipment equipment = equipmentRepository.findById(id).orElseThrow(() -> new EquipmentNotFound());
         
         return EquipmentResponse.fromEquipmentToResponse(equipment);
-    }   
+    }  
+
+    public EquipmentResponse create(EquipmentRequest request){
+        return EquipmentResponse.fromEquipmentToResponse(equipmentRepository.save(
+            new Equipment(null, request.getName(), request.getImage())));
+    }
 }
