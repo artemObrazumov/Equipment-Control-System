@@ -9,4 +9,8 @@ import lombok.Setter;
 public class WorkplaceUpdateRequest extends WorkplaceRequest {
     @NotNull
     Boolean hasStarted;
+
+    public WorkplaceUpdateRequest(Double latitude, Double longitude, String address) {
+        super(latitude, longitude, address);
+    }
 }

@@ -1,5 +1,6 @@
 package com.quackaboutit.equipmentapp.workplace.service;
 
+import com.quackaboutit.equipmentapp.workplace.dto.WorkplaceItemResponse;
 import org.springframework.stereotype.Service;
 
 import com.quackaboutit.equipmentapp.workplace.dto.WorkplaceRequest;
@@ -21,11 +22,12 @@ import java.util.Optional;
 public class WorkPlaceService {
     private final WorkplaceRepository workplaceRepository;
 
-    public List<WorkplaceResponse> findWorksplaces(){
+    public List<WorkplaceItemResponse> findWorkPlaces(){
         List<Workplace> workplaces = workplaceRepository.findAll();
-        List<WorkplaceResponse> workplaceResponses = new ArrayList<>();
+        List<WorkplaceItemResponse> workplaceResponses = new ArrayList<>();
         workplaces.forEach(workplace -> {
-            workplaceResponses.add(WorkplaceResponse.fromWorkplacetoResponce(workplace));
+            workplaceResponses.add(WorkplaceItemResponse.fromWorkPlaceToResponse(workplace,
+                    1, 2));
         });
 
         return workplaceResponses;
