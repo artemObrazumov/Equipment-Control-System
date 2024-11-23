@@ -2,19 +2,11 @@ package com.quackaboutit.equipmentapp.equipment.controller;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.quackaboutit.equipmentapp.equipment.dto.EquipmentRequest;
-import com.quackaboutit.equipmentapp.equipment.dto.EquipmentResponse;
-import com.quackaboutit.equipmentapp.equipment.dto.EquipmentUpdateRequest;
+import com.quackaboutit.equipmentapp.equipment.dto.*;
 import com.quackaboutit.equipmentapp.equipment.service.EquipmentService;
+import com.quackaboutit.equipmentapp.equipment.service.EquipmentTypeService;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -24,6 +16,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class EquipmentController {
     private final EquipmentService equipmentService;
+    private final EquipmentTypeService equipmentTypeService;
 
     @GetMapping
     private List<EquipmentResponse> findEquipment(){
@@ -31,13 +24,23 @@ public class EquipmentController {
     }
 
     @GetMapping("/{id}")
-    private EquipmentResponse findEquipmentById(@PathVariable Long id){
+    private EquipmentByIdResponse findEquipmentById(@PathVariable Long id){
         return equipmentService.findEquipmentById(id);
+    }
+
+    @GetMapping("/types")
+    private List<EquipmentByIdResponse> findEquipmentWithTypes(){
+        return equipmentService.findEquipmentWithTypes();
     }
 
     @PostMapping
     private EquipmentResponse createEquipment(@Valid @RequestBody EquipmentRequest request){
         return equipmentService.create(request);
+    }
+
+    @GetMapping("/{id}/types")
+    private List<EquipmentTypeResponse> findAllTypesByEquipment(@PathVariable Long id){
+        return equipmentTypeService.findAllTypesByEquipment(id);
     }
 
     @PutMapping("/{id}")
