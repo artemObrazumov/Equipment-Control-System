@@ -45,8 +45,9 @@ public class WorkPlaceService {
     }
 
     public void update(Long id, WorkplaceUpdateRequest request){
+        WorkplaceState state = (request.getHasStarted() ? WorkplaceState.INWORKS : WorkplaceState.FINISHED);
         workplaceRepository.updateWorkplace(request.getAddress(), 
-        request.getLatitude(), request.getLongitude(), id);
+        request.getLatitude(), request.getLongitude(), state, id);
     }
 
     public void delete(Long id){

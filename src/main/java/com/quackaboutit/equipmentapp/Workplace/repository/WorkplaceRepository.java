@@ -8,12 +8,13 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.quackaboutit.equipmentapp.workplace.entity.Workplace;
+import com.quackaboutit.equipmentapp.workplace.entity.WorkplaceState;
 
 @Repository
 @Transactional
 public interface WorkplaceRepository extends JpaRepository<Workplace, Long> {
     @Modifying
-    @Query("UPDATE Workplace w SET w.address = :address, w.latitude = :latitude, w.longitude = :longitude WHERE w.id = :id")
+    @Query("UPDATE Workplace w SET w.address = :address, w.state = :state, w.latitude = :latitude, w.longitude = :longitude WHERE w.id = :id")
     void updateWorkplace(@Param("address") String address, @Param("latitude") Double latitude, 
-    @Param("longitude") Double longitude, @Param("id") Long id); 
+    @Param("longitude") Double longitude, @Param("state") WorkplaceState state, @Param("id") Long id); 
 }
