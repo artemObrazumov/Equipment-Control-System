@@ -4,10 +4,11 @@ import com.quackaboutit.equipmentapp.users.entity.Role;
 import com.quackaboutit.equipmentapp.users.entity.User;
 import com.quackaboutit.equipmentapp.users.request.SignInRequest;
 import com.quackaboutit.equipmentapp.users.request.SignUpRequest;
-import com.quackaboutit.equipmentapp.users.response.JwtAuthResponse;
+import com.quackaboutit.equipmentapp.users.response.AuthResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,32 +20,35 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
-    public JwtAuthResponse signUp(SignUpRequest request) {
+    public AuthResponse signUp(SignUpRequest request) {
 
+        var userRole = Role.ROLE_WORKER;
         var user = User.builder()
                 .username(request.getUsername())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.ROLE_WORKER)
+                .role(userRole)
                 .build();
 
         userService.create(user);
 
         var jwt = jwtService.generateToken(user);
-        return new JwtAuthResponse(jwt);
+        return new AuthResponse(jwt, userRole);
     }
 
-    public JwtAuthResponse signIn(SignInRequest request) {
+    public AuthResponse signIn(SignInRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.getUsername(),
                 request.getPassword()
         ));
 
-        var user = userService
+        UserDetails userDetails = userService
                 .userDetailsService()
                 .loadUserByUsername(request.getUsername());
 
-        var jwt = jwtService.generateToken(user);
-        return new JwtAuthResponse(jwt);
+        User userInDatabase = userService.getByUsername(request.getUsername());
+
+        var jwt = jwtService.generateToken(userDetails);
+        return new AuthResponse(jwt, userInDatabase.getRole());
     }
 }
