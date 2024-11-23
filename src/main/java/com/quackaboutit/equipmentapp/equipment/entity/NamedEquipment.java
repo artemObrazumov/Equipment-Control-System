@@ -19,14 +19,14 @@ public class NamedEquipment {
     @SequenceGenerator(name = "named_equipment_id_seq", sequenceName = "named_equipment_id_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name = "unique_name")
-    private String uniqueName;
+    @Column(name = "license_plate")
+    private String licensePlate;
 
     @ManyToOne
     @JoinColumn(name = "base_id", referencedColumnName = "id")
     private Base base;
 
     @ManyToOne
-    @JoinColumn(name = "equipment_id", referencedColumnName = "id")
-    private Equipment equipment;
+    @JoinColumn(name = "equipment_type_id", referencedColumnName = "id")
+    private EquipmentType equipmentType;
 }
