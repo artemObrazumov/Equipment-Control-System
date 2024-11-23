@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.quackaboutit.equipmentapp.equipment.dto.EquipmentRequest;
 import com.quackaboutit.equipmentapp.equipment.dto.EquipmentResponse;
+import com.quackaboutit.equipmentapp.equipment.dto.EquipmentUpdateRequest;
 import com.quackaboutit.equipmentapp.equipment.entity.Equipment;
 import com.quackaboutit.equipmentapp.equipment.exceptions.EquipmentNotFound;
 import com.quackaboutit.equipmentapp.equipment.repository.EquipmentRepository;
@@ -37,5 +38,13 @@ public class EquipmentService {
     public EquipmentResponse create(EquipmentRequest request){
         return EquipmentResponse.fromEquipmentToResponse(equipmentRepository.save(
             new Equipment(null, request.getName(), request.getImage())));
+    }
+
+    public void delete(Long id){
+        equipmentRepository.deleteById(id);
+    }
+
+    public void update(Long id, EquipmentUpdateRequest request){
+        equipmentRepository.updateEquipment(request.getName(), request.getImage(), id);
     }
 }
