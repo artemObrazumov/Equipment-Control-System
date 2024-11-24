@@ -11,6 +11,8 @@ import com.quackaboutit.equipmentapp.bases.entity.Base;
 import com.quackaboutit.equipmentapp.equipment.entity.EquipmentType;
 import com.quackaboutit.equipmentapp.equipment.entity.NamedEquipment;
 
+import java.util.List;
+
 @Repository
 @Transactional
 public interface NamedEquipmentRepository extends JpaRepository<NamedEquipment, Long> {
@@ -18,4 +20,7 @@ public interface NamedEquipmentRepository extends JpaRepository<NamedEquipment, 
     @Query("UPDATE NamedEquipment ne SET ne.licensePlate = :licensePlate, ne.carBrand = :carBrand, ne.base  = :base, ne.equipmentType = :equipmentType WHERE ne.id = :id")
     void updateNamedEquipment(@Param("licensePlate") String license_plate, @Param("carBrand") String carBrand, @Param("base") Base base,
     @Param("equipmentType") EquipmentType equipmentType, @Param("id") Long id);
+
+    @Query("SELECT n FROM NamedEquipment n WHERE n.equipmentType.id = :typeId")
+    List<NamedEquipment> findAllByEquipmentTypeId(@Param("typeId") Long typeId);
 }

@@ -1,11 +1,7 @@
 package com.quackaboutit.equipmentapp.equipment.controller;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.quackaboutit.equipmentapp.equipment.dto.EquipmentTypeDetailsResponse;
+import org.springframework.web.bind.annotation.*;
 
 import com.quackaboutit.equipmentapp.equipment.dto.EquipmentTypeRequest;
 import com.quackaboutit.equipmentapp.equipment.dto.EquipmentTypeResponse;
@@ -23,6 +19,11 @@ public class EquipmentTypeController {
     @PostMapping
     private EquipmentTypeResponse createEquipmentTypeResponse(@Valid @RequestBody EquipmentTypeRequest request){
          return equipmentTypeService.create(request);
+    }
+
+    @GetMapping("/{id}")
+    private EquipmentTypeDetailsResponse findEquipmentTypeDetails(@PathVariable Long id) {
+        return equipmentTypeService.findEquipmentTypeDetails(id);
     }
 
     @DeleteMapping("/{id}")

@@ -1,9 +1,13 @@
 package com.quackaboutit.equipmentapp;
 
+import com.quackaboutit.equipmentapp.bases.entity.Base;
+import com.quackaboutit.equipmentapp.bases.repository.BaseRepository;
 import com.quackaboutit.equipmentapp.equipment.entity.Equipment;
 import com.quackaboutit.equipmentapp.equipment.entity.EquipmentType;
+import com.quackaboutit.equipmentapp.equipment.entity.NamedEquipment;
 import com.quackaboutit.equipmentapp.equipment.repository.EquipmentRepository;
 import com.quackaboutit.equipmentapp.equipment.repository.EquipmentTypeRepository;
+import com.quackaboutit.equipmentapp.equipment.repository.NamedEquipmentRepository;
 import com.quackaboutit.equipmentapp.unit.dto.UnitRequest;
 import com.quackaboutit.equipmentapp.unit.entity.Unit;
 import com.quackaboutit.equipmentapp.unit.repository.UnitRepository;
@@ -41,10 +45,16 @@ public class EquipmentApplication implements CommandLineRunner {
 	private UnitRepository unitRepository;
 
 	@Autowired
+	private BaseRepository baseRepository;
+
+	@Autowired
 	private EquipmentRepository equipmentRepository;
 
 	@Autowired
 	private EquipmentTypeRepository equipmentTypeRepository;
+
+	@Autowired
+	private NamedEquipmentRepository namedEquipmentRepository;
 
 	@Autowired
 	private WorkplaceRepository workplaceRepository;
@@ -67,6 +77,7 @@ public class EquipmentApplication implements CommandLineRunner {
 
 		// Adding equipment
 		var equipmentList = new ArrayList<Equipment>();
+		var equipmentTypeList = new ArrayList<EquipmentType>();
 		var equipmentRequest = Equipment.builder()
 				.name("Автоцистерна")
 				.image("https://sun9-1.userapi.com/impg/qVwmVZL-TNUcEVzRHUHVTaTcQSMlvr2b7UKG9A/_BKuikk8ngE.jpg?size=343x157&quality=95&sign=66558f63eb7118ab850a07545c71be1e&type=album")
@@ -79,14 +90,14 @@ public class EquipmentApplication implements CommandLineRunner {
 				.equipment(equipmentList.getLast())
 				.build();
 
-		equipmentTypeRepository.save(equipmentTypeRequest);
+		equipmentTypeList.add(equipmentTypeRepository.save(equipmentTypeRequest));
 
 		equipmentTypeRequest = EquipmentType.builder()
 				.type("8 тонн")
 				.equipment(equipmentList.getLast())
 				.build();
 
-		equipmentTypeRepository.save(equipmentTypeRequest);
+		equipmentTypeList.add(equipmentTypeRepository.save(equipmentTypeRequest));
 
 		equipmentRequest = Equipment.builder()
 				.name("Подъёмные агрегаты")
@@ -103,6 +114,26 @@ public class EquipmentApplication implements CommandLineRunner {
 				.build();
 
 		var unit = unitRepository.save(unitRequest);
+
+		// Adding bases
+		var baseRequest = Base.builder()
+				.unit(unit)
+				.address("test address")
+				.longitude(12.4)
+				.latitude(34.4)
+				.build();
+
+		var base = baseRepository.save(baseRequest);
+
+		// Adding named equipment
+		var namedEquipmentRequest = NamedEquipment.builder()
+				.licensePlate("123")
+				.carBrand("HAVAL")
+				.base(base)
+				.equipmentType(equipmentTypeList.getFirst())
+				.build();
+
+		var namedEq = namedEquipmentRepository.save(namedEquipmentRequest);
 
 		// Adding workplaces
 		var workplaceRequest = Workplace.builder()
