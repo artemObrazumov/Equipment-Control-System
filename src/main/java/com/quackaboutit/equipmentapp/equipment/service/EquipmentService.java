@@ -54,7 +54,7 @@ public class EquipmentService {
         return equipmentResponses;
     }
 
-    public EquipmentByIdResponse findEquipmentById(Long id) throws EquipmentNotFound{
+    public EquipmentByIdResponse getEquipmentDetails(Long id) throws EquipmentNotFound{
         Equipment equipment = equipmentRepository.findById(id).orElseThrow(() -> new EquipmentNotFound());
         List<EquipmentType> equipmentTypes = equipmentTypeRepository.findAllByEquipmentId(id);
         List<EquipmentTypeResponse> equipmentTypeResponses = new ArrayList<>();

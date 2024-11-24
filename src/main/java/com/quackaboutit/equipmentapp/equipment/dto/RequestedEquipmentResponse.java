@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 public class RequestedEquipmentResponse {
 
+    private Long id;
     private Long equipmentId;
     private String equipmentName;
     private String equipmentImage;

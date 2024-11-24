@@ -11,9 +11,6 @@ import java.time.LocalDateTime;
 public class RequestedEquipmentUpdateRequest {
 
     @NotNull
-    private Long id;
-
-    @NotNull
     private Long equipmentTypeId;
 
     @NotNull

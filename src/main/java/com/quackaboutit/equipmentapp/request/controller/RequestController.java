@@ -41,7 +41,7 @@ public class RequestController {
         return requestService.getRequestDetailById(id);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/requestedEquipment/{id}")
     private void UpdateRequestedEquipmentById(@Valid @RequestBody RequestedEquipmentUpdateRequest request, @PathVariable Long id) {
         requestService.updateRequestedEquipmentById(request, id);
     }

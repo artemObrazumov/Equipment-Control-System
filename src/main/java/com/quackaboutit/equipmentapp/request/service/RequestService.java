@@ -85,6 +85,7 @@ public class RequestService {
         List<RequestedEquipmentResponse> requestedEquipment = new ArrayList<>();
         request.getRequestedEquipment().forEach(eq -> {
             requestedEquipment.add(RequestedEquipmentResponse.builder()
+                    .id(eq.getId())
                     .equipmentId(eq.getEquipment().getId())
                     .equipmentName(eq.getEquipment().getName())
                     .equipmentImage(eq.getEquipment().getImage())
