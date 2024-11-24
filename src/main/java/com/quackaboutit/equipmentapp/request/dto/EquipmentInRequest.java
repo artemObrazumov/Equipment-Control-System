@@ -7,9 +7,15 @@ import com.quackaboutit.equipmentapp.request.entity.RequestedEquipment;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.*;
 
 @Data
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+//@RequiredArgsConstructor
 public class EquipmentInRequest {
     @NotNull
     private Long equipmentId;
@@ -22,10 +28,4 @@ public class EquipmentInRequest {
 
     @NotNull
     private Integer quantity;
-
-    static public RequestedEquipment fromEquipmentInRequest(EquipmentInRequest eir, 
-    Equipment re){
-        return new RequestedEquipment(null, re, 
-        eir.getArrivalTime(), eir.getQuantity());
-    }
 }
