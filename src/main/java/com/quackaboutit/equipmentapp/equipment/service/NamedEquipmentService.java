@@ -53,7 +53,7 @@ public class NamedEquipmentService {
             .orElseThrow(() -> new EquipmentNotFound());
         
         return NamedEquipmentResponse.fromNamedEquipmentToResponse(namedEquipmentRepository.save(
-            new NamedEquipment(null, request.getLicensePlate(), base, equipmentType)
+            new NamedEquipment(null, request.getLicensePlate(), request.getCarBrand(), base, equipmentType)
         ));
     }
 
@@ -65,8 +65,8 @@ public class NamedEquipmentService {
         EquipmentType equipmentType = equipmentTypeRepository.findById(request.getEquipmentTypeId())
             .orElseThrow(() -> new EquipmentNotFound());
 
-        namedEquipmentRepository.updateNamedEquipment(request.getLicensePlate()
-        , base, equipmentType, id);
+        namedEquipmentRepository.updateNamedEquipment(request.getLicensePlate(), request.getCarBrand(), 
+            base, equipmentType, id);
     }
 
     public void delete(Long id){

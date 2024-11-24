@@ -22,6 +22,9 @@ public class NamedEquipment {
     @Column(name = "license_plate", unique = true)
     private String licensePlate;
 
+    @Column(name = "car_brand")
+    private String carBrand;
+
     @ManyToOne
     @JoinColumn(name = "base_id", referencedColumnName = "id")
     private Base base;
