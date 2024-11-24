@@ -2,8 +2,6 @@ package com.quackaboutit.equipmentapp.equipment.dto;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Data
 @Builder
 @AllArgsConstructor
@@ -17,4 +15,5 @@ public class RequestedEquipmentResponse {
     private String equipmentType;
     private String licensePlateNumber;
     private String arrivalTime;
+    private String workDuration;
 }

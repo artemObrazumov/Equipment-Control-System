@@ -5,6 +5,8 @@ import java.util.List;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quackaboutit.equipmentapp.request.dto.RequestDetailsResponse;
+import com.quackaboutit.equipmentapp.request.dto.RequestedEquipmentUpdateRequest;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import com.quackaboutit.equipmentapp.request.dto.RequestForRequest;
@@ -30,12 +32,17 @@ public class RequestController {
     }
 
     @PostMapping
-    private ResponseRequest postRequest(@RequestBody String request) throws JsonProcessingException {
-        return requestService.postRequest(objectMapper.readValue(request, RequestForRequest.class));
+    private ResponseRequest postRequest(@RequestBody RequestForRequest request) {
+        return requestService.postRequest(request);
     }
 
     @GetMapping("/{id}")
     private RequestDetailsResponse getRequestsDetails(@PathVariable Long id){
         return requestService.getRequestDetailById(id);
+    }
+
+    @PutMapping("/{id}")
+    private void UpdateRequestedEquipmentById(@Valid @RequestBody RequestedEquipmentUpdateRequest request, @PathVariable Long id) {
+        requestService.updateRequestedEquipmentById(request, id);
     }
 }

@@ -1,5 +1,6 @@
 package com.quackaboutit.equipmentapp.request.dto;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 import com.quackaboutit.equipmentapp.equipment.entity.Equipment;
@@ -15,7 +16,6 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-//@RequiredArgsConstructor
 public class EquipmentInRequest {
     @NotNull
     private Long equipmentId;
@@ -28,4 +28,7 @@ public class EquipmentInRequest {
 
     @NotNull
     private Integer quantity;
+
+    @NotNull
+    private Duration workDuration;
 }

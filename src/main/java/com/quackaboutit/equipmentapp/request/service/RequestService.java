@@ -7,6 +7,7 @@ import com.quackaboutit.equipmentapp.equipment.dto.RequestedEquipmentResponse;
 import com.quackaboutit.equipmentapp.equipment.entity.EquipmentType;
 import com.quackaboutit.equipmentapp.equipment.repository.EquipmentTypeRepository;
 import com.quackaboutit.equipmentapp.request.dto.RequestDetailsResponse;
+import com.quackaboutit.equipmentapp.request.dto.RequestedEquipmentUpdateRequest;
 import com.quackaboutit.equipmentapp.users.service.JwtService;
 import com.quackaboutit.equipmentapp.workplace.entity.Workplace;
 import org.springframework.stereotype.Service;
@@ -55,6 +56,7 @@ public class RequestService {
                         .equipment(equipment)
                         .equipmentType(equipmentType)
                         .arrivalTime(eq.getArrivalTime())
+                        .workDuration(eq.getWorkDuration())
                         .build();
                 requestedEquipment = requestEquipmentRepository.save(requestedEquipment);
                 requestedEquipmentList.add(requestedEquipment);
@@ -90,6 +92,7 @@ public class RequestService {
                     .equipmentType(eq.getEquipmentType().getType())
                     .licensePlateNumber(eq.getLicensePlateNumber())
                     .arrivalTime(eq.getArrivalTime().toString())
+                    .workDuration(eq.getWorkDuration().toString())
                     .build());
         });
 
@@ -105,5 +108,10 @@ public class RequestService {
                 .total(1)
                 .equipment(requestedEquipment)
                 .build();
+    }
+
+    public void updateRequestedEquipmentById(RequestedEquipmentUpdateRequest request, Long id) {
+        requestEquipmentRepository.updateById(id, request.getEquipmentTypeId(),
+                request.getLicensePlateNumber(), request.getArrivalTime(), request.getWorkDuration());
     }
 }
