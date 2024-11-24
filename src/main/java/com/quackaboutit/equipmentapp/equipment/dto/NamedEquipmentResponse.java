@@ -23,6 +23,10 @@ public class NamedEquipmentResponse {
     @NotNull
     private String licensePlate;
 
+    @NotBlank
+    @NotNull
+    private String carBrand;
+
     @NotNull
     private Base base;
 
@@ -31,6 +35,6 @@ public class NamedEquipmentResponse {
 
     public static NamedEquipmentResponse fromNamedEquipmentToResponse(NamedEquipment equipment){
         return new NamedEquipmentResponse(equipment.getId(), equipment.getLicensePlate(),
-        equipment.getBase(), equipment.getEquipmentType());
+        equipment.getCarBrand(), equipment.getBase(), equipment.getEquipmentType());
     }
 }

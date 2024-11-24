@@ -16,6 +16,10 @@ public class NamedEquipmentRequest {
     @NotNull
     private String licensePlate;
 
+    @NotBlank
+    @NotNull
+    private String carBrand;
+
     @NotNull
     private Long baseId;
 
