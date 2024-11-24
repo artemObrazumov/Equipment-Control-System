@@ -8,7 +8,10 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Data
-public class RequestedEquipmentUpdateRequest {
+public class RequestedEquipmentRequest {
+
+    @NotNull
+    private Long equipmentId;
 
     @NotNull
     private Long equipmentTypeId;

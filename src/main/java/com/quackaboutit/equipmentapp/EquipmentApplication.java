@@ -160,6 +160,7 @@ public class EquipmentApplication implements CommandLineRunner {
 				.email("dispatcher@gmail.com")
 				.password(passwordEncoder.encode("password"))
 				.role(Role.ROLE_DISPATCHER)
+				.unit(unit)
 				.build();
 
 		userRepository.save(dispatcherUser);
@@ -169,6 +170,7 @@ public class EquipmentApplication implements CommandLineRunner {
 				.email("admin@gmail.com")
 				.password(passwordEncoder.encode("password"))
 				.role(Role.ROLE_ADMIN)
+				.unit(unit)
 				.build();
 
 		userRepository.save(adminUser);

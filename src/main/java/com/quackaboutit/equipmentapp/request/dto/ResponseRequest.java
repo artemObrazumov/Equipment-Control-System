@@ -12,16 +12,17 @@ import lombok.Data;
 public class ResponseRequest {
     private Long id;
     private RequestState state;
+    private String workerName;
     private String workplaceAddress;
     private Integer equipmentCount;
     private String date;
     private Integer progress;
     private Integer total;
 
-    public static ResponseRequest fromRequest(Request req){
+    public static ResponseRequest fromRequest(Request req) {
 
         return new ResponseRequest(req.getId(), req.getState(),
-        req.getWorkplace().getAddress(), req.getRequestedEquipment().size(),
-        req.getArrivalDate().toString(), 52, 69);
+                req.getCreator().getUsername(), req.getWorkplace().getAddress(),
+                req.getRequestedEquipment().size(), req.getArrivalDate().toString(), 52, 69);
     }
 }
