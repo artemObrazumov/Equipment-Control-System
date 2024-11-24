@@ -6,6 +6,7 @@ import com.quackaboutit.equipmentapp.users.exceptions.UserWithEmailExists;
 import com.quackaboutit.equipmentapp.users.exceptions.UserWithNameExists;
 import com.quackaboutit.equipmentapp.users.repository.UserRepository;
 import com.quackaboutit.equipmentapp.users.response.WorkerItemResponse;
+import com.quackaboutit.equipmentapp.workplace.entity.Workplace;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -49,8 +50,10 @@ public class UserService {
         List<WorkerItemResponse> workers = new ArrayList<>();
         userWorkers.forEach(worker -> {
             Integer sentRequest = requestRepository.countSentByUser(worker.getId());
+            Workplace lastWorkplace = worker.getLastWorkplace();
             workers.add(WorkerItemResponse.builder()
-                    .currentWorkPlaceAddress(worker.getLastWorkplace().getAddress())
+                    .id(worker.getId())
+                    .currentWorkPlaceAddress(lastWorkplace == null ? "Не задано" : lastWorkplace.getAddress())
                     .sentRequest(sentRequest)
                     .build()
             );

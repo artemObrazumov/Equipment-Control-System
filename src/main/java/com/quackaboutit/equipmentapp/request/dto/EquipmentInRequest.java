@@ -11,15 +11,15 @@ import lombok.Data;
 
 @Data
 public class EquipmentInRequest {
-    @NotBlank
     @NotNull
     private Long equipmentId;
 
-    @NotBlank
+    @NotNull
+    private Long equipmentTypeId;
+
     @NotNull
     private LocalDateTime arrivalTime;
 
-    @NotBlank
     @NotNull
     private Integer quantity;
 
