@@ -1,6 +1,7 @@
 package com.quackaboutit.equipmentapp.users.entity;
 
 import com.quackaboutit.equipmentapp.unit.entity.Unit;
+import com.quackaboutit.equipmentapp.workplace.entity.Workplace;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -41,6 +42,10 @@ public class User implements UserDetails {
     @ManyToOne
     @JoinColumn(name = "unit_id", referencedColumnName = "id")
     private Unit unit;
+
+    @OneToOne
+    @JoinColumn(name = "last_workplace_id", referencedColumnName = "id", nullable = true)
+    private Workplace lastWorkplace;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
