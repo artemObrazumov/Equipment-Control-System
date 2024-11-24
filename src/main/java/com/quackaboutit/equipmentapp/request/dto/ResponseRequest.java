@@ -14,7 +14,7 @@ public class ResponseRequest {
     private RequestState state;
     private String workplaceAddress;
     private Integer equipmentCount;
-    private LocalDateTime date;
+    private String date;
     private Integer progress;
     private Integer total;
 
@@ -22,6 +22,6 @@ public class ResponseRequest {
 
         return new ResponseRequest(req.getId(), req.getState(),
         req.getWorkplace().getAddress(), req.getRequestedEquipment().size(),
-        req.getArrivalDate(), 52, 69);
+        req.getArrivalDate().toString(), 52, 69);
     }
 }

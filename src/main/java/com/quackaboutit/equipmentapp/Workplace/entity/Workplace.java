@@ -14,8 +14,8 @@ public class Workplace {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "request_id_seq")
-    @SequenceGenerator(name = "request_id_seq", sequenceName = "request_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "workplace_id_seq")
+    @SequenceGenerator(name = "workplace_id_seq", sequenceName = "workplace_id_seq", allocationSize = 1)
     private Long id;
 
     //@Enumerated(EnumType.STRING) - затестить
