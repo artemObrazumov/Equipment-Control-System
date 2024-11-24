@@ -12,6 +12,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
@@ -33,14 +34,11 @@ public class Summary  {
     @Column(name = "state")
     private SummaryState state;
 
-    @Column(name = "manager")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User manager;
 
     @Column(name = "date")
     private LocalDateTime date;
-
-    @Column(name = "unit")
-    private Unit unit;
     
     @OneToMany
     @Column(name = "requests")
