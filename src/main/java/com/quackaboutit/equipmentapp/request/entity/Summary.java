@@ -1,7 +1,7 @@
 package com.quackaboutit.equipmentapp.request.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 import com.quackaboutit.equipmentapp.unit.entity.Unit;
 import com.quackaboutit.equipmentapp.users.entity.User;
@@ -47,5 +47,5 @@ public class Summary  {
     
     @OneToMany
     @JoinColumn(name = "requests")
-    private List<Request> requests;
+    private Set<Request> requests;
 }

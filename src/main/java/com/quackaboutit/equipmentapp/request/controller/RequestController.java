@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import com.quackaboutit.equipmentapp.request.dto.RequestForRequest;
 import com.quackaboutit.equipmentapp.request.dto.ResponseRequest;
 import com.quackaboutit.equipmentapp.request.service.RequestService;
+import com.quackaboutit.equipmentapp.request.service.SummaryService;
 import com.quackaboutit.equipmentapp.users.service.JwtService;
 
 import lombok.RequiredArgsConstructor;
@@ -21,14 +22,18 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RequestController {
     private final RequestService requestService;
+    private final SummaryService summaryService;
     private final JwtService jwtService;
-
-    private final ObjectMapper objectMapper;
 
     @GetMapping
     private List<ResponseRequest> getRequests(){
         return requestService.getRequests(
             jwtService.getUserFromSecurityContextHolder().getId());
+    }
+
+    @PostMapping("/{id}/add_to_summary")
+    private void addRequestToSummary(@PathVariable Long id) {
+        summaryService.addRequestToSummary(id, jwtService.getUserFromSecurityContextHolder());
     }
 
     @PostMapping

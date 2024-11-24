@@ -1,6 +1,7 @@
 package com.quackaboutit.equipmentapp.request.repository;
 
-import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -16,5 +17,8 @@ import com.quackaboutit.equipmentapp.request.entity.Summary;
 public interface SummaryRepository extends JpaRepository<Summary, Long> {
     @Modifying
     @Query("SELECT s FROM Summary s WHERE s.unit.id = :UnitId")
-    List<Summary> findAllSummarysByUnitId(@Param("UnitId") Long unitId);
+    Set<Summary> findAllSummarysByUnitId(@Param("UnitId") Long unitId);
+    
+    @Query("SELECT s FROM Summary s ORDER BY s.id DESC")
+    Optional<Summary> findFirstByOrderByIdDesc();
 }

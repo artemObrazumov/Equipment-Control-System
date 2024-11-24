@@ -29,6 +29,7 @@ public class SummaryController {
     public List<SummaryResponse> findAllSummarysByUnitId(){
         return summaryService.findAllSummarysByUnitId(jwtService.getUserFromSecurityContextHolder().getUnit());
     }
+    
 
 
 }
