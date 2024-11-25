@@ -25,7 +25,7 @@ public class EquipmentController {
 
     @GetMapping("/{id}")
     private EquipmentByIdResponse findEquipmentById(@PathVariable Long id){
-        return equipmentService.findEquipmentById(id);
+        return equipmentService.getEquipmentDetails(id);
     }
 
     @GetMapping("/types")

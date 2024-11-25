@@ -1,8 +1,14 @@
 package com.quackaboutit.equipmentapp.equipment.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import com.quackaboutit.equipmentapp.equipment.dto.EquipmentTypeAnalytics;
+import com.quackaboutit.equipmentapp.equipment.dto.EquipmentTypeDetailsResponse;
+import com.quackaboutit.equipmentapp.equipment.entity.NamedEquipment;
+import com.quackaboutit.equipmentapp.equipment.repository.NamedEquipmentRepository;
 import org.springframework.stereotype.Service;
 
 import com.quackaboutit.equipmentapp.equipment.dto.EquipmentTypeRequest;
@@ -20,6 +26,7 @@ import lombok.AllArgsConstructor;
 public class EquipmentTypeService {
     private final EquipmentTypeRepository equipmentTypeRepository;
     private final EquipmentRepository equipmentRepository;
+    private final NamedEquipmentRepository namedEquipmentRepository;
 
     public List<EquipmentTypeResponse> findAllTypesByEquipment(Long equipment_id){
         List<EquipmentType> equipments = equipmentTypeRepository.findAllByEquipmentId(equipment_id);
@@ -46,4 +53,27 @@ public class EquipmentTypeService {
     }
 
 
+    public EquipmentTypeDetailsResponse findEquipmentTypeDetails(Long id) {
+        EquipmentType equipmentType = equipmentTypeRepository.findById(id).orElseThrow();
+        Equipment equipment = equipmentRepository.findById(id).orElseThrow();
+        List<NamedEquipment> namedEquipmentList = namedEquipmentRepository.findAllByEquipmentTypeId(id);
+        HashMap<String, Integer> brands = new HashMap<>();
+        AtomicInteger equipmentCount = new AtomicInteger();
+        namedEquipmentList.forEach(eq -> {
+            brands.put(eq.getCarBrand(), brands.getOrDefault(eq.getCarBrand(), 0) + 1);
+            equipmentCount.getAndIncrement();
+        });
+        EquipmentTypeAnalytics analytics = EquipmentTypeAnalytics.builder()
+                .carBrand(brands)
+                .equipmentCount(equipmentCount.get())
+                .yearActivity(List.of(8,9,12,8,10,12,11,8,9,12,10,12))
+                .build();
+
+        return EquipmentTypeDetailsResponse.builder()
+                .id(equipmentType.getId())
+                .equipmentName(equipment.getName())
+                .type(equipmentType.getType())
+                .analytics(analytics)
+                .build();
+    }
 }

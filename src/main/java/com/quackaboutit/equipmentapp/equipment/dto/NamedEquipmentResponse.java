@@ -11,6 +11,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Data
 @Setter
 @Getter
@@ -33,8 +35,12 @@ public class NamedEquipmentResponse {
     @NotNull
     private EquipmentType equipmentType;
 
+    private Boolean isActive;
+    private String lastWorkPlaceAddress;
+    private String finishTime;
+
     public static NamedEquipmentResponse fromNamedEquipmentToResponse(NamedEquipment equipment){
         return new NamedEquipmentResponse(equipment.getId(), equipment.getLicensePlate(),
-        equipment.getCarBrand(), equipment.getBase(), equipment.getEquipmentType());
+        equipment.getCarBrand(), equipment.getBase(), equipment.getEquipmentType(), true, "address", LocalDateTime.now().toString());
     }
 }

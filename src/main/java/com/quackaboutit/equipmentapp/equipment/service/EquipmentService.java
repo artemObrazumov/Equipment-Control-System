@@ -3,6 +3,7 @@ package com.quackaboutit.equipmentapp.equipment.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.quackaboutit.equipmentapp.equipment.repository.NamedEquipmentRepository;
 import org.springframework.stereotype.Service;
 
 import com.quackaboutit.equipmentapp.equipment.dto.EquipmentByIdResponse;
@@ -23,6 +24,7 @@ import lombok.AllArgsConstructor;
 public class EquipmentService {
     private final EquipmentRepository equipmentRepository;
     private final EquipmentTypeRepository equipmentTypeRepository;
+    private final NamedEquipmentRepository namedEquipmentRepository;
 
     public List<EquipmentResponse> findEquipment(){
         List<Equipment> equipments = equipmentRepository.findAll();
@@ -44,8 +46,9 @@ public class EquipmentService {
             List<EquipmentTypeResponse> equipmentTypeResponses = new ArrayList<>();
 
             equipmentTypes.forEach(equipmentType -> {
+                var count = namedEquipmentRepository.countByTypeId(equipmentType.getId());
                 equipmentTypeResponses.add(EquipmentTypeResponse.
-                fromEquipmentTypeToResponse(equipmentType));
+                fromEquipmentTypeToResponse(equipmentType, count));
             });
 
             equipmentResponses.add(EquipmentByIdResponse.fromEquipmentToResponse(equipment, equipmentTypeResponses));
@@ -54,7 +57,7 @@ public class EquipmentService {
         return equipmentResponses;
     }
 
-    public EquipmentByIdResponse findEquipmentById(Long id) throws EquipmentNotFound{
+    public EquipmentByIdResponse getEquipmentDetails(Long id) throws EquipmentNotFound{
         Equipment equipment = equipmentRepository.findById(id).orElseThrow(() -> new EquipmentNotFound());
         List<EquipmentType> equipmentTypes = equipmentTypeRepository.findAllByEquipmentId(id);
         List<EquipmentTypeResponse> equipmentTypeResponses = new ArrayList<>();

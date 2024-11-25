@@ -55,6 +55,7 @@ public class UserService {
                     .id(worker.getId())
                     .currentWorkPlaceAddress(lastWorkplace == null ? "Не задано" : lastWorkplace.getAddress())
                     .sentRequest(sentRequest)
+                    .workerName(worker.getUsername())
                     .build()
             );
         });

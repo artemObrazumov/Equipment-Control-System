@@ -44,7 +44,7 @@ public class Request {
     @ManyToOne
     private User editor;
 
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "requested_equipment")
     private List<RequestedEquipment> requestedEquipment;
 

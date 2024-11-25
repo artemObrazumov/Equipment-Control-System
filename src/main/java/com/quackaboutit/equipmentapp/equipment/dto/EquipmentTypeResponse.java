@@ -12,18 +12,20 @@ import lombok.Setter;
 
 @Data
 @Getter
-@Setter
 @AllArgsConstructor
 public class EquipmentTypeResponse {
-    @NotNull
-    private Long id;
 
-    @NotBlank
-    @NotNull
+    private Long id;
     private String type;
+    private Integer count;
 
     public static EquipmentTypeResponse fromEquipmentTypeToResponse(EquipmentType equipmentType){
-        return new EquipmentTypeResponse(equipmentType.getId(), 
-        equipmentType.getType());
+        return new EquipmentTypeResponse(equipmentType.getId(),
+                equipmentType.getType(), null);
+    }
+
+    public static EquipmentTypeResponse fromEquipmentTypeToResponse(EquipmentType equipmentType, Integer count){
+        return new EquipmentTypeResponse(equipmentType.getId(),
+        equipmentType.getType(), count);
     }
 }

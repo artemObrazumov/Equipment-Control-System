@@ -7,9 +7,10 @@ import com.quackaboutit.equipmentapp.equipment.dto.RequestedEquipmentResponse;
 import com.quackaboutit.equipmentapp.equipment.entity.EquipmentType;
 import com.quackaboutit.equipmentapp.equipment.repository.EquipmentTypeRepository;
 import com.quackaboutit.equipmentapp.request.dto.RequestDetailsResponse;
-import com.quackaboutit.equipmentapp.request.dto.RequestedEquipmentUpdateRequest;
+import com.quackaboutit.equipmentapp.request.dto.RequestedEquipmentRequest;
 import com.quackaboutit.equipmentapp.users.service.JwtService;
 import com.quackaboutit.equipmentapp.workplace.entity.Workplace;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import com.quackaboutit.equipmentapp.equipment.entity.Equipment;
@@ -85,6 +86,7 @@ public class RequestService {
         List<RequestedEquipmentResponse> requestedEquipment = new ArrayList<>();
         request.getRequestedEquipment().forEach(eq -> {
             requestedEquipment.add(RequestedEquipmentResponse.builder()
+                    .id(eq.getId())
                     .equipmentId(eq.getEquipment().getId())
                     .equipmentName(eq.getEquipment().getName())
                     .equipmentImage(eq.getEquipment().getImage())
@@ -110,8 +112,40 @@ public class RequestService {
                 .build();
     }
 
-    public void updateRequestedEquipmentById(RequestedEquipmentUpdateRequest request, Long id) {
+    public void updateRequestedEquipmentById(RequestedEquipmentRequest request, Long id) {
         requestEquipmentRepository.updateById(id, request.getEquipmentTypeId(),
                 request.getLicensePlateNumber(), request.getArrivalTime(), request.getWorkDuration());
+    }
+
+    public RequestedEquipmentResponse postRequestedEquipment(@Valid RequestedEquipmentRequest request,
+                                                             Long id) {
+        Equipment equipment = equipmentRepository.findById(request.getEquipmentId()).orElseThrow();
+        EquipmentType equipmentType = equipmentTypeRepository.findById(request.getEquipmentTypeId()).orElseThrow();
+        RequestedEquipment requestedEquipment = RequestedEquipment.builder()
+                .workDuration(request.getWorkDuration())
+                .equipment(equipment)
+                .equipmentType(equipmentType)
+                .licensePlateNumber(request.getLicensePlateNumber())
+                .arrivalTime(request.getArrivalTime())
+                .workDuration(request.getWorkDuration())
+                .build();
+
+        requestedEquipment = requestEquipmentRepository.save(requestedEquipment);
+
+        Request requestEntity = requestRepository.findById(id).orElseThrow();
+        requestEntity.getRequestedEquipment().add(requestedEquipment);
+        requestRepository.save(requestEntity);
+
+        return RequestedEquipmentResponse.builder()
+                .id(requestedEquipment.getId())
+                .equipmentId(requestedEquipment.getEquipment().getId())
+                .equipmentName(requestedEquipment.getEquipment().getName())
+                .equipmentImage(requestedEquipment.getEquipment().getImage())
+                .equipmentTypeId(requestedEquipment.getEquipmentType().getId())
+                .equipmentType(requestedEquipment.getEquipmentType().getType())
+                .licensePlateNumber(requestedEquipment.getLicensePlateNumber())
+                .arrivalTime(requestedEquipment.getArrivalTime().toString())
+                .workDuration(requestedEquipment.getWorkDuration().toString())
+                .build();
     }
 }

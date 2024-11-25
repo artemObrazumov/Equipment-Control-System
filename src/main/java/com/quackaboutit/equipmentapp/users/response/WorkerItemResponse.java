@@ -12,12 +12,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class WorkerItemResponse {
 
-    @NotNull
     private Long id;
-
-    @NotNull
     private String currentWorkPlaceAddress;
-
-    @NotNull
     private Integer sentRequest;
+    private String workerName;
 }

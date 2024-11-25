@@ -2,15 +2,12 @@ package com.quackaboutit.equipmentapp.request.controller;
 
 import java.util.List;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.quackaboutit.equipmentapp.request.dto.RequestDetailsResponse;
-import com.quackaboutit.equipmentapp.request.dto.RequestedEquipmentUpdateRequest;
+import com.quackaboutit.equipmentapp.equipment.dto.RequestedEquipmentResponse;
+import com.quackaboutit.equipmentapp.request.dto.*;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
-import com.quackaboutit.equipmentapp.request.dto.RequestForRequest;
-import com.quackaboutit.equipmentapp.request.dto.ResponseRequest;
 import com.quackaboutit.equipmentapp.request.service.RequestService;
 import com.quackaboutit.equipmentapp.request.service.SummaryService;
 import com.quackaboutit.equipmentapp.users.service.JwtService;
@@ -26,9 +23,9 @@ public class RequestController {
     private final JwtService jwtService;
 
     @GetMapping
-    private List<ResponseRequest> getRequests(){
+    private List<ResponseRequest> getRequests() {
         return requestService.getRequests(
-            jwtService.getUserFromSecurityContextHolder().getId());
+                jwtService.getUserFromSecurityContextHolder().getId());
     }
 
     @PostMapping("/{id}/add_to_summary")
@@ -43,12 +40,18 @@ public class RequestController {
     }
 
     @GetMapping("/{id}")
-    private RequestDetailsResponse getRequestsDetails(@PathVariable Long id){
+    private RequestDetailsResponse getRequestsDetails(@PathVariable Long id) {
         return requestService.getRequestDetailById(id);
     }
 
-    @PutMapping("/{id}")
-    private void UpdateRequestedEquipmentById(@Valid @RequestBody RequestedEquipmentUpdateRequest request, @PathVariable Long id) {
+    @PostMapping("/{id}/requestedEquipment")
+    private RequestedEquipmentResponse postRequestedEquipment(@Valid @RequestBody RequestedEquipmentRequest request,
+                                                              @PathVariable Long id) {
+        return requestService.postRequestedEquipment(request, id);
+    }
+
+    @PutMapping("/requestedEquipment/{id}")
+    private void UpdateRequestedEquipmentById(@Valid @RequestBody RequestedEquipmentRequest request, @PathVariable Long id) {
         requestService.updateRequestedEquipmentById(request, id);
     }
 }
