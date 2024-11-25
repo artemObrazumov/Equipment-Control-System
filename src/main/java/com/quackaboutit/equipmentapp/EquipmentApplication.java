@@ -99,6 +99,27 @@ public class EquipmentApplication implements CommandLineRunner {
 
 		equipmentTypeList.add(equipmentTypeRepository.save(equipmentTypeRequest));
 
+		equipmentTypeRequest = EquipmentType.builder()
+				.type("128 тонн")
+				.equipment(equipmentList.getLast())
+				.build();
+
+		equipmentTypeList.add(equipmentTypeRepository.save(equipmentTypeRequest));
+
+		equipmentTypeRequest = EquipmentType.builder()
+				.type("256 тонн")
+				.equipment(equipmentList.getLast())
+				.build();
+
+		equipmentTypeList.add(equipmentTypeRepository.save(equipmentTypeRequest));
+
+		equipmentTypeRequest = EquipmentType.builder()
+				.type("128 тонн")
+				.equipment(equipmentList.getLast())
+				.build();
+
+		equipmentTypeList.add(equipmentTypeRepository.save(equipmentTypeRequest));
+
 		equipmentRequest = Equipment.builder()
 				.name("Подъёмные агрегаты")
 				.image("https://sun9-16.userapi.com/impg/m1FtE45hMgJ3vlEnLXb-aRIibI_-BXdKGVUR5A/1dUGJrcomto.jpg?size=438x267&quality=95&sign=a027a3641aea65eec1433f7d00a4a6cd&type=album")

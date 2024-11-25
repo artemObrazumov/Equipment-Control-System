@@ -3,14 +3,12 @@ package com.quackaboutit.equipmentapp.unit.dto;
 import com.quackaboutit.equipmentapp.unit.entity.Unit;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Data
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 public class UnitResponse {
     @NotNull

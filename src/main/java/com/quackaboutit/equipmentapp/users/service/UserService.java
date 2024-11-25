@@ -1,10 +1,12 @@
 package com.quackaboutit.equipmentapp.users.service;
 
 import com.quackaboutit.equipmentapp.request.repository.RequestRepository;
+import com.quackaboutit.equipmentapp.unit.dto.UnitResponse;
 import com.quackaboutit.equipmentapp.users.entity.User;
 import com.quackaboutit.equipmentapp.users.exceptions.UserWithEmailExists;
 import com.quackaboutit.equipmentapp.users.exceptions.UserWithNameExists;
 import com.quackaboutit.equipmentapp.users.repository.UserRepository;
+import com.quackaboutit.equipmentapp.users.response.UserDataResponse;
 import com.quackaboutit.equipmentapp.users.response.WorkerItemResponse;
 import com.quackaboutit.equipmentapp.workplace.entity.Workplace;
 import lombok.RequiredArgsConstructor;
@@ -61,6 +63,22 @@ public class UserService {
         });
 
         return workers;
+    }
+
+    public UserDataResponse getUserData() {
+        User user = getCurrentUser();
+        UnitResponse unitResponse = UnitResponse.builder()
+                .id(user.getUnit().getId())
+                .address(user.getUnit().getAddress())
+                .latitude(user.getUnit().getLatitude())
+                .longitude(user.getUnit().getLongitude())
+                .build();
+
+        return UserDataResponse.builder()
+                .id(user.getId())
+                .name(user.getUsername())
+                .unit(unitResponse)
+                .build();
     }
 
     public UserDetailsService userDetailsService() {

@@ -1,5 +1,6 @@
 package com.quackaboutit.equipmentapp.users.controller;
 
+import com.quackaboutit.equipmentapp.users.response.UserDataResponse;
 import com.quackaboutit.equipmentapp.users.response.WorkerItemResponse;
 import com.quackaboutit.equipmentapp.users.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -19,5 +20,10 @@ public class UsersController {
     @GetMapping("/workers")
     private List<WorkerItemResponse> getWorkers() {
         return userService.getWorkersList();
+    }
+
+    @GetMapping
+    private UserDataResponse getUserData() {
+        return userService.getUserData();
     }
 }
