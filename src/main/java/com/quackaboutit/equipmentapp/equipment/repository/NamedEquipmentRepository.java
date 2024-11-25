@@ -23,4 +23,7 @@ public interface NamedEquipmentRepository extends JpaRepository<NamedEquipment, 
 
     @Query("SELECT n FROM NamedEquipment n WHERE n.equipmentType.id = :typeId")
     List<NamedEquipment> findAllByEquipmentTypeId(@Param("typeId") Long typeId);
+
+    @Query("SELECT COUNT(eq) FROM NamedEquipment eq WHERE eq.equipmentType.id = :typeId")
+    Integer countByTypeId(@Param("typeId") Long typeId);
 }
