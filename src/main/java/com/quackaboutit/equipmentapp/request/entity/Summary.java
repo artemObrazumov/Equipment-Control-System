@@ -2,8 +2,6 @@ package com.quackaboutit.equipmentapp.request.entity;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
-import com.quackaboutit.equipmentapp.equipment.dto.EquipmentRequest;
 import com.quackaboutit.equipmentapp.unit.entity.Unit;
 import com.quackaboutit.equipmentapp.users.entity.User;
 
@@ -13,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
@@ -34,13 +33,18 @@ public class Summary  {
     @Column(name = "state")
     private SummaryState state;
 
+    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User manager;
 
     @Column(name = "date")
     private LocalDateTime date;
+
+    @ManyToOne
+    @JoinColumn(name = "unit_id", referencedColumnName = "id")
+    private Unit unit;
     
     @OneToMany
-    @Column(name = "requests")
+    @JoinColumn(name = "requests")
     private List<Request> requests;
 }
