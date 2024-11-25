@@ -2,7 +2,6 @@ package com.quackaboutit.equipmentapp.bases.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -31,6 +30,16 @@ public class BaseService {
         bases.forEach(base -> {
             baseResponses.add(BaseResponse.fromBaseToResponse(base));
             System.out.println(base.getUnit().getId());
+        });
+
+        return baseResponses;
+    }
+
+    public List<BaseResponse> findByAddressContaining(String substr){
+        List<Base> bases = baseRepository.findByAddressContaining(substr);
+        List<BaseResponse> baseResponses = new ArrayList<>();
+        bases.forEach(base -> {
+            baseResponses.add(BaseResponse.fromBaseToResponse(base));
         });
 
         return baseResponses;

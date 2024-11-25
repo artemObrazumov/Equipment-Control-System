@@ -1,5 +1,7 @@
 package com.quackaboutit.equipmentapp.bases.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,4 +18,5 @@ public interface BaseRepository extends JpaRepository<Base, Long> {
     void updateBase(@Param("address") String address, @Param("latitude") Double latitude, 
     @Param("longitude") Double longitude, @Param("id") Long id); 
 
+    List<Base> findByAddressContaining(String substring);
 }
