@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.quackaboutit.equipmentapp.request.entity.Request;
 import com.quackaboutit.equipmentapp.request.entity.Summary;
+import com.quackaboutit.equipmentapp.request.entity.SummaryState;
 
 @Transactional
 @Repository
@@ -25,4 +26,9 @@ public interface SummaryRepository extends JpaRepository<Summary, Long> {
     @Modifying
     @Query("UPDATE Summary s SET s.requests = :requests WHERE s.id = :id")
     void updateRequests(@Param("requests") List<Request> requests, @Param("id") Long id);
+
+    @Modifying
+    @Query("UPDATE Summary s SET s.state = :state WHERE s.id = :id")
+    void updateState(@Param("state") SummaryState state, @Param("id") Long id);
+
 }

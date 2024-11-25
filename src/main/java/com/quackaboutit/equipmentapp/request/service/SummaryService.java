@@ -71,7 +71,8 @@ public class SummaryService {
     private SummaryResponse changeStateSummary(Long id, SummaryState state) throws SummaryNotFound{
         Summary summary = summaryRepository.findById(id).
             orElseThrow(() -> new SummaryNotFound());
-        summary.setState(state);
+        
+        summaryRepository.updateState(state, id);
 
         return SummaryResponse.fromSummaryToResponse(summary);
     } 
