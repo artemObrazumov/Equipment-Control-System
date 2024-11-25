@@ -59,7 +59,6 @@ public class SummaryService {
             () -> new RequestNotFound()
         );
         
-        // ПОМЕНЯТЬ СЕТЫ НА ЛИСТЫ И ПРОВЕРКУ НА ПРОЦЕССИНГ ПРИ ДОБАВЛЕНИИ
         if(request.getState() == RequestState.SENT){
             requestRepository.updateState(RequestState.PROCESSING, id);
             lastSummary.get().getRequests().add(request);
