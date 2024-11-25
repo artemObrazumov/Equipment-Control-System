@@ -3,6 +3,7 @@ package com.quackaboutit.equipmentapp.request.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,6 +31,14 @@ public class SummaryController {
         return summaryService.findAllSummarysByUnitId(jwtService.getUserFromSecurityContextHolder().getUnit());
     }
     
+    @PostMapping("/{id}/close")
+    private SummaryResponse closeSummary(@PathVariable Long id) {
+        return summaryService.closeSummary(id);
+    }
 
+    @PostMapping("/{id}/archive")
+    private SummaryResponse archiveSummary(@PathVariable Long id) {
+        return summaryService.archiveSummary(id);
+    }
 
 }

@@ -35,6 +35,7 @@ public class RequestController {
     private void addRequestToSummary(@PathVariable Long id) {
         summaryService.addRequestToSummary(id, jwtService.getUserFromSecurityContextHolder());
     }
+    
 
     @PostMapping
     private ResponseRequest postRequest(@RequestBody RequestForRequest request) {

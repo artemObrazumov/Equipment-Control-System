@@ -1,7 +1,7 @@
 package com.quackaboutit.equipmentapp.request.dto;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 import com.quackaboutit.equipmentapp.request.entity.Request;
 import com.quackaboutit.equipmentapp.request.entity.Summary;
@@ -36,8 +36,8 @@ public class SummaryResponse {
     private Unit unit;
 
     @NotNull
-    private Set<Request> requests;
-
+    private List<Request> requests;
+    
     public static SummaryResponse fromSummaryToResponse(Summary summary){
         return new SummaryResponse(summary.getId(), summary.getState(),
         summary.getManager(), summary.getDate(), summary.getUnit(),
