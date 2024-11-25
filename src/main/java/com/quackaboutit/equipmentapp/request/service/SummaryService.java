@@ -8,9 +8,11 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.quackaboutit.equipmentapp.request.dto.SummaryIdResponse;
 import com.quackaboutit.equipmentapp.request.dto.SummaryResponse;
 import com.quackaboutit.equipmentapp.request.entity.Request;
 import com.quackaboutit.equipmentapp.request.entity.RequestState;
@@ -66,6 +68,14 @@ public class SummaryService {
 
         }else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Request has already been procesed.");
 
+    }
+
+    public SummaryIdResponse getSummaryById(Long id) throws SummaryNotFound{
+        Summary summary = summaryRepository.findById(id).orElseThrow(
+            () -> new SummaryNotFound()
+        );
+
+        return SummaryIdResponse.fromSummaryToResponse(summary);
     }
 
     private SummaryResponse changeStateSummary(Long id, SummaryState state) throws SummaryNotFound{

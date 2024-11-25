@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.quackaboutit.equipmentapp.request.dto.SummaryIdResponse;
 import com.quackaboutit.equipmentapp.request.dto.SummaryResponse;
 import com.quackaboutit.equipmentapp.request.service.SummaryService;
 import com.quackaboutit.equipmentapp.users.service.JwtService;
@@ -40,6 +41,11 @@ public class SummaryController {
     @PutMapping("/{id}/archive")
     private SummaryResponse archiveSummary(@PathVariable Long id) {
         return summaryService.archiveSummary(id);
+    }
+
+    @GetMapping("/{id}")
+    private SummaryIdResponse getSummaryById(@PathVariable Long id){
+        return summaryService.getSummaryById(id);
     }
 
 }
