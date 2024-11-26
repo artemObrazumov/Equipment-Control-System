@@ -27,6 +27,11 @@ public class UnitController {
         return unitService.findUnitById(id);
     }
 
+    @GetMapping("/containing/{substr}")
+    private List<UnitResponse> findUnitContainsSubstr(@PathVariable String substr) {
+        return unitService.findByAddressContaining(substr);
+    }
+
     @PostMapping
     private UnitResponse createUnit(@Valid @RequestBody UnitRequest request) {
         return unitService.create(request);

@@ -15,6 +15,7 @@ import com.quackaboutit.equipmentapp.bases.dto.BaseRequest;
 import com.quackaboutit.equipmentapp.bases.dto.BaseResponse;
 import com.quackaboutit.equipmentapp.bases.dto.BaseUpdateRequest;
 import com.quackaboutit.equipmentapp.bases.service.BaseService;
+import com.quackaboutit.equipmentapp.unit.dto.UnitResponse;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +39,11 @@ public class BaseController {
     @PutMapping("/{id}") 
     public void updateBaseById(@PathVariable Long id, @Valid @RequestBody BaseUpdateRequest request){
         baseService.update(id, request);
+    }
+
+    @GetMapping("/containing/{substr}")
+    private List<BaseResponse> findBaseContainsSubstr(@PathVariable String substr) {
+        return baseService.findByAddressContaining(substr);
     }
 
     @DeleteMapping("/{id}")

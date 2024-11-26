@@ -2,6 +2,7 @@ package com.quackaboutit.equipmentapp.users.service;
 
 import com.quackaboutit.equipmentapp.request.repository.RequestRepository;
 import com.quackaboutit.equipmentapp.unit.dto.UnitResponse;
+import com.quackaboutit.equipmentapp.users.entity.Role;
 import com.quackaboutit.equipmentapp.users.entity.User;
 import com.quackaboutit.equipmentapp.users.exceptions.UserWithEmailExists;
 import com.quackaboutit.equipmentapp.users.exceptions.UserWithNameExists;
@@ -46,6 +47,25 @@ public class UserService {
 
     }
 
+    public List<WorkerItemResponse> findByNameContaining(String substr){
+        List<User> users = repository.findWorkersByNameLike(substr, Role.ROLE_WORKER);
+        List<WorkerItemResponse> workers = new ArrayList<>();
+
+        users.forEach(worker -> {
+            Integer sentRequest = requestRepository.countSentByUser(worker.getId());
+            Workplace lastWorkplace = worker.getLastWorkplace();
+            workers.add(WorkerItemResponse.builder()
+                    .id(worker.getId())
+                    .currentWorkPlaceAddress(lastWorkplace == null ? "Не задано" : lastWorkplace.getAddress())
+                    .workerName(worker.getUsername())
+                    .sentRequest(sentRequest)
+                    .build()
+            );
+        });
+
+        return workers;
+    }
+
     public List<WorkerItemResponse> getWorkersList() {
         Long unitId = getCurrentUser().getUnit().getId();
         List<User> userWorkers = repository.findAllByUnitId(unitId);
@@ -56,6 +76,7 @@ public class UserService {
             workers.add(WorkerItemResponse.builder()
                     .id(worker.getId())
                     .currentWorkPlaceAddress(lastWorkplace == null ? "Не задано" : lastWorkplace.getAddress())
+                    .workerName(worker.getUsername())
                     .sentRequest(sentRequest)
                     .workerName(worker.getUsername())
                     .build()

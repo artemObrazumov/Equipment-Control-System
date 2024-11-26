@@ -7,13 +7,10 @@ import com.quackaboutit.equipmentapp.unit.entity.Unit;
 import com.quackaboutit.equipmentapp.unit.exceptions.UnitNotFound;
 import com.quackaboutit.equipmentapp.unit.repository.UnitRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +36,16 @@ public class UnitService {
         Unit unit = unitRepository.findById(id).orElseThrow(() -> new UnitNotFound());
         
         return UnitResponse.fromUnit(unit);
+    }
+
+    public List<UnitResponse> findByAddressContaining(String substr){
+        List<Unit> units = unitRepository.findByAddressContaining(substr);
+        List<UnitResponse> unitResponses = new ArrayList<>();
+        units.forEach(unit -> {
+            unitResponses.add(UnitResponse.fromUnit(unit));
+        });
+
+        return unitResponses;
     }
 
     public void update(Long id, UnitUpdateRequest request){
