@@ -74,134 +74,298 @@ public class EquipmentApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) {
-
 		// Adding equipment
 		var equipmentList = new ArrayList<Equipment>();
-		var equipmentTypeList = new ArrayList<EquipmentType>();
+
 		var equipmentRequest = Equipment.builder()
 				.name("Автоцистерна")
-				.image("https://sun9-1.userapi.com/impg/qVwmVZL-TNUcEVzRHUHVTaTcQSMlvr2b7UKG9A/_BKuikk8ngE.jpg?size=343x157&quality=95&sign=66558f63eb7118ab850a07545c71be1e&type=album")
+				.image("https://psv4.userapi.com/s/v1/d/TnMeDLKe8DNpnHodu7hVoFepe0F0JSGx8dqGP5W-qaKwt8oNlsrE9dffex23XcHXvTVt-XTLcG8gyGJNQPj3p97J-ZY4E2KV_UvxE_zfwhvvTNjF3l4Orw/rb_54227.png")
 				.build();
-
+		
 		equipmentList.add(equipmentRepository.save(equipmentRequest));
-
-		var equipmentTypeRequest = EquipmentType.builder()
-				.type("5 тонн")
-				.equipment(equipmentList.getLast())
-				.build();
-
-		equipmentTypeList.add(equipmentTypeRepository.save(equipmentTypeRequest));
-
-		equipmentTypeRequest = EquipmentType.builder()
-				.type("8 тонн")
-				.equipment(equipmentList.getLast())
-				.build();
-
-		equipmentTypeList.add(equipmentTypeRepository.save(equipmentTypeRequest));
-
-		equipmentTypeRequest = EquipmentType.builder()
-				.type("128 тонн")
-				.equipment(equipmentList.getLast())
-				.build();
-
-		equipmentTypeList.add(equipmentTypeRepository.save(equipmentTypeRequest));
-
-		equipmentTypeRequest = EquipmentType.builder()
-				.type("256 тонн")
-				.equipment(equipmentList.getLast())
-				.build();
-
-		equipmentTypeList.add(equipmentTypeRepository.save(equipmentTypeRequest));
-
-		equipmentTypeRequest = EquipmentType.builder()
-				.type("128 тонн")
-				.equipment(equipmentList.getLast())
-				.build();
-
-		equipmentTypeList.add(equipmentTypeRepository.save(equipmentTypeRequest));
 
 		equipmentRequest = Equipment.builder()
-				.name("Подъёмные агрегаты")
-				.image("https://sun9-16.userapi.com/impg/m1FtE45hMgJ3vlEnLXb-aRIibI_-BXdKGVUR5A/1dUGJrcomto.jpg?size=438x267&quality=95&sign=a027a3641aea65eec1433f7d00a4a6cd&type=album")
+				.name("Дорожный каток")
+				.image("https://psv4.userapi.com/s/v1/d/fPTB8Eh-m8SKl5T1ZQT5Rd4oMTe9-cfvClYfjx9AObFeHjsHqzSBO5JpsV4-W-nM3uE9C9JzQQolB0ARXJ3wOXx4TAa_KzwFWUl8TakUP2Oje5zn6E0eCw/133742270_10239040_2.png")
 				.build();
-
+		
 		equipmentList.add(equipmentRepository.save(equipmentRequest));
 
-		// Adding units
+		equipmentRequest = Equipment.builder()
+				.name("Экскаватор")
+				.image("https://psv4.userapi.com/s/v1/d/KSY8akU9Tbss_retxCJ7OrxSOU7sDm9TpfuaNVxVH7vBDTQqHKxX6AI3SgEsezDuA5aOlBnLbJixLcBJ_Ax6cRYXt0I8m1bep10QoL-WAuqRibjIT8rnXA/133742268_10239036_2.png")
+				.build();
+		
+		equipmentList.add(equipmentRepository.save(equipmentRequest));
+
+		equipmentRequest = Equipment.builder()
+				.name("Бетономешалка")
+				.image("https://psv4.userapi.com/s/v1/d/_uPcynQKDmKpVSTKn-TrU_teHIm9T2b0bR41cDvcetCqJJ7zVakXriK4Hprw1rEovHiLLYOKJImMOEDf64klrd08p5MXIy-9BscxvqlHb4BieDsfFuyVdQ/rb_109837_2.png")
+				.build();
+		
+		equipmentList.add(equipmentRepository.save(equipmentRequest));
+
+		equipmentRequest = Equipment.builder()
+				.name("Подъёмный кран")
+				.image("https://psv4.userapi.com/s/v1/d/cEHdesU6KEoN8vtHHkjLpnntMIcioOL5D869HHK7l61Npuhuhw_udIIR9wuPRvpiwwAVcyUCpeoHx2LYFOdJaLR_o4qxqJ1MbnPjQBasOnIY4lzdPLX9jQ/rb_60032.png")
+				.build();
+		
+		equipmentList.add(equipmentRepository.save(equipmentRequest));
+
+		// Adding equipment type
+		var equipmentTypeList = new ArrayList<EquipmentType>();
+
+		var equipmentTypeRequest = EquipmentType.builder()
+				.equipment(equipmentList.get(0))
+				.type("Бензовоз 25 тыс. литров") 
+				.build();
+		
+		equipmentTypeList.add(equipmentTypeRepository.save(equipmentTypeRequest));
+
+		equipmentTypeRequest = EquipmentType.builder()
+				.equipment(equipmentList.get(0))
+				.type("Газовоз 25 тыс. литров") 
+				.build();
+		
+				equipmentTypeList.add(equipmentTypeRepository.save(equipmentTypeRequest));
+
+		equipmentTypeRequest = EquipmentType.builder()
+				.equipment(equipmentList.get(1))
+				.type("Грунтовый") 
+				.build();
+		
+		equipmentTypeList.add(equipmentTypeRepository.save(equipmentTypeRequest));
+		
+		equipmentTypeRequest = EquipmentType.builder()
+				.equipment(equipmentList.get(1))
+				.type("Асфальтный") 
+				.build();
+		
+		equipmentTypeList.add(equipmentTypeRepository.save(equipmentTypeRequest));
+		
+		equipmentTypeRequest = EquipmentType.builder()
+				.equipment(equipmentList.get(2))
+				.type("Карьерный") 
+				.build();
+
+		equipmentTypeList.add(equipmentTypeRepository.save(equipmentTypeRequest));
+
+		equipmentTypeRequest = EquipmentType.builder()
+				.equipment(equipmentList.get(3))
+				.type("150 литров") 
+				.build();
+
+		equipmentTypeList.add(equipmentTypeRepository.save(equipmentTypeRequest));
+
+		equipmentTypeRequest = EquipmentType.builder()
+				.equipment(equipmentList.get(4))
+				.type("Грузоподъёмный") 
+				.build();
+
+		equipmentTypeList.add(equipmentTypeRepository.save(equipmentTypeRequest));
+
+		equipmentTypeRequest = EquipmentType.builder()
+				.equipment(equipmentList.get(4))
+				.type("Поворотный") 
+				.build();
+
+		equipmentTypeList.add(equipmentTypeRepository.save(equipmentTypeRequest));
+
+		// Adding unit
+
+		var unitList = new ArrayList<Unit>();
+
 		var unitRequest = Unit.builder()
-				.address("адрес 1")
-				.latitude(34.4)
-				.longitude(54.6)
+				.address("Московская улица, 14, Чехов, Московская область")
+				.latitude(55.142401)
+				.longitude(37.451761)
 				.build();
+		
+		unitList.add(unitRepository.save(unitRequest));
 
-		var unit = unitRepository.save(unitRequest);
+		unitRequest = Unit.builder()
+				.address("улица Калинина, 34А, Арзамас, Нижегородская область")
+				.latitude(55.396427)
+				.longitude(43.831246)
+				.build();
+		
+		unitList.add(unitRepository.save(unitRequest));
 
-		// Adding bases
+		// Adding base
+
+		var baseList = new ArrayList<Base>();
+
 		var baseRequest = Base.builder()
-				.unit(unit)
-				.address("test address")
-				.longitude(12.4)
-				.latitude(34.4)
+				.address("Московская улица, 14, Чехов, Московская область")
+				.latitude(55.142401)
+				.longitude(37.451761)
+				.unit(unitList.get(0))
 				.build();
+		
+		baseList.add(baseRepository.save(baseRequest));
 
-		var base = baseRepository.save(baseRequest);
+		baseRequest = Base.builder()
+				.address("улица Калинина, 34А, Арзамас, Нижегородская область")
+				.latitude(55.396427)
+				.longitude(43.831246)
+				.unit(unitList.get(1))
+				.build();
+		
+		baseList.add(baseRepository.save(baseRequest));
 
 		// Adding named equipment
+
+		var namedEquipmentList = new ArrayList<NamedEquipment>();
+
 		var namedEquipmentRequest = NamedEquipment.builder()
-				.licensePlate("123")
-				.carBrand("HAVAL")
-				.base(base)
-				.equipmentType(equipmentTypeList.getFirst())
+					.licensePlate("O726AK777")
+					.carBrand("LADA")
+					.base(baseList.get(0))
+					.equipmentType(equipmentTypeList.get(0))
+					.build();
+
+		namedEquipmentList.add(namedEquipmentRepository.save(namedEquipmentRequest));
+		
+		namedEquipmentRequest = NamedEquipment.builder()
+					.licensePlate("A916AO777")
+					.carBrand("LADA")
+					.base(baseList.get(1))
+					.equipmentType(equipmentTypeList.get(0))
+					.build();
+
+		namedEquipmentList.add(namedEquipmentRepository.save(namedEquipmentRequest));
+
+		namedEquipmentRequest = NamedEquipment.builder()
+					.licensePlate("A526KC777")
+					.carBrand("ZIL")
+					.base(baseList.get(0))
+					.equipmentType(equipmentTypeList.get(3))
+					.build();
+
+		namedEquipmentList.add(namedEquipmentRepository.save(namedEquipmentRequest));
+
+		namedEquipmentRequest = NamedEquipment.builder()
+					.licensePlate("K114OO777")
+					.carBrand("ZIL")
+					.base(baseList.get(0))
+					.equipmentType(equipmentTypeList.get(5))
+					.build();
+
+		namedEquipmentList.add(namedEquipmentRepository.save(namedEquipmentRequest));
+
+		namedEquipmentRequest = NamedEquipment.builder()
+					.licensePlate("E169AE777")
+					.carBrand("ZIL")
+					.base(baseList.get(1))
+					.equipmentType(equipmentTypeList.get(4))
+					.build();
+
+		namedEquipmentList.add(namedEquipmentRepository.save(namedEquipmentRequest));
+		
+		namedEquipmentRequest = NamedEquipment.builder()
+					.licensePlate("T092AY777")
+					.carBrand("LADA")
+					.base(baseList.get(1))
+					.equipmentType(equipmentTypeList.get(7))
+					.build();
+
+		namedEquipmentList.add(namedEquipmentRepository.save(namedEquipmentRequest));
+		
+		// Adding workplaces
+
+		var workplaceRequest = Workplace.builder()
+				.address("Молокозаводская улица, 66, Арзамас, Нижегородская область")
+				.latitude(55.413458)
+				.longitude(43.806453)
 				.build();
 
-		var namedEq = namedEquipmentRepository.save(namedEquipmentRequest);
+		workplaceRepository.save(workplaceRequest);
 
-		// Adding workplaces
-		var workplaceRequest = Workplace.builder()
-				.address("address 1")
-				.latitude(12.9)
-				.longitude(44.5)
+		workplaceRequest = Workplace.builder()
+				.address("деревня Чепелёво, 71, городской округ Чехов, Московская область")
+				.latitude(55.182891)
+				.longitude(37.493398)
 				.build();
 
 		workplaceRepository.save(workplaceRequest);
 
 		// Adding users
 		var manager = User.builder()
-				.username("Manager")
-				.email("manager@gmail.com")
+				.username("Юрий Давидович Золов")
+				.email("y.d.zolov@gmail.com")
 				.password(passwordEncoder.encode("password"))
 				.role(Role.ROLE_UNIT_MANAGER)
-				.unit(unit)
+				.unit(unitList.get(0))
 				.build();
 
 		userRepository.save(manager);
 
 		var dispatcherUser = User.builder()
-				.username("Dispatcher")
-				.email("dispatcher@gmail.com")
+				.username("Алексей Владимирович Кругов")
+				.email("a.v.krygov@gmail.com")
 				.password(passwordEncoder.encode("password"))
 				.role(Role.ROLE_DISPATCHER)
-				.unit(unit)
+				.unit(unitList.get(0))
 				.build();
 
 		userRepository.save(dispatcherUser);
 
 		var workerUser = User.builder()
-				.username("Worker")
-				.email("worker@gmail.com")
+				.username("Никита Сергеевич Мерджбранчев")
+				.email("n.s.mergebranchev@gmail.com")
 				.password(passwordEncoder.encode("password"))
 				.role(Role.ROLE_WORKER)
-				.unit(unitRequest)
+				.unit(unitList.get(0))
 				.build();
 
 		userRepository.save(workerUser);
 
 		var adminUser = User.builder()
-				.username("Admin")
-				.email("admin@gmail.com")
+				.username("Артём Александрович Мобилков")
+				.email("a.a.mobilkov@gmail.com")
 				.password(passwordEncoder.encode("password"))
 				.role(Role.ROLE_ADMIN)
-				.unit(unit)
+				.unit(unitList.get(0))
+				.build();
+
+		userRepository.save(adminUser);
+
+		manager = User.builder()
+				.username("Екатерина Михайловна Фигмовна")
+				.email("e.m.figmovna@gmail.com")
+				.password(passwordEncoder.encode("password"))
+				.role(Role.ROLE_UNIT_MANAGER)
+				.unit(unitList.get(1))
+				.build();
+
+		userRepository.save(manager);
+
+		dispatcherUser = User.builder()
+				.username("Евгений Артёмович Ковров")
+				.email("e.a.kovrov@gmail.com")
+				.password(passwordEncoder.encode("password"))
+				.role(Role.ROLE_DISPATCHER)
+				.unit(unitList.get(1))
+				.build();
+
+		userRepository.save(dispatcherUser);
+
+		workerUser = User.builder()
+				.username("Николай Романович Джсов")
+				.email("n.r.jsov@gmail.com")
+				.password(passwordEncoder.encode("password"))
+				.role(Role.ROLE_WORKER)
+				.unit(unitList.get(1))
+				.build();
+
+		userRepository.save(workerUser);
+
+		adminUser = User.builder()
+				.username("Владислав Олегович Деревов")
+				.email("v.o.derevov@gmail.com")
+				.password(passwordEncoder.encode("password"))
+				.role(Role.ROLE_ADMIN)
+				.unit(unitList.get(1))
 				.build();
 
 		userRepository.save(adminUser);
