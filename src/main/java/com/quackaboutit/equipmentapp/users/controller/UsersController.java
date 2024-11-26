@@ -4,6 +4,7 @@ import com.quackaboutit.equipmentapp.users.response.WorkerItemResponse;
 import com.quackaboutit.equipmentapp.users.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,5 +20,10 @@ public class UsersController {
     @GetMapping("/workers")
     private List<WorkerItemResponse> getWorkers() {
         return userService.getWorkersList();
+    }
+
+    @GetMapping("/workers/containing/{substr}")
+    private List<WorkerItemResponse> findWorkerContainsSubstr(@PathVariable String substr) {
+        return userService.findByNameContaining(substr);
     }
 }

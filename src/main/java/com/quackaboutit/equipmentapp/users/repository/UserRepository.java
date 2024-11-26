@@ -1,5 +1,6 @@
 package com.quackaboutit.equipmentapp.users.repository;
 
+import com.quackaboutit.equipmentapp.users.entity.Role;
 import com.quackaboutit.equipmentapp.users.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,4 +18,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u FROM User u WHERE u.unit.id = :unitId")
     List<User> findAllByUnitId(@Param("unitId") Long unitId);
+
+    @Query("SELECT u FROM User u WHERE LOWER(u.username) LIKE LOWER(CONCAT('%', :substring, '%')) AND u.role = :role")
+    List<User> findWorkersByNameLike(@Param("substring") String substring, @Param("role") Role role);
+    
+  
 }

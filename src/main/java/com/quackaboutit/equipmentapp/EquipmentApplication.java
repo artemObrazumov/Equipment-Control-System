@@ -133,6 +133,16 @@ public class EquipmentApplication implements CommandLineRunner {
 
 		userRepository.save(dispatcherUser);
 
+		var workerUser = User.builder()
+				.username("Worker")
+				.email("worker@gmail.com")
+				.password(passwordEncoder.encode("password"))
+				.role(Role.ROLE_WORKER)
+				.unit(unitRequest)
+				.build();
+
+		userRepository.save(workerUser);
+
 		var adminUser = User.builder()
 				.username("Admin")
 				.email("admin@gmail.com")
