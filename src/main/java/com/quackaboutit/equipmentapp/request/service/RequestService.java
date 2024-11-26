@@ -3,6 +3,7 @@ package com.quackaboutit.equipmentapp.request.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.quackaboutit.equipmentapp.equipment.dto.EquipmentTypeResponse;
 import com.quackaboutit.equipmentapp.equipment.dto.RequestedEquipmentResponse;
 import com.quackaboutit.equipmentapp.equipment.entity.EquipmentType;
 import com.quackaboutit.equipmentapp.equipment.repository.EquipmentTypeRepository;
@@ -85,6 +86,13 @@ public class RequestService {
         Request request = requestRepository.findById(requestId).get();
         List<RequestedEquipmentResponse> requestedEquipment = new ArrayList<>();
         request.getRequestedEquipment().forEach(eq -> {
+            List<EquipmentTypeResponse> typesEntity = equipmentTypeRepository
+                    .findAllByEquipmentId(eq.getEquipment().getId()).stream()
+                    .map(type -> EquipmentTypeResponse.builder()
+                            .id(type.getId())
+                            .type(type.getType())
+                            .build())
+                    .toList();
             requestedEquipment.add(RequestedEquipmentResponse.builder()
                     .id(eq.getId())
                     .equipmentId(eq.getEquipment().getId())
@@ -95,6 +103,7 @@ public class RequestService {
                     .licensePlateNumber(eq.getLicensePlateNumber())
                     .arrivalTime(eq.getArrivalTime().toString())
                     .workDuration(eq.getWorkDuration().toString())
+                    .types(typesEntity)
                     .build());
         });
 

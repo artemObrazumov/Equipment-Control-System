@@ -5,13 +5,11 @@ import com.quackaboutit.equipmentapp.equipment.entity.EquipmentType;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Data
 @Getter
+@Builder
 @AllArgsConstructor
 public class EquipmentTypeResponse {
 

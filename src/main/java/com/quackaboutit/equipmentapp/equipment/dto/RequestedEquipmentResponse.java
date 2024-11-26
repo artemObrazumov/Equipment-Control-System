@@ -2,6 +2,8 @@ package com.quackaboutit.equipmentapp.equipment.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -17,4 +19,5 @@ public class RequestedEquipmentResponse {
     private String licensePlateNumber;
     private String arrivalTime;
     private String workDuration;
+    private List<EquipmentTypeResponse> types;
 }
