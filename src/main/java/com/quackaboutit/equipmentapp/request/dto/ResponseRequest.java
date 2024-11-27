@@ -21,6 +21,6 @@ public class ResponseRequest {
 
         return new ResponseRequest(req.getId(), req.getState(),
                 req.getCreator().getUsername(), req.getWorkplace().getAddress(),
-                req.getRequestedEquipment().size(), req.getArrivalDate().toString(), 52, 69);
+                req.getRequestedEquipment().size(), req.getArrivalDate().toString(), 0, 1);
     }
 }

@@ -68,7 +68,7 @@ public class EquipmentApplication implements CommandLineRunner {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("**").allowedOrigins("http://localhost:3000");
+				registry.addMapping("**").allowedOrigins("http://localhost:3000", "https://91eclm-79-104-7-207.ru.tuna.am", "https://tuna.am");
 			}
 		};
 	}
@@ -337,6 +337,16 @@ public class EquipmentApplication implements CommandLineRunner {
 				.username("Екатерина Михайловна Фигмовна")
 				.email("e.m.figmovna@gmail.com")
 				.password(passwordEncoder.encode("password"))
+				.role(Role.ROLE_UNIT_MANAGER)
+				.unit(unitList.get(1))
+				.build();
+
+		userRepository.save(manager);
+
+		manager = User.builder()
+				.username("ttttt")
+				.email("e.m.figmovna1@gmail.com")
+				.password(passwordEncoder.encode("ttttt"))
 				.role(Role.ROLE_UNIT_MANAGER)
 				.unit(unitList.get(1))
 				.build();
