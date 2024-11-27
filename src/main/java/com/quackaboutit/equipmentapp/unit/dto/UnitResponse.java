@@ -10,6 +10,7 @@ import lombok.*;
 @Setter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class UnitResponse {
     @NotNull
     private Long id;

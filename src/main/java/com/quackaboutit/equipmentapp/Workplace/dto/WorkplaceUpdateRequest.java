@@ -22,4 +22,7 @@ public class WorkplaceUpdateRequest {
     @NotBlank
     @NotNull
     private String address;
+
+    @NotNull
+    private Long unitId;
 }

@@ -279,6 +279,7 @@ public class EquipmentApplication implements CommandLineRunner {
 				.latitude(55.413458)
 				.longitude(43.806453)
 				.state(WorkplaceState.IDLE)
+				.unit(unitList.get(0))
 				.build();
 
 		workplaceRepository.save(workplaceRequest);
@@ -287,6 +288,7 @@ public class EquipmentApplication implements CommandLineRunner {
 				.address("деревня Чепелёво, 71, городской округ Чехов, Московская область")
 				.latitude(55.182891)
 				.longitude(37.493398)
+				.unit(unitList.get(1))
 				.state(WorkplaceState.IDLE)
 				.build();
 

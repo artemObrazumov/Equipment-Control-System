@@ -1,4 +1,5 @@
 package com.quackaboutit.equipmentapp.workplace.dto;
+import com.quackaboutit.equipmentapp.unit.dto.UnitResponse;
 import com.quackaboutit.equipmentapp.workplace.entity.WorkplaceState;
 
 import jakarta.validation.constraints.NotBlank;
@@ -28,4 +29,7 @@ public class WorkplaceResponse {
     @NotNull
     @NotBlank
     private String address;
+
+    @NotNull
+    private UnitResponse unit;
 }

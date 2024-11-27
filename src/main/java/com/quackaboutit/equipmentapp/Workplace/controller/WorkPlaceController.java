@@ -2,6 +2,7 @@ package com.quackaboutit.equipmentapp.workplace.controller;
 
 import java.util.List;
 
+import com.quackaboutit.equipmentapp.users.service.JwtService;
 import com.quackaboutit.equipmentapp.workplace.dto.WorkplaceItemResponse;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,10 +26,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class WorkPlaceController {
     private final WorkPlaceService workPlaceService;
+    private final JwtService jwtService;
 
     @GetMapping
     public List<WorkplaceItemResponse> findWorkPlaces(){
         return workPlaceService.findWorkPlaces();
+    }
+
+    @GetMapping("/unit")
+    public List<WorkplaceItemResponse> findWorkPlacesByUnit(){
+        return workPlaceService.findWorkPlacesByUnit(jwtService.getUserFromSecurityContextHolder().getUnit());
     }
 
     @GetMapping("/{id}")

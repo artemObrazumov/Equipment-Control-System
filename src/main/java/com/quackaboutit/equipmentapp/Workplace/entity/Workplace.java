@@ -1,5 +1,7 @@
 package com.quackaboutit.equipmentapp.workplace.entity;
 
+import com.quackaboutit.equipmentapp.unit.entity.Unit;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,4 +31,8 @@ public class Workplace {
 
     @Column(name = "address")
     private String address;
+
+    @ManyToOne
+    @JoinColumn(name = "unit_id", referencedColumnName = "id")
+    private Unit unit;
 }
