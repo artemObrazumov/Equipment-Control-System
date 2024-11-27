@@ -2,13 +2,10 @@ package com.quackaboutit.equipmentapp.request.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -24,6 +21,7 @@ import com.quackaboutit.equipmentapp.request.repository.RequestRepository;
 import com.quackaboutit.equipmentapp.request.repository.SummaryRepository;
 import com.quackaboutit.equipmentapp.unit.entity.Unit;
 import com.quackaboutit.equipmentapp.users.entity.User;
+import com.quackaboutit.equipmentapp.users.response.UserSummaryResponse;
 
 import lombok.AllArgsConstructor;
 
@@ -34,16 +32,27 @@ public class SummaryService {
     private final RequestRepository requestRepository;
 
     public SummaryResponse create(User manager){
-        return SummaryResponse.fromSummaryToResponse(summaryRepository.save(
-            new Summary(null, SummaryState.NEW, 
-            manager, LocalDateTime.now(), manager.getUnit(), new ArrayList<>())));
+        var summary = summaryRepository.save(new Summary(null, SummaryState.NEW, 
+        manager, LocalDateTime.now(), manager.getUnit(), new ArrayList<>()));
+
+        return SummaryResponse.builder()
+            .id(summary.getId())
+            .state(summary.getState())
+            .managerName(summary.getManager().getUsername())
+            .date(summary.getDate().toString())
+            .build();
     }
 
     public List<SummaryResponse> findAllSummarysByUnitId(Unit unit){
         List<Summary> summaries = summaryRepository.findAllSummarysByUnitId(unit.getId());
         List<SummaryResponse> summaryResponses = new ArrayList<>();
         summaries.forEach(summary -> {
-            summaryResponses.add(SummaryResponse.fromSummaryToResponse(summary));
+            summaryResponses.add(SummaryResponse.builder()
+                                        .id(summary.getId())
+                                        .state(summary.getState())
+                                        .managerName(summary.getManager().getUsername())
+                                        .date(summary.getDate().toString())
+                                        .build());
         });
 
         return summaryResponses;
@@ -69,13 +78,27 @@ public class SummaryService {
         }else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Request has already been procesed.");
 
     }
-
     public SummaryIdResponse getSummaryById(Long id) throws SummaryNotFound{
         Summary summary = summaryRepository.findById(id).orElseThrow(
             () -> new SummaryNotFound()
         );
 
-        return SummaryIdResponse.fromSummaryToResponse(summary);
+        var userSummaryResponse = UserSummaryResponse.builder()
+                                        .id(summary.getManager().getId())
+                                        .username(summary.getManager().getUsername())
+                                        .role(summary.getManager().getRole())
+                                        .email(summary.getManager().getEmail())
+                                        .unit(summary.getManager().getUnit())
+                                        .build();
+
+        return SummaryIdResponse.builder()
+                            .id(summary.getId())
+                            .state(summary.getState())
+                            .manager(userSummaryResponse)
+                            .date(summary.getDate().toString())
+                            .unit(summary.getUnit())
+                            .requests(summary.getRequests())
+                            .build();
     }
 
     private SummaryResponse changeStateSummary(Long id, SummaryState state) throws SummaryNotFound{
@@ -84,7 +107,12 @@ public class SummaryService {
         
         summaryRepository.updateState(state, id);
 
-        return SummaryResponse.fromSummaryToResponse(summary);
+        return SummaryResponse.builder()
+                        .id(summary.getId())
+                        .state(summary.getState())
+                        .managerName(summary.getManager().getUsername())
+                        .date(summary.getDate().toString())
+                        .build();
     } 
     
     public SummaryResponse closeSummary(Long id){

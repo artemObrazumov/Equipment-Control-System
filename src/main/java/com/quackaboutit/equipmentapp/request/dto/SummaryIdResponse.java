@@ -1,8 +1,6 @@
 package com.quackaboutit.equipmentapp.request.dto;
 
 import java.util.List;
-
-import com.quackaboutit.equipmentapp.request.entity.Summary;
 import com.quackaboutit.equipmentapp.request.entity.Request;
 import com.quackaboutit.equipmentapp.request.entity.SummaryState;
 import com.quackaboutit.equipmentapp.unit.entity.Unit;
@@ -10,13 +8,13 @@ import com.quackaboutit.equipmentapp.users.response.UserSummaryResponse;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Data
-@Getter
-@Setter
+@Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class SummaryIdResponse {
     @NotNull
@@ -36,10 +34,4 @@ public class SummaryIdResponse {
 
     @NotNull
     private List<Request> requests;
-
-    public static SummaryIdResponse fromSummaryToResponse(Summary summary){
-        return new SummaryIdResponse(summary.getId(), summary.getState(),
-        UserSummaryResponse.fromUserToSummaryResponse(summary.getManager()), summary.getDate().toString(), summary.getUnit(),
-        summary.getRequests());
-    }
 }

@@ -2,21 +2,19 @@ package com.quackaboutit.equipmentapp.users.response;
 
 import com.quackaboutit.equipmentapp.unit.entity.Unit;
 import com.quackaboutit.equipmentapp.users.entity.Role;
-import com.quackaboutit.equipmentapp.users.entity.User;
-import com.quackaboutit.equipmentapp.workplace.entity.Workplace;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Data
-@Getter
-@Setter
+@Builder
+@NoArgsConstructor
 @AllArgsConstructor
-public class UserSummaryResponse {
+public class UserSummaryResponse { 
     @NotNull
     private Long id;
 
@@ -34,9 +32,4 @@ public class UserSummaryResponse {
 
     @NotNull
     private Unit unit;
-
-    public static UserSummaryResponse fromUserToSummaryResponse(User user){
-        return new UserSummaryResponse(user.getId(), user.getUsername(),
-            user.getRole(), user.getEmail(), user.getUnit());
-    }
 }

@@ -1,8 +1,6 @@
 package com.quackaboutit.equipmentapp.request.controller;
 
 import java.util.List;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quackaboutit.equipmentapp.equipment.dto.RequestedEquipmentResponse;
 import com.quackaboutit.equipmentapp.request.dto.*;
 import jakarta.validation.Valid;
@@ -47,11 +45,11 @@ public class RequestController {
     @PostMapping("/{id}/requestedEquipment")
     private RequestedEquipmentResponse postRequestedEquipment(@Valid @RequestBody RequestedEquipmentRequest request,
                                                               @PathVariable Long id) {
-        return requestService.postRequestedEquipment(request, id);
+        return requestService.postRequestedEquipment(request, id); // !!!
     }
 
     @PutMapping("/requestedEquipment/{id}")
     private void UpdateRequestedEquipmentById(@Valid @RequestBody RequestedEquipmentRequest request, @PathVariable Long id) {
-        requestService.updateRequestedEquipmentById(request, id);
+        requestService.updateRequestedEquipmentById(request, id); 
     }
 }

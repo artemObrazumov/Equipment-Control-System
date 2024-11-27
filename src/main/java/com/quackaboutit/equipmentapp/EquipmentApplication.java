@@ -18,6 +18,7 @@ import com.quackaboutit.equipmentapp.users.repository.UserRepository;
 import com.quackaboutit.equipmentapp.users.service.UserService;
 import com.quackaboutit.equipmentapp.workplace.dto.WorkplaceRequest;
 import com.quackaboutit.equipmentapp.workplace.entity.Workplace;
+import com.quackaboutit.equipmentapp.workplace.entity.WorkplaceState;
 import com.quackaboutit.equipmentapp.workplace.repository.WorkplaceRepository;
 import com.quackaboutit.equipmentapp.workplace.service.WorkPlaceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -277,6 +278,7 @@ public class EquipmentApplication implements CommandLineRunner {
 				.address("Молокозаводская улица, 66, Арзамас, Нижегородская область")
 				.latitude(55.413458)
 				.longitude(43.806453)
+				.state(WorkplaceState.IDLE)
 				.build();
 
 		workplaceRepository.save(workplaceRequest);
@@ -285,6 +287,7 @@ public class EquipmentApplication implements CommandLineRunner {
 				.address("деревня Чепелёво, 71, городской округ Чехов, Московская область")
 				.latitude(55.182891)
 				.longitude(37.493398)
+				.state(WorkplaceState.IDLE)
 				.build();
 
 		workplaceRepository.save(workplaceRequest);

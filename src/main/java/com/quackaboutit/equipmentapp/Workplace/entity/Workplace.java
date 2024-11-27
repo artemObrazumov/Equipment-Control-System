@@ -17,8 +17,7 @@ public class Workplace {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "workplace_id_seq")
     @SequenceGenerator(name = "workplace_id_seq", sequenceName = "workplace_id_seq", allocationSize = 1)
     private Long id;
-
-    //@Enumerated(EnumType.STRING) - затестить
+    
     @Column(name = "state")
     private WorkplaceState state;
 

@@ -19,4 +19,7 @@ public class BaseUpdateRequest {
 
     @NotNull
     private Double longitude;
+
+    @NotNull
+    private Long unitId;
 }

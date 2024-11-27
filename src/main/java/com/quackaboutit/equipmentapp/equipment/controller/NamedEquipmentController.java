@@ -35,7 +35,7 @@ public class NamedEquipmentController {
     }
 
     @PostMapping
-    private NamedEquipmentResponse createfindNamedEquipments(@Valid @RequestBody NamedEquipmentRequest request){
+    private NamedEquipmentResponse createNamedEquipments(@Valid @RequestBody NamedEquipmentRequest request){
         return namedEquipmentService.create(request);
     }
 

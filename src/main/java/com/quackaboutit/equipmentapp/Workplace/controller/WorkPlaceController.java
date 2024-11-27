@@ -37,8 +37,8 @@ public class WorkPlaceController {
     }
 
     @PostMapping
-    public WorkplaceResponse createWorkplace(@Valid @RequestBody WorkplaceRequest req){
-        return workPlaceService.create(req);
+    public WorkplaceResponse createWorkplace(@Valid @RequestBody WorkplaceRequest request){
+        return workPlaceService.create(request);
     }
 
     @PutMapping("/{id}")

@@ -1,7 +1,5 @@
 package com.quackaboutit.equipmentapp.request.dto;
 
-import java.time.LocalDateTime;
-
 import com.quackaboutit.equipmentapp.request.entity.*;
 
 import lombok.AllArgsConstructor;

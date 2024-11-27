@@ -31,7 +31,11 @@ public class EquipmentService {
         List<EquipmentResponse> equipmentResponses = new ArrayList<>();
 
         equipments.forEach(equipment -> {
-            equipmentResponses.add(EquipmentResponse.fromEquipmentToResponse(equipment));
+            equipmentResponses.add(EquipmentResponse.builder()
+                                            .id(equipment.getId())
+                                            .name(equipment.getName())
+                                            .image(equipment.getImage())
+                                            .build());
         });
 
         return equipmentResponses;
@@ -47,11 +51,20 @@ public class EquipmentService {
 
             equipmentTypes.forEach(equipmentType -> {
                 var count = namedEquipmentRepository.countByTypeId(equipmentType.getId());
-                equipmentTypeResponses.add(EquipmentTypeResponse.
-                fromEquipmentTypeToResponse(equipmentType, count));
+                equipmentTypeResponses.add(EquipmentTypeResponse.builder()
+                                                        .id(equipmentType.getId())
+                                                        .type(equipmentType.getType())
+                                                        .count(count)
+                                                        .build());
             });
 
-            equipmentResponses.add(EquipmentByIdResponse.fromEquipmentToResponse(equipment, equipmentTypeResponses));
+            equipmentResponses.add(EquipmentByIdResponse.builder()
+                                        .id(equipment.getId())
+                                        .name(equipment.getName())
+                                        .image(equipment.getImage())
+                                        .equipmentTypeResponses(equipmentTypeResponses)
+                                        .build()
+            );
         });
 
         return equipmentResponses;
@@ -63,16 +76,29 @@ public class EquipmentService {
         List<EquipmentTypeResponse> equipmentTypeResponses = new ArrayList<>();
 
         equipmentTypes.forEach(equipmentType -> {
-            equipmentTypeResponses.add(EquipmentTypeResponse.
-            fromEquipmentTypeToResponse(equipmentType));
+            equipmentTypeResponses.add(EquipmentTypeResponse.builder()
+                                                    .id(equipmentType.getId())
+                                                    .type(equipmentType.getType())
+                                                    .count(null)
+                                                    .build());
         });
         
-        return EquipmentByIdResponse.fromEquipmentToResponse(equipment, equipmentTypeResponses);
+        return EquipmentByIdResponse.builder()
+                            .id(equipment.getId())
+                            .name(equipment.getName())
+                            .image(equipment.getImage())
+                            .equipmentTypeResponses(equipmentTypeResponses)
+                            .build();
     }  
 
     public EquipmentResponse create(EquipmentRequest request){
-        return EquipmentResponse.fromEquipmentToResponse(equipmentRepository.save(
-            new Equipment(null, request.getName(), request.getImage())));
+        var equipment = equipmentRepository.save(new Equipment(null, request.getName(), request.getImage()));
+
+        return EquipmentResponse.builder()
+                        .id(equipment.getId())
+                        .name(equipment.getName())
+                        .image(equipment.getImage())
+                        .build();
     }
 
     public void delete(Long id){

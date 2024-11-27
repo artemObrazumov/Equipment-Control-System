@@ -1,17 +1,15 @@
 package com.quackaboutit.equipmentapp.workplace.dto;
 
-import com.quackaboutit.equipmentapp.workplace.entity.Workplace;
-import com.quackaboutit.equipmentapp.workplace.entity.WorkplaceState;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Data
-@Getter
-@Setter
+@Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class WorkplaceItemResponse {
     @NotNull
@@ -26,10 +24,4 @@ public class WorkplaceItemResponse {
 
     @NotNull
     private Integer requestsSent;
-
-    public static WorkplaceItemResponse fromWorkPlaceToResponse(
-            Workplace workplace, Integer requestsProcessed, Integer requestsSent){
-        return new WorkplaceItemResponse(workplace.getId(), workplace.getAddress(),
-                requestsProcessed, requestsSent);
-    }
 }

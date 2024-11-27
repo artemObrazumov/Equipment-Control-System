@@ -1,5 +1,6 @@
 package com.quackaboutit.equipmentapp.equipment.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,17 +32,34 @@ public class NamedEquipmentService {
         List<NamedEquipmentResponse> namedEquipmentResponses = new ArrayList<>();
 
         namedEquipments.forEach(namedEquipment -> {
-            namedEquipmentResponses.add(NamedEquipmentResponse.
-            fromNamedEquipmentToResponse(namedEquipment));
+            namedEquipmentResponses.add(NamedEquipmentResponse.builder()
+            .id(namedEquipment.getId())
+            .licensePlate(namedEquipment.getLicensePlate())
+            .carBrand(namedEquipment.getCarBrand())
+            .base(namedEquipment.getBase())
+            .equipmentType(namedEquipment.getEquipmentType())
+            .isActive(true)
+            .lastWorkPlaceAddress("ADDDRESSS")
+            .finishTime(LocalDateTime.now().toString())
+            .build());
         });
 
         return namedEquipmentResponses;
     }
 
     public NamedEquipmentResponse findNamedEquipmentById(Long id) throws EquipmentNotFound{
-        return NamedEquipmentResponse.fromNamedEquipmentToResponse(
-            namedEquipmentRepository.findById(id).orElseThrow(() -> new EquipmentNotFound())
-        );
+        var namedEquipment = namedEquipmentRepository.findById(id).orElseThrow(() -> new EquipmentNotFound());
+
+        return NamedEquipmentResponse.builder()
+                            .id(namedEquipment.getId())
+                            .licensePlate(namedEquipment.getLicensePlate())
+                            .carBrand(namedEquipment.getCarBrand())
+                            .base(namedEquipment.getBase())
+                            .equipmentType(namedEquipment.getEquipmentType())
+                            .isActive(true)
+                            .lastWorkPlaceAddress("ADDDRESSS")
+                            .finishTime(LocalDateTime.now().toString())
+                            .build();
     } 
 
     public NamedEquipmentResponse create(NamedEquipmentRequest request) throws RuntimeException{
@@ -52,9 +70,19 @@ public class NamedEquipmentService {
         EquipmentType equipmentType = equipmentTypeRepository.findById(request.getEquipmentTypeId())
             .orElseThrow(() -> new EquipmentNotFound());
         
-        return NamedEquipmentResponse.fromNamedEquipmentToResponse(namedEquipmentRepository.save(
-            new NamedEquipment(null, request.getLicensePlate(), request.getCarBrand(), base, equipmentType)
-        ));
+        var namedEquipment = namedEquipmentRepository.save(
+            new NamedEquipment(null, request.getLicensePlate(), request.getCarBrand(), base, equipmentType));
+        
+        return NamedEquipmentResponse.builder()
+                                .id(namedEquipment.getId())
+                                .licensePlate(namedEquipment.getLicensePlate())
+                                .carBrand(namedEquipment.getCarBrand())
+                                .base(namedEquipment.getBase())
+                                .equipmentType(namedEquipment.getEquipmentType())
+                                .isActive(true)
+                                .lastWorkPlaceAddress("ADDDRESSS")
+                                .finishTime(LocalDateTime.now().toString())
+                                .build();
     }
 
     public void update(Long id, NamedEquipmentRequest request){

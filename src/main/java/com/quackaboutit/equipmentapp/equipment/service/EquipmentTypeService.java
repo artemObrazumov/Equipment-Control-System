@@ -32,7 +32,11 @@ public class EquipmentTypeService {
         List<EquipmentType> equipments = equipmentTypeRepository.findAllByEquipmentId(equipment_id);
         List<EquipmentTypeResponse> equipmentTypeResponse = new ArrayList<>();
         equipments.forEach(equipment -> {
-            equipmentTypeResponse.add(EquipmentTypeResponse.fromEquipmentTypeToResponse(equipment));
+            equipmentTypeResponse.add(EquipmentTypeResponse.builder()
+                                                    .id(equipment.getId())
+                                                    .type(equipment.getType())
+                                                    .count(null)
+                                                    .build());
         });
 
         return equipmentTypeResponse;
@@ -42,10 +46,14 @@ public class EquipmentTypeService {
         Equipment equipment = equipmentRepository.findById(
             request.getEquipmentId()).orElseThrow(() -> new EquipmentNotFound());
         
-        return EquipmentTypeResponse.fromEquipmentTypeToResponse(
-            equipmentTypeRepository.save(new EquipmentType(
-                null, request.getType(), equipment
-            )));
+        EquipmentType equipmentType = equipmentTypeRepository.save(new EquipmentType(
+            null, request.getType(), equipment));
+
+        return EquipmentTypeResponse.builder()
+                            .id(equipmentType.getId())
+                            .type(equipmentType.getType())
+                            .count(null)
+                            .build();
     }
 
     public void delete(Long id){
@@ -56,8 +64,10 @@ public class EquipmentTypeService {
     public EquipmentTypeDetailsResponse findEquipmentTypeDetails(Long id) {
         EquipmentType equipmentType = equipmentTypeRepository.findById(id).orElseThrow();
         Equipment equipment = equipmentRepository.findById(id).orElseThrow();
+        
         List<NamedEquipment> namedEquipmentList = namedEquipmentRepository.findAllByEquipmentTypeId(id);
         HashMap<String, Integer> brands = new HashMap<>();
+        
         AtomicInteger equipmentCount = new AtomicInteger();
         namedEquipmentList.forEach(eq -> {
             brands.put(eq.getCarBrand(), brands.getOrDefault(eq.getCarBrand(), 0) + 1);

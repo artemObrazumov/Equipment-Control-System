@@ -15,7 +15,6 @@ import lombok.AllArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -26,28 +25,47 @@ public class WorkPlaceService {
         List<Workplace> workplaces = workplaceRepository.findAll();
         List<WorkplaceItemResponse> workplaceResponses = new ArrayList<>();
         workplaces.forEach(workplace -> {
-            workplaceResponses.add(WorkplaceItemResponse.fromWorkPlaceToResponse(workplace,
-                    1, 2));
+            workplaceResponses.add(WorkplaceItemResponse.builder()
+                                            .id(workplace.getId())
+                                            .address(workplace.getAddress())
+                                            .requestsProcessed(1) // ???
+                                            .requestsSent(2) // ???
+                                            .build());
         });
 
         return workplaceResponses;
     }
 
     public WorkplaceResponse findWorkplacesById(Long Id) throws WorkplaceNotFound{
-        Optional<Workplace> workplace = workplaceRepository.findById(Id);
-        if(workplace.isPresent())
-            return WorkplaceResponse.fromWorkplacetoResponce(workplace.get());
-        throw new WorkplaceNotFound();
+        Workplace workplace = workplaceRepository.findById(Id)
+                        .orElseThrow(() -> new WorkplaceNotFound());
+        
+        return WorkplaceResponse.builder()
+                        .id(workplace.getId())
+                        .state(workplace.getState())
+                        .latitude(workplace.getLatitude())
+                        .longitude(workplace.getLongitude())
+                        .address(workplace.getAddress())
+                        .build(); 
     }
 
     public WorkplaceResponse create(WorkplaceRequest req){ 
-        return WorkplaceResponse.fromWorkplacetoResponce(workplaceRepository.save(new Workplace(
+        var workplace = workplaceRepository.save(new Workplace(
             null, WorkplaceState.IDLE, req.getLatitude(), req.getLongitude(), req.getAddress()
-        )));  
+        ));
+
+        return WorkplaceResponse.builder()
+                        .id(workplace.getId())
+                        .state(workplace.getState())
+                        .latitude(workplace.getLatitude())
+                        .longitude(workplace.getLongitude())
+                        .address(workplace.getAddress())
+                        .build();  
     }
 
     public void update(Long id, WorkplaceUpdateRequest request){
         WorkplaceState state = (request.getHasStarted() ? WorkplaceState.INWORKS : WorkplaceState.FINISHED);
+        
         workplaceRepository.updateWorkplace(request.getAddress(), 
         request.getLatitude(), request.getLongitude(), state, id);
     }

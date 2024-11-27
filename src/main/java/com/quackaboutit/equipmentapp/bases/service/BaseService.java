@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.quackaboutit.equipmentapp.bases.repository.BaseRepository;
-import com.quackaboutit.equipmentapp.unit.dto.UnitResponse;
 import com.quackaboutit.equipmentapp.unit.entity.Unit;
 import com.quackaboutit.equipmentapp.unit.exceptions.UnitNotFound;
 import com.quackaboutit.equipmentapp.unit.repository.UnitRepository;
@@ -28,7 +27,14 @@ public class BaseService {
         List<Base> bases = baseRepository.findAll();
         List<BaseResponse> baseResponses = new ArrayList<>();
         bases.forEach(base -> {
-            baseResponses.add(BaseResponse.fromBaseToResponse(base));
+            baseResponses.add(BaseResponse.builder()
+                                .id(base.getId())
+                                .unit(base.getUnit())   
+                                .address(base.getAddress())
+                                .latitude(base.getLatitude())
+                                .longitude(base.getLongitude())
+                                .build() 
+            );
             System.out.println(base.getUnit().getId());
         });
 
@@ -39,7 +45,13 @@ public class BaseService {
         List<Base> bases = baseRepository.findByAddressContaining(substr);
         List<BaseResponse> baseResponses = new ArrayList<>();
         bases.forEach(base -> {
-            baseResponses.add(BaseResponse.fromBaseToResponse(base));
+            baseResponses.add(BaseResponse.builder()
+                                .id(base.getId())
+                                .unit(base.getUnit())   
+                                .address(base.getAddress())
+                                .latitude(base.getLatitude())
+                                .longitude(base.getLongitude())
+                                .build());
         });
 
         return baseResponses;
@@ -47,18 +59,35 @@ public class BaseService {
 
     public BaseResponse findBaseById(Long id) throws BaseNotFound{
         Base base = baseRepository.findById(id).orElseThrow(() -> new BaseNotFound());
-        return BaseResponse.fromBaseToResponse(base);
+        return BaseResponse.builder()
+                        .id(base.getId())
+                        .unit(base.getUnit())   
+                        .address(base.getAddress())
+                        .latitude(base.getLatitude())
+                        .longitude(base.getLongitude())
+                        .build();
     }
     public BaseResponse create(BaseRequest request) throws UnitNotFound {
         Unit unit = unitRepository.findById(request.getUnitId()).orElseThrow(() -> new UnitNotFound());;
-        return BaseResponse.fromBaseToResponse(baseRepository.save(new Base(
+        var base = baseRepository.save(new Base(
             null, unit, request.getAddress(), request.getLatitude(), request.getLongitude()
-        )));
+        ));
+        
+        return BaseResponse.builder()
+                .id(base.getId())
+                .unit(base.getUnit())   
+                .address(base.getAddress())
+                .latitude(base.getLatitude())
+                .longitude(base.getLongitude())
+                .build();
     }
 
-    public void update(Long id, BaseUpdateRequest request){
+    public void update(Long id, BaseUpdateRequest request) throws UnitNotFound{
+        Unit unit = unitRepository.findById(request.getUnitId()).orElseThrow(()
+            -> new UnitNotFound());
+
         baseRepository.updateBase(request.getAddress(), 
-            request.getLatitude(), request.getLongitude(), id);
+            request.getLatitude(), request.getLongitude(), unit, id);
     }
 
     public void delete(Long id){
