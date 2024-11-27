@@ -16,7 +16,6 @@ import com.quackaboutit.equipmentapp.equipment.entity.NamedEquipment;
 import com.quackaboutit.equipmentapp.equipment.exceptions.EquipmentNotFound;
 import com.quackaboutit.equipmentapp.equipment.repository.EquipmentTypeRepository;
 import com.quackaboutit.equipmentapp.equipment.repository.NamedEquipmentRepository;
-import com.quackaboutit.equipmentapp.unit.repository.UnitRepository;
 import com.quackaboutit.equipmentapp.users.service.JwtService;
 import com.quackaboutit.equipmentapp.utils.LicensePlate;
 
