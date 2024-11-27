@@ -17,7 +17,10 @@ public interface BaseRepository extends JpaRepository<Base, Long> {
     @Modifying
     @Query("UPDATE Base b SET b.address = :address, b.latitude = :latitude, b.unit = :unit, b.longitude = :longitude WHERE b.id = :id")
     void updateBase(@Param("address") String address, @Param("latitude") Double latitude, 
-    @Param("longitude") Double longitude, @Param("unit") Unit unit , @Param("id") Long id); 
+    @Param("longitude") Double longitude, @Param("unit") Unit unit , @Param("id") Long id);
+
+    @Query("SELECT b FROM Base b WHERE b.unit = :unit")
+    Base findBaseByUnit(@Param("unit") Unit unit);
 
     List<Base> findByAddressContaining(String substring);
 }

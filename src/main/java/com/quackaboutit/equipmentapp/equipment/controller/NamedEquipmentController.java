@@ -23,10 +23,16 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class NamedEquipmentController {
     private final NamedEquipmentService namedEquipmentService;
+    
 
     @GetMapping
     private List<NamedEquipmentResponse> findNamedEquipments(){
         return namedEquipmentService.findNamedEquipments();
+    }
+
+    @GetMapping("/base")
+    private List<NamedEquipmentResponse> findNamedEquipmentsByBase(){
+        return namedEquipmentService.findNamedEquipmentsByBase();
     }
 
     @GetMapping("/{id}")

@@ -16,6 +16,8 @@ import com.quackaboutit.equipmentapp.equipment.entity.NamedEquipment;
 import com.quackaboutit.equipmentapp.equipment.exceptions.EquipmentNotFound;
 import com.quackaboutit.equipmentapp.equipment.repository.EquipmentTypeRepository;
 import com.quackaboutit.equipmentapp.equipment.repository.NamedEquipmentRepository;
+import com.quackaboutit.equipmentapp.unit.repository.UnitRepository;
+import com.quackaboutit.equipmentapp.users.service.JwtService;
 import com.quackaboutit.equipmentapp.utils.LicensePlate;
 
 import lombok.AllArgsConstructor;
@@ -26,6 +28,7 @@ public class NamedEquipmentService {
     private final NamedEquipmentRepository namedEquipmentRepository;
     private final BaseRepository baseRepository;
     private final EquipmentTypeRepository equipmentTypeRepository;
+    private final JwtService jwtService;
 
     public List<NamedEquipmentResponse> findNamedEquipments(){
         List<NamedEquipment> namedEquipments = namedEquipmentRepository.findAll();
@@ -95,6 +98,27 @@ public class NamedEquipmentService {
 
         namedEquipmentRepository.updateNamedEquipment(request.getLicensePlate(), request.getCarBrand(), 
             base, equipmentType, id);
+    }
+
+    public List<NamedEquipmentResponse> findNamedEquipmentsByBase(){
+        var base = baseRepository.findBaseByUnit(jwtService.getUserFromSecurityContextHolder().getUnit());
+        List<NamedEquipment> namedEquipments = namedEquipmentRepository.findAllByEquipmentBase(base);
+        List<NamedEquipmentResponse> namedEquipmentResponses = new ArrayList<>();
+
+        namedEquipments.forEach(namedEquipment -> {
+            namedEquipmentResponses.add(NamedEquipmentResponse.builder()
+                                                .id(namedEquipment.getId())
+                                                .licensePlate(namedEquipment.getLicensePlate())
+                                                .carBrand(namedEquipment.getCarBrand())
+                                                .base(namedEquipment.getBase())
+                                                .equipmentType(namedEquipment.getEquipmentType())
+                                                .isActive(true)
+                                                .lastWorkPlaceAddress("ADDDRESSS")
+                                                .finishTime(LocalDateTime.now().toString())
+                                                .build());
+        });
+
+        return namedEquipmentResponses;
     }
 
     public void delete(Long id){
