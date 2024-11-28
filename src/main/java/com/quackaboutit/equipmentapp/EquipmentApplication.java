@@ -2,6 +2,8 @@ package com.quackaboutit.equipmentapp;
 
 import com.quackaboutit.equipmentapp.bases.entity.Base;
 import com.quackaboutit.equipmentapp.bases.repository.BaseRepository;
+import com.quackaboutit.equipmentapp.contractor.entity.Contractor;
+import com.quackaboutit.equipmentapp.contractor.repository.ContractorRepository;
 import com.quackaboutit.equipmentapp.equipment.entity.Equipment;
 import com.quackaboutit.equipmentapp.equipment.entity.EquipmentType;
 import com.quackaboutit.equipmentapp.equipment.entity.NamedEquipment;
@@ -59,6 +61,9 @@ public class EquipmentApplication implements CommandLineRunner {
 
 	@Autowired
 	private WorkplaceRepository workplaceRepository;
+
+	@Autowired
+	private ContractorRepository contractorRepository;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -293,6 +298,18 @@ public class EquipmentApplication implements CommandLineRunner {
 				.build();
 
 		workplaceRepository.save(workplaceRequest);
+
+		// Adding Contractors
+		
+		var contractor = Contractor.builder()
+								.name("Возим вам")
+								.inn("482426332280")
+								.kpp("770201001")
+								.legalAddress("630136, Новосибирская область, г. Новосибирск, ул. Троллейная, д. 19, оф. 203")
+								.phoneNumber("89572917439")
+								.build();
+		
+		contractorRepository.save(contractor);
 
 		// Adding users
 		var manager = User.builder()
