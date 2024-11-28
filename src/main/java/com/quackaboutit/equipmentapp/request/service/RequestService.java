@@ -28,6 +28,8 @@ import com.quackaboutit.equipmentapp.workplace.repository.WorkplaceRepository;
 
 import lombok.RequiredArgsConstructor;
 
+import static java.util.stream.Collectors.toList;
+
 @Service
 @RequiredArgsConstructor
 public class RequestService {
@@ -146,6 +148,8 @@ public class RequestService {
         requestEntity.getRequestedEquipment().add(requestedEquipment);
         requestRepository.save(requestEntity);
 
+        List<EquipmentType> types = equipmentTypeRepository.findAllByEquipmentId(request.getEquipmentId());
+
         return RequestedEquipmentResponse.builder()
                 .id(requestedEquipment.getId())
                 .equipmentId(requestedEquipment.getEquipment().getId())
@@ -156,6 +160,14 @@ public class RequestService {
                 .licensePlateNumber(requestedEquipment.getLicensePlateNumber())
                 .arrivalTime(requestedEquipment.getArrivalTime().toString())
                 .workDuration(requestedEquipment.getWorkDuration().toString())
+                .types(
+                        types.stream().map(t ->
+                                EquipmentTypeResponse.builder()
+                                        .id(t.getId())
+                                        .type(t.getType())
+                                        .build()
+                        ).toList()
+                )
                 .build();
     }
 

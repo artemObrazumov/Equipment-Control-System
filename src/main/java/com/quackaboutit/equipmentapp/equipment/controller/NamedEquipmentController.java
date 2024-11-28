@@ -2,6 +2,7 @@ package com.quackaboutit.equipmentapp.equipment.controller;
 
 import java.util.List;
 
+import com.quackaboutit.equipmentapp.equipment.dto.EquipmentBestOptionsResponse;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +36,11 @@ public class NamedEquipmentController {
         return namedEquipmentService.findNamedEquipmentsByBase();
     }
 
+    @GetMapping("/contractor/{id}")
+    private List<NamedEquipmentResponse> findNamedEquipmentsByContractor(@PathVariable Long id){
+        return namedEquipmentService.findNamedEquipmentsByContractor(id);
+    }
+
     @GetMapping("/{id}")
     private NamedEquipmentResponse findNamedEquipmentById(@PathVariable Long id){
         return namedEquipmentService.findNamedEquipmentById(id);
@@ -53,5 +59,10 @@ public class NamedEquipmentController {
     @DeleteMapping("/{id}")
     private void deleteNamedEquipment(@PathVariable Long id){
         namedEquipmentService.delete(id);
+    }
+
+    @GetMapping("/best")
+    private EquipmentBestOptionsResponse getBestEquipment() {
+        return namedEquipmentService.getBestEquipmentOptions();
     }
 }

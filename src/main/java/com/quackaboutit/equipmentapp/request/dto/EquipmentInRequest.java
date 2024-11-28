@@ -26,4 +26,7 @@ public class EquipmentInRequest {
 
     @NotNull
     private Duration workDuration;
+
+    @NotNull
+    private String licensePlateNumber;
 }
