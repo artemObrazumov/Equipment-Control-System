@@ -12,21 +12,11 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UnitResponse {
-    @NotNull
+
     private Long id;
-
-    @NotBlank
-    @NotNull
     private String address;
-
-    @NotNull
     private Double latitude;
-
-    @NotNull
     private Double longitude;
-
-    public static UnitResponse fromUnit(Unit unit) {
-        return new UnitResponse(unit.getId(),
-                unit.getAddress(), unit.getLatitude(), unit.getLongitude());
-    }
+    private Integer workplaces;
+    private Integer requests;
 }

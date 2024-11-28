@@ -25,4 +25,7 @@ public interface RequestRepository extends JpaRepository<Request, Long>{
     @Modifying
     @Query("UPDATE Request r SET r.state = :state WHERE r.id = :id")
     void updateState(@Param("state") RequestState state, @Param("id") Long id);
+
+    @Query("SELECT COUNT(r) FROM Request r WHERE r.unit.id = :id")
+    Integer countByUnitId(@Param("id") Long id);
 }

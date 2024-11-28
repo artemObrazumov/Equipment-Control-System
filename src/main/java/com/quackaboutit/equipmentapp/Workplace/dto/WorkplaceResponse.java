@@ -14,20 +14,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WorkplaceResponse {
-    @NotNull
+
     private Long id;
-
-    @NotNull
     private WorkplaceState state;
-
-    @NotNull
     private Double latitude;
-
-    @NotNull
     private Double longitude;
-
-    @NotNull
-    @NotBlank
     private String address;
 
     @NotNull

@@ -23,4 +23,7 @@ public interface WorkplaceRepository extends JpaRepository<Workplace, Long> {
 
     @Query("SELECT w FROM Workplace w WHERE w.unit.id = :unitId")
     List<Workplace> findAllbyUnitId(@Param("unitId") Long UnitId);
+
+    @Query("SELECT COUNT(w) FROM Workplace w WHERE w.unit.id = :id")
+    Integer countByUnitId(@Param("id") Long unitId);
 }

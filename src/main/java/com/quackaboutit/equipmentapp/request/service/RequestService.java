@@ -157,4 +157,8 @@ public class RequestService {
                 .workDuration(requestedEquipment.getWorkDuration().toString())
                 .build();
     }
+
+    public void deleteRequestedEquipmentById(Long id) {
+        requestEquipmentRepository.deleteById(id);
+    }
 }

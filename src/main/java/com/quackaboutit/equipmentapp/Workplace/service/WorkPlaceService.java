@@ -1,5 +1,6 @@
 package com.quackaboutit.equipmentapp.workplace.service;
 
+import com.quackaboutit.equipmentapp.request.repository.RequestRepository;
 import com.quackaboutit.equipmentapp.unit.dto.UnitResponse;
 import com.quackaboutit.equipmentapp.unit.entity.Unit;
 import com.quackaboutit.equipmentapp.unit.exceptions.UnitNotFound;
@@ -25,6 +26,7 @@ import java.util.List;
 public class WorkPlaceService {
     private final WorkplaceRepository workplaceRepository;
     private final UnitRepository unitRepository;
+    private final RequestRepository requestRepository;
 
     public List<WorkplaceItemResponse> findWorkPlaces(){
         List<Workplace> workplaces = workplaceRepository.findAll();
@@ -77,7 +79,7 @@ public class WorkPlaceService {
     public WorkplaceResponse findWorkplacesById(Long Id) throws WorkplaceNotFound{
         Workplace workplace = workplaceRepository.findById(Id)
                         .orElseThrow(() -> new WorkplaceNotFound());
-        
+
         var unit = UnitResponse.builder()
                 .id(workplace.getUnit().getId())
                 .address(workplace.getUnit().getAddress())
@@ -91,11 +93,10 @@ public class WorkPlaceService {
                         .latitude(workplace.getLatitude())
                         .longitude(workplace.getLongitude())
                         .address(workplace.getAddress())
-                        .unit(unit)
                         .build(); 
     }
 
-    public WorkplaceResponse create(WorkplaceRequest req){ 
+    public WorkplaceResponse create(WorkplaceRequest req){
         Unit unit = unitRepository.findById(req.getUnitId()).orElseThrow(
             () -> new UnitNotFound()
         );
@@ -118,7 +119,7 @@ public class WorkPlaceService {
                                 .latitude(unit.getLatitude())
                                 .build()
                         )
-                        .build();  
+                        .build();
     }
 
     public void update(Long id, WorkplaceUpdateRequest request){
@@ -126,8 +127,8 @@ public class WorkPlaceService {
         Unit unit = unitRepository.findById(id).orElseThrow(
             () -> new UnitNotFound()
         );
-        
-        workplaceRepository.updateWorkplace(request.getAddress(), 
+
+        workplaceRepository.updateWorkplace(request.getAddress(),
         request.getLatitude(), request.getLongitude(), state, unit, id);
     }
 

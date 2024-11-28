@@ -52,4 +52,9 @@ public class RequestController {
     private void UpdateRequestedEquipmentById(@Valid @RequestBody RequestedEquipmentRequest request, @PathVariable Long id) {
         requestService.updateRequestedEquipmentById(request, id); 
     }
+
+    @DeleteMapping("/requestedEquipment/{id}")
+    private void deleteRequestedEquipmentById(@PathVariable Long id) {
+        requestService.deleteRequestedEquipmentById(id);
+    }
 }
