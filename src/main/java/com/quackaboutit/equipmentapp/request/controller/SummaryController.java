@@ -34,8 +34,8 @@ public class SummaryController {
     }
     
     @PutMapping("/{id}/close")
-    private SummaryResponse closeSummary(@PathVariable Long id) {
-        return summaryService.closeSummary(id);
+    private void closeSummary(@PathVariable Long id) {
+        summaryService.closeSummary(id);
     }
 
     @PutMapping("/{id}/archive")

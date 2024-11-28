@@ -1,29 +1,26 @@
 package com.quackaboutit.equipmentapp.tracks.dto;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Data
-@Builder
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ArrivalPointResponse {
+public class ArrivalPointRequest {
     private Long id;
-    private String address;
-    private String planOutTime;
-    private String planArrivalTime;
-    private Double distanse;
-    private Duration planWorkDuration;
-    private String realArrivalTime;
-    private String realOutTime;
+    private String driver;
+    private LocalDateTime realArrivalTime;
+    private LocalDateTime realOutTime;
     private Double kmOnStart;
     private Double kmOnEnd;
     private Double fuelOnStart;
     private Double fuelOnEnd;
-    private String waitTime;
+    private LocalDateTime waitTime;
 }

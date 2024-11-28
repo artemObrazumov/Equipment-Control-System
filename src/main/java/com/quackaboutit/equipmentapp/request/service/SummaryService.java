@@ -15,10 +15,12 @@ import com.quackaboutit.equipmentapp.request.entity.Request;
 import com.quackaboutit.equipmentapp.request.entity.RequestState;
 import com.quackaboutit.equipmentapp.request.entity.Summary;
 import com.quackaboutit.equipmentapp.request.entity.SummaryState;
+import com.quackaboutit.equipmentapp.request.exceptions.HasOpenedSummary;
 import com.quackaboutit.equipmentapp.request.exceptions.RequestNotFound;
 import com.quackaboutit.equipmentapp.request.exceptions.SummaryNotFound;
 import com.quackaboutit.equipmentapp.request.repository.RequestRepository;
 import com.quackaboutit.equipmentapp.request.repository.SummaryRepository;
+import com.quackaboutit.equipmentapp.tracks.service.TrackService;
 import com.quackaboutit.equipmentapp.unit.entity.Unit;
 import com.quackaboutit.equipmentapp.users.entity.User;
 import com.quackaboutit.equipmentapp.users.response.UserSummaryResponse;
@@ -30,8 +32,13 @@ import lombok.AllArgsConstructor;
 public class SummaryService {
     private final SummaryRepository summaryRepository;
     private final RequestRepository requestRepository;
+    private final TrackService trackService;
 
-    public SummaryResponse create(User manager){
+    public SummaryResponse create(User manager) throws RuntimeException{
+        Optional<Summary> lastSummary = summaryRepository.findFirstByOrderByIdDesc();
+        if(lastSummary.isPresent())
+            if(lastSummary.get().getState() == SummaryState.NEW) throw new HasOpenedSummary();
+        
         var summary = summaryRepository.save(new Summary(null, SummaryState.NEW, 
         manager, LocalDateTime.now(), manager.getUnit(), new ArrayList<>()));
 
@@ -115,8 +122,8 @@ public class SummaryService {
                         .build();
     } 
     
-    public SummaryResponse closeSummary(Long id){
-        return changeStateSummary(id, SummaryState.CLOSED);
+    public void closeSummary(Long id){
+        trackService.create(id);
     }
 
     public SummaryResponse archiveSummary(Long id){

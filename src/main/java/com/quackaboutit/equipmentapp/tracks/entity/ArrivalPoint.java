@@ -45,7 +45,7 @@ public class ArrivalPoint {
 
     @Column(name = "planWorkDuration")
     private Duration planWorkDuration;
-
+    
     @Column(name = "realArrivalTime")
     private LocalDateTime realArrivalTime;
 

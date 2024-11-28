@@ -29,4 +29,6 @@ public interface NamedEquipmentRepository extends JpaRepository<NamedEquipment, 
 
     @Query("SELECT n FROM NamedEquipment n WHERE n.base = :base")
     List<NamedEquipment> findAllByEquipmentBase(@Param("base") Base base);
+
+    NamedEquipment findBylicensePlate(String licensePlate);
 }
