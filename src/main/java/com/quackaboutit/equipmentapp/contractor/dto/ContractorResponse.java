@@ -30,4 +30,8 @@ public class ContractorResponse {
     @NotBlank
     @NotNull
     private String legalAddress;
+
+    @NotBlank
+    @NotNull
+    private String phoneNumber;
 }

@@ -38,4 +38,7 @@ public class Contractor {
 
     @Column(name = "legalAddress")
     private String legalAddress;
+
+    @Column(name = "phoneNumber")
+    private String phoneNumber;
 }

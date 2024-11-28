@@ -21,7 +21,7 @@ public class ContractorService {
     public ContractorResponse create(ContractorRequest request){
         var contractor = contractorRepository.save(new Contractor(
             null, request.getName(), request.getInn(),
-            request.getKpp(), request.getLegalAddress()
+            request.getKpp(), request.getLegalAddress(), request.getPhoneNumber()
         ));
 
         return ContractorResponse.builder()
@@ -30,6 +30,7 @@ public class ContractorService {
                         .inn(contractor.getInn())
                         .kpp(contractor.getKpp())
                         .legalAddress(contractor.getLegalAddress())
+                        .phoneNumber(contractor.getPhoneNumber())
                         .build();
     }
 
@@ -43,6 +44,7 @@ public class ContractorService {
                         .inn(contractor.getInn())
                         .kpp(contractor.getKpp())
                         .legalAddress(contractor.getLegalAddress())
+                        .phoneNumber(contractor.getPhoneNumber())
                         .build();
     }
 
@@ -57,6 +59,7 @@ public class ContractorService {
                                                 .inn(contractor.getInn())
                                                 .kpp(contractor.getKpp())
                                                 .legalAddress(contractor.getLegalAddress())
+                                                .phoneNumber(contractor.getPhoneNumber())
                                                 .build());
         });
 

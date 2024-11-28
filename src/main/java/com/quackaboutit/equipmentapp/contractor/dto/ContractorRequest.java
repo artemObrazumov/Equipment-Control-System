@@ -29,4 +29,8 @@ public class ContractorRequest {
     @NotBlank
     @NotNull
     private String legalAddress;
+
+    @NotBlank
+    @NotNull
+    private String phoneNumber;
 }
