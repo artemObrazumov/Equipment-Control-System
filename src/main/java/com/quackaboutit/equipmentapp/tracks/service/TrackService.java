@@ -4,8 +4,10 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.quackaboutit.equipmentapp.tracks.entity.ArrivalPoint;
 import com.quackaboutit.equipmentapp.tracks.entity.Track;
@@ -50,22 +52,24 @@ public class TrackService {
         summaryRepository.updateState(SummaryState.CLOSED, summaryId);
         // key = namedEquipment.licensePlate
         Map<String, List<ObjectForTrack>> namedEquipmentMap = new HashMap<>();
-        List<String> licensePlates = new ArrayList<>();
+        Set<String> licensePlates = new HashSet<>();
 
         List<Request> requests = summary.getRequests();
         requests.forEach(request -> { // summary -> List<RequestedEquipment> -> NamedEquipment
             List<RequestedEquipment> requestedEquipments = request.getRequestedEquipment();
+            
             requestedEquipments.forEach(requestedEquipment ->{
                 licensePlates.add(requestedEquipment.getLicensePlateNumber());
                 
-                if(namedEquipmentMap.get(licensePlates.getLast()) == null){ // берём из словаря элемент под ID
+                if(namedEquipmentMap.get(requestedEquipment.getLicensePlateNumber()) == null){ // берём из словаря элемент под ID
                     List<ObjectForTrack> tmp = new ArrayList<>();
                     tmp.add(new ObjectForTrack(requestedEquipment.getArrivalTime(), 
                             requestedEquipment.getArrivalTime().plusHours(
                                 requestedEquipment.getWorkDuration().toHours()), request, requestedEquipment));
-                    namedEquipmentMap.put(licensePlates.getLast(), tmp);
+                    
+                    namedEquipmentMap.put(requestedEquipment.getLicensePlateNumber(), tmp);
                 }else{
-                    namedEquipmentMap.get(licensePlates.getLast()).add(new ObjectForTrack(requestedEquipment.getArrivalTime(), 
+                    namedEquipmentMap.get(requestedEquipment.getLicensePlateNumber()).add(new ObjectForTrack(requestedEquipment.getArrivalTime(), 
                     requestedEquipment.getArrivalTime().plusHours(
                         requestedEquipment.getWorkDuration().toHours()
                     ), request, requestedEquipment));
@@ -78,10 +82,7 @@ public class TrackService {
             NamedEquipment namedEquipment = namedEquipmentRepository.findBylicensePlate(licensePlate);
             List<ArrivalPoint> ArrivalPoins = new ArrayList<>();
 
-
             namedEquipmentMap.get(licensePlate).forEach(obj ->{
-
-
                 ArrivalPoins.add(
                     arrivalPointRepository.save(new ArrivalPoint(
                         null, obj.getRequest().getWorkplace().getAddress(),
@@ -113,13 +114,13 @@ public class TrackService {
                                                 .planArrivalTime(point.getPlanArrivalTime().toString())
                                                 .distanse(point.getDistance())
                                                 .planWorkDuration(point.getPlanWorkDuration())
-                                                .realArrivalTime(point.getRealArrivalTime().toString())
-                                                .realOutTime(point.getRealOutTime().toString())
+                                                .realArrivalTime((point.getRealArrivalTime() == null ? null : point.getRealArrivalTime().toString()))
+                                                .realOutTime((point.getRealOutTime() == null ? null : point.getRealOutTime().toString()))
                                                 .kmOnStart(point.getKmOnStart())
                                                 .kmOnEnd(point.getKmOnEnd())
                                                 .fuelOnStart(point.getFuelOnStart())
                                                 .fuelOnEnd(point.getFuelOnEnd())
-                                                .waitTime(point.getWaitTime().toString())
+                                                .waitTime((point.getWaitTime() == null ? null : point.getWaitTime().toString()))
                                                 .build()
             );
         });
@@ -162,6 +163,8 @@ public class TrackService {
             () -> new TrackNotFound()
         );
         if (track.getIsActive() == false) throw new TrackIsClosed();
+        trackRepository.updateDriver(requests.get(0).getDriver(), id);
+        
         trackRepository.closeTrack(track.getId());
         requests.forEach(request -> {
             arrivalPointRepository.updateTrackByUserData(request.getRealArrivalTime(), request.getRealOutTime(), 

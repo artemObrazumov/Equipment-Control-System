@@ -16,4 +16,8 @@ public interface TrackRepository extends JpaRepository<Track, Long> {
     @Modifying
     @Query("UPDATE Track t SET t.isActive = false WHERE t.id = :id")
     void closeTrack(@PathParam("id") Long id);
+
+    @Modifying
+    @Query("UPDATE Track t SET t.driver = :driver WHERE t.id = :id")
+    void updateDriver(@PathParam("driver") String driver, @PathParam("id") Long id);
 }

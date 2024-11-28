@@ -59,6 +59,7 @@ public class RequestService {
                         .equipmentType(equipmentType)
                         .arrivalTime(eq.getArrivalTime())
                         .workDuration(eq.getWorkDuration())
+                        //.licensePlateNumber((eq.getEquipmentId() == 1 ? "E169AE777" : "K114OO777"))
                         .build();
                 requestedEquipment = requestEquipmentRepository.save(requestedEquipment);
                 requestedEquipmentList.add(requestedEquipment);
