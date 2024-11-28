@@ -20,7 +20,7 @@ repositories {
 dependencies {
 	// Web
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-tomcat'
+	//implementation 'org.springframework.boot:spring-boot-starter-tomcat'
 	// Utils
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.apache.commons:commons-lang3:3.17.0'
@@ -35,7 +35,7 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
 	runtimeOnly 'org.postgresql:postgresql'
 	// Docker
-	//developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
+	developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
 	// Docs
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 	// Serialization

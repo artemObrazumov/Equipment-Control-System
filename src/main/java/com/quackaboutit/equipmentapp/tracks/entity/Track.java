@@ -1,19 +1,15 @@
 // package com.quackaboutit.equipmentapp.tracks.entity;
 
 // import java.time.LocalDateTime;
-
-// import com.fasterxml.jackson.databind.deser.Deserializers.Base;
-// import com.quackaboutit.equipmentapp.request.entity.RequestedEquipment;
-// import com.quackaboutit.equipmentapp.unit.entity.Unit;
-// import com.quackaboutit.equipmentapp.workplace.entity.Workplace;
-
+// import java.util.List;
+// import com.quackaboutit.equipmentapp.equipment.entity.NamedEquipment;
 // import jakarta.persistence.Column;
 // import jakarta.persistence.Entity;
 // import jakarta.persistence.GeneratedValue;
 // import jakarta.persistence.GenerationType;
 // import jakarta.persistence.Id;
 // import jakarta.persistence.JoinColumn;
-// import jakarta.persistence.OneToOne;
+// import jakarta.persistence.OneToMany;
 // import jakarta.persistence.SequenceGenerator;
 // import jakarta.persistence.Table;
 // import lombok.AllArgsConstructor;
@@ -35,43 +31,16 @@
 //     @SequenceGenerator(name = "track_id_seq", sequenceName = "track_id_seq", allocationSize = 1)
 //     private Long id;
 
-//     @OneToOne
-//     @JoinColumn(name = "requested_equipment_id", referencedColumnName = "id")
-//     private RequestedEquipment requestedEquipments;
+//     @Column(name = "date")
+//     private LocalDateTime date;
 
-//     @Column(name = "driver_name")
-//     private String driverName;
+//     @JoinColumn(name = "named_equipment_id", referencedColumnName = "id")
+//     private NamedEquipment namedEquipment;
 
-//     @Column(name = "car_brand")
-//     private String carBrand;
+//     @Column(name = "driver")
+//     private String driver;
 
-//     @OneToOne
-//     @JoinColumn(name = "workplace_id", referencedColumnName = "id")
-//     private Workplace workplaces;
-
-//     @OneToOne
-//     @JoinColumn(name = "unit_id", referencedColumnName = "id")
-//     private Unit unit;
-
-//     @OneToOne
-//     @JoinColumn(name = "base_id", referencedColumnName = "id")
-//     private Base base;
-    
-//     @Column(name = "distance")
-//     private Double distance;
-
-//     @Column(name = "startTime")
-//     private LocalDateTime startTime;
-
-//     @Column(name = "finishTime")
-//     private LocalDateTime finishTime;
-
-//     @Column(name = "fact_distance")
-//     private Double factDistance;
-
-//     @Column(name = "fact_startTime")
-//     private LocalDateTime factStartTime;
-
-//     @Column(name = "fact_finishTime")
-//     private LocalDateTime factFinishTime;
+//     @OneToMany
+//     @JoinColumn(name = "arrival_point_id", referencedColumnName = "id")
+//     private List<ArrivalPoint> arrivalPoint;
 // }

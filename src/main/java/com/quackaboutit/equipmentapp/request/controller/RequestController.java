@@ -45,7 +45,7 @@ public class RequestController {
     @PostMapping("/{id}/requestedEquipment")
     private RequestedEquipmentResponse postRequestedEquipment(@Valid @RequestBody RequestedEquipmentRequest request,
                                                               @PathVariable Long id) {
-        return requestService.postRequestedEquipment(request, id); // !!!
+        return requestService.postRequestedEquipment(request, id);
     }
 
     @PutMapping("/requestedEquipment/{id}")

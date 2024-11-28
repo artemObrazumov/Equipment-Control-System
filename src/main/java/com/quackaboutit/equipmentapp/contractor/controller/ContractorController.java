@@ -12,7 +12,7 @@ import com.quackaboutit.equipmentapp.contractor.dto.ContractorRequest;
 import com.quackaboutit.equipmentapp.contractor.dto.ContractorResponse;
 import com.quackaboutit.equipmentapp.contractor.service.ContractorService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
