@@ -29,6 +29,9 @@ public class NamedEquipment {
     @JoinColumn(name = "base_id", referencedColumnName = "id")
     private Base base;
 
+    @Column(name = "fuelType")
+    private String fuelType;
+
     @ManyToOne
     @JoinColumn(name = "equipment_type_id", referencedColumnName = "id")
     private EquipmentType equipmentType;

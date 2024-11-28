@@ -43,6 +43,7 @@ public class NamedEquipmentService {
             .isActive(true)
             .lastWorkPlaceAddress("ADDDRESSS")
             .finishTime(LocalDateTime.now().toString())
+            .fuelType(namedEquipment.getFuelType())
             .build());
         });
 
@@ -61,6 +62,7 @@ public class NamedEquipmentService {
                             .isActive(true)
                             .lastWorkPlaceAddress("ADDDRESSS")
                             .finishTime(LocalDateTime.now().toString())
+                            .fuelType(namedEquipment.getFuelType())
                             .build();
     } 
 
@@ -73,7 +75,8 @@ public class NamedEquipmentService {
             .orElseThrow(() -> new EquipmentNotFound());
         
         var namedEquipment = namedEquipmentRepository.save(
-            new NamedEquipment(null, request.getLicensePlate(), request.getCarBrand(), base, equipmentType));
+            new NamedEquipment(null, request.getLicensePlate(), 
+                request.getCarBrand(), base, request.getFuelType(), equipmentType));
         
         return NamedEquipmentResponse.builder()
                                 .id(namedEquipment.getId())
@@ -84,6 +87,7 @@ public class NamedEquipmentService {
                                 .isActive(true)
                                 .lastWorkPlaceAddress("ADDDRESSS")
                                 .finishTime(LocalDateTime.now().toString())
+                                .fuelType(namedEquipment.getFuelType())
                                 .build();
     }
 
@@ -96,7 +100,7 @@ public class NamedEquipmentService {
             .orElseThrow(() -> new EquipmentNotFound());
 
         namedEquipmentRepository.updateNamedEquipment(request.getLicensePlate(), request.getCarBrand(), 
-            base, equipmentType, id);
+            base, equipmentType, id, request.getFuelType());
     }
 
     public List<NamedEquipmentResponse> findNamedEquipmentsByBase(){
@@ -114,6 +118,7 @@ public class NamedEquipmentService {
                                                 .isActive(true)
                                                 .lastWorkPlaceAddress("ADDDRESSS")
                                                 .finishTime(LocalDateTime.now().toString())
+                                                .fuelType(namedEquipment.getFuelType())
                                                 .build());
         });
 

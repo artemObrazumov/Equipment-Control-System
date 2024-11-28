@@ -27,4 +27,8 @@ public class NamedEquipmentRequest {
 
     @NotNull
     private Long equipmentTypeId;
+
+    @NotNull
+    @NotBlank
+    private String fuelType;
 }

@@ -17,9 +17,9 @@ import java.util.List;
 @Transactional
 public interface NamedEquipmentRepository extends JpaRepository<NamedEquipment, Long> {
     @Modifying
-    @Query("UPDATE NamedEquipment ne SET ne.licensePlate = :licensePlate, ne.carBrand = :carBrand, ne.base  = :base, ne.equipmentType = :equipmentType WHERE ne.id = :id")
+    @Query("UPDATE NamedEquipment ne SET ne.licensePlate = :licensePlate, ne.fuelType = :fuelType, ne.carBrand = :carBrand, ne.base  = :base, ne.equipmentType = :equipmentType WHERE ne.id = :id")
     void updateNamedEquipment(@Param("licensePlate") String license_plate, @Param("carBrand") String carBrand, @Param("base") Base base,
-    @Param("equipmentType") EquipmentType equipmentType, @Param("id") Long id);
+    @Param("equipmentType") EquipmentType equipmentType, @Param("id") Long id, @Param("fuelType") String fuelType);
 
     @Query("SELECT n FROM NamedEquipment n WHERE n.equipmentType.id = :typeId")
     List<NamedEquipment> findAllByEquipmentTypeId(@Param("typeId") Long typeId);

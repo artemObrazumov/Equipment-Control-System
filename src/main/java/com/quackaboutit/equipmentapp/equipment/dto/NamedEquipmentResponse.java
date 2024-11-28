@@ -21,4 +21,5 @@ public class NamedEquipmentResponse {
     private Boolean isActive;
     private String lastWorkPlaceAddress;
     private String finishTime;
+    private String fuelType;
 }

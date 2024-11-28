@@ -239,6 +239,7 @@ public class EquipmentApplication implements CommandLineRunner {
 					.carBrand("LADA")
 					.base(baseList.get(0))
 					.equipmentType(equipmentTypeList.get(0))
+					.fuelType("АИ-92")
 					.build();
 
 		namedEquipmentList.add(namedEquipmentRepository.save(namedEquipmentRequest));
@@ -247,6 +248,7 @@ public class EquipmentApplication implements CommandLineRunner {
 					.licensePlate("A916AO777")
 					.carBrand("LADA")
 					.base(baseList.get(1))
+					.fuelType("АИ-92")
 					.equipmentType(equipmentTypeList.get(0))
 					.build();
 
@@ -255,6 +257,7 @@ public class EquipmentApplication implements CommandLineRunner {
 		namedEquipmentRequest = NamedEquipment.builder()
 					.licensePlate("A526KC777")
 					.carBrand("ZIL")
+					.fuelType("АИ-92")
 					.base(baseList.get(0))
 					.equipmentType(equipmentTypeList.get(3))
 					.build();
@@ -264,6 +267,7 @@ public class EquipmentApplication implements CommandLineRunner {
 		namedEquipmentRequest = NamedEquipment.builder()
 					.licensePlate("K114OO777")
 					.carBrand("ZIL")
+					.fuelType("АИ-92")
 					.base(baseList.get(0))
 					.equipmentType(equipmentTypeList.get(5))
 					.build();
@@ -273,6 +277,7 @@ public class EquipmentApplication implements CommandLineRunner {
 		namedEquipmentRequest = NamedEquipment.builder()
 					.licensePlate("E169AE777")
 					.carBrand("ZIL")
+					.fuelType("АИ-92")
 					.base(baseList.get(1))
 					.equipmentType(equipmentTypeList.get(4))
 					.build();
@@ -282,6 +287,7 @@ public class EquipmentApplication implements CommandLineRunner {
 		namedEquipmentRequest = NamedEquipment.builder()
 					.licensePlate("T092AY777")
 					.carBrand("LADA")
+					.fuelType("АИ-92")
 					.base(baseList.get(1))
 					.equipmentType(equipmentTypeList.get(7))
 					.build();
@@ -324,7 +330,7 @@ public class EquipmentApplication implements CommandLineRunner {
 
 		// Adding users
 		var manager = User.builder()
-				.username("Юрий Давидович Золов")
+				.username("Золов Юрий Давидович")
 				.email("y.d.zolov@gmail.com")
 				.password(passwordEncoder.encode("password"))
 				.role(Role.ROLE_UNIT_MANAGER)
@@ -334,7 +340,7 @@ public class EquipmentApplication implements CommandLineRunner {
 		userRepository.save(manager);
 
 		var dispatcherUser = User.builder()
-				.username("Алексей Владимирович Кругов")
+				.username("Кругов Алексей Владимирович")
 				.email("a.v.krygov@gmail.com")
 				.password(passwordEncoder.encode("password"))
 				.role(Role.ROLE_DISPATCHER)
@@ -344,7 +350,7 @@ public class EquipmentApplication implements CommandLineRunner {
 		userRepository.save(dispatcherUser);
 
 		var workerUser = User.builder()
-				.username("Никита Сергеевич Мерджбранчев")
+				.username("Мерджбранчев Никита Сергеевич")
 				.email("n.s.mergebranchev@gmail.com")
 				.password(passwordEncoder.encode("password"))
 				.role(Role.ROLE_WORKER)
@@ -354,7 +360,7 @@ public class EquipmentApplication implements CommandLineRunner {
 		userRepository.save(workerUser);
 
 		var adminUser = User.builder()
-				.username("Артём Александрович Мобилков")
+				.username("Мобилков Артём Александрович")
 				.email("a.a.mobilkov@gmail.com")
 				.password(passwordEncoder.encode("password"))
 				.role(Role.ROLE_ADMIN)
@@ -364,7 +370,7 @@ public class EquipmentApplication implements CommandLineRunner {
 		userRepository.save(adminUser);
 
 		manager = User.builder()
-				.username("Екатерина Михайловна Фигмовна")
+				.username("Фигмовна Екатерина Михайловна")
 				.email("e.m.figmovna@gmail.com")
 				.password(passwordEncoder.encode("password"))
 				.role(Role.ROLE_UNIT_MANAGER)
@@ -384,7 +390,7 @@ public class EquipmentApplication implements CommandLineRunner {
 		userRepository.save(manager);
 
 		dispatcherUser = User.builder()
-				.username("Евгений Артёмович Ковров")
+				.username("Ковров Евгений Артёмович")
 				.email("e.a.kovrov@gmail.com")
 				.password(passwordEncoder.encode("password"))
 				.role(Role.ROLE_DISPATCHER)
@@ -394,7 +400,7 @@ public class EquipmentApplication implements CommandLineRunner {
 		userRepository.save(dispatcherUser);
 
 		workerUser = User.builder()
-				.username("Николай Романович Джсов")
+				.username("Джсов Николай Романович")
 				.email("n.r.jsov@gmail.com")
 				.password(passwordEncoder.encode("password"))
 				.role(Role.ROLE_WORKER)
@@ -404,7 +410,7 @@ public class EquipmentApplication implements CommandLineRunner {
 		userRepository.save(workerUser);
 
 		adminUser = User.builder()
-				.username("Владислав Олегович Деревов")
+				.username("Деревов Владислав Олегович")
 				.email("v.o.derevov@gmail.com")
 				.password(passwordEncoder.encode("password"))
 				.role(Role.ROLE_ADMIN)
