@@ -31,4 +31,10 @@ public interface NamedEquipmentRepository extends JpaRepository<NamedEquipment, 
     List<NamedEquipment> findAllByEquipmentBase(@Param("base") Base base);
 
     NamedEquipment findBylicensePlate(String licensePlate);
+
+    @Query("SELECT n FROM NamedEquipment n WHERE n.contractor.id = :contractorId")
+    List<NamedEquipment> findAllByEquipmentContractorId(@Param("contractorId") Long contractorId);
+
+    @Query("SELECT n FROM NamedEquipment n WHERE n.contractor != null")
+    List<NamedEquipment> findContractorOptions();
 }

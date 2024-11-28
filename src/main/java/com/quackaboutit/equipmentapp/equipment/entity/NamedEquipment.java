@@ -1,6 +1,7 @@
 package com.quackaboutit.equipmentapp.equipment.entity;
 
 import com.quackaboutit.equipmentapp.bases.entity.Base;
+import com.quackaboutit.equipmentapp.contractor.entity.Contractor;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,6 +32,10 @@ public class NamedEquipment {
 
     @Column(name = "fuelType")
     private String fuelType;
+
+    @ManyToOne
+    @JoinColumn(name = "contractor_id", referencedColumnName = "id")
+    private Contractor contractor;
 
     @ManyToOne
     @JoinColumn(name = "equipment_type_id", referencedColumnName = "id")
