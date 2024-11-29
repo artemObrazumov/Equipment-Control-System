@@ -87,4 +87,21 @@ public class AnalyticsController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/track_contract/{id}")
+    public ResponseEntity<byte[]> trackContract(@PathVariable Long id) throws IOException {
+
+        try {
+            byte[] excelFile = excelTableService.trackSheetExcel(id);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            headers.setContentDispositionFormData("attachment", "contract_"+id+".xls");
+            headers.setContentLength(excelFile.length);
+
+            return new ResponseEntity<>(excelFile, headers, HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

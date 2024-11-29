@@ -21,5 +21,6 @@ public class TrackResponse {
     private String driver;
     private Boolean isActive;
     private String licensePlateNumber;
+    private Double price;
     private List<ArrivalPointResponse> arrivalPoints;
 }
