@@ -23,4 +23,5 @@ public class ArrivalPointRequest {
     private Double fuelOnStart;
     private Double fuelOnEnd;
     private LocalDateTime waitTime;
+    private Double price;
 }
