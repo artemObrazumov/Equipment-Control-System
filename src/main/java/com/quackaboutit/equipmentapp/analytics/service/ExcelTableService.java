@@ -208,7 +208,7 @@ public class ExcelTableService {
                             arrialPoint.getWaitTime().format(DateTimeFormatter.ofPattern("HH:mm")), String.format("%d:%02d", arrialPoint.getPlanWorkDuration().toHours(), arrialPoint.getPlanWorkDuration().toMinutesPart()),
                             arrialPoint.getFuelOnStart().toString(), arrialPoint.getFuelOnEnd().toString(),
                             arrialPoint.getKmOnStart().toString(), arrialPoint.getKmOnEnd().toString(), 
-                            arrialPoint.getDistance().toString(), ""+(namedEquipment.getPaymentHourly() * arrialPoint.getPlanWorkDuration().toMillis()/3600000));
+                            (arrialPoint.getKmOnEnd() - arrialPoint.getKmOnStart())+"", ""+(namedEquipment.getPaymentHourly() * arrialPoint.getPlanWorkDuration().toMillis()/3600000));
             }else{
                 params = List.of(arrialPoint.getAddress(), track.getDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")),
                             arrialPoint.getPlanOutTime().format(formatter), "",
