@@ -3,14 +3,8 @@ package com.quackaboutit.equipmentapp.equipment.controller;
 import java.util.List;
 
 import com.quackaboutit.equipmentapp.equipment.dto.EquipmentBestOptionsResponse;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.quackaboutit.equipmentapp.tracks.dto.ArrivalPointResponse;
+import org.springframework.web.bind.annotation.*;
 
 import com.quackaboutit.equipmentapp.equipment.dto.NamedEquipmentRequest;
 import com.quackaboutit.equipmentapp.equipment.dto.NamedEquipmentResponse;
@@ -64,5 +58,10 @@ public class NamedEquipmentController {
     @GetMapping("/best")
     private EquipmentBestOptionsResponse getBestEquipment() {
         return namedEquipmentService.getBestEquipmentOptions();
+    }
+
+    @GetMapping("/{id}/calendar")
+    private List<ArrivalPointResponse> getCalendarForTimestamp(@PathVariable Long id, @RequestParam Long timestamp) {
+        return namedEquipmentService.getTimetableOnDay(id, timestamp);
     }
 }

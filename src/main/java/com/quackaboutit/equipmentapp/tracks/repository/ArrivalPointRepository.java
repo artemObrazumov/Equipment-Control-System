@@ -1,7 +1,9 @@
 package com.quackaboutit.equipmentapp.tracks.repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import com.quackaboutit.equipmentapp.tracks.dto.ArrivalPointResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,4 +21,7 @@ public interface ArrivalPointRepository extends JpaRepository<ArrivalPoint, Long
     void updateTrackByUserData(@Param("realArrivalTime") LocalDateTime realArrivalTime, 
     @Param("realOutTime") LocalDateTime realOutTime, @Param("kmOnStart") Double kmOnStart, @Param("kmOnEnd") Double kmOnEnd, 
     @Param("fuelOnStart") Double fuelOnStart, @Param("fuelOnEnd") Double fuelOnEnd, @Param("waitTime") LocalDateTime waitTime, @Param("id") Long id);
+
+    @Query("SELECT p FROM ArrivalPoint p WHERE p.planArrivalTime > :start AND p.planArrivalTime < :end")
+    List<ArrivalPoint> findByAndTimestamp(@Param("start")Long start, @Param("end")Long end);
 }

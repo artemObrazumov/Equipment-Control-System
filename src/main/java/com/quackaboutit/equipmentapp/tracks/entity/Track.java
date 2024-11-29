@@ -39,6 +39,9 @@ public class Track { // Трек = одна машина
     @JoinColumn(name = "named_equipment_id", referencedColumnName = "id")
     private NamedEquipment namedEquipment;
 
+    @Column(name = "license_plate_number")
+    private String licensePlateNumber;
+
     @Column(name = "driver")
     private String driver;
 

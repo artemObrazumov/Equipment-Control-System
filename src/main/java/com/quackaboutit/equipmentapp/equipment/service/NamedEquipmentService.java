@@ -4,8 +4,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 import com.quackaboutit.equipmentapp.equipment.dto.EquipmentBestOptionsResponse;
+import com.quackaboutit.equipmentapp.tracks.dto.ArrivalPointResponse;
+import com.quackaboutit.equipmentapp.tracks.entity.Track;
+import com.quackaboutit.equipmentapp.tracks.repository.ArrivalPointRepository;
+import com.quackaboutit.equipmentapp.tracks.repository.TrackRepository;
 import com.quackaboutit.equipmentapp.users.entity.User;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +37,8 @@ public class NamedEquipmentService {
     private final NamedEquipmentRepository namedEquipmentRepository;
     private final BaseRepository baseRepository;
     private final EquipmentTypeRepository equipmentTypeRepository;
+    private final ArrivalPointRepository arrivalPointRepository;
+    private final TrackRepository trackRepository;
     private final JwtService jwtService;
 
     public List<NamedEquipmentResponse> findNamedEquipments() {
@@ -41,6 +48,8 @@ public class NamedEquipmentService {
         namedEquipments.forEach(namedEquipment -> {
             namedEquipmentResponses.add(NamedEquipmentResponse.builder()
                     .id(namedEquipment.getId())
+                    .condition(namedEquipment.getCondition())
+                    .paymentHourly(namedEquipment.getPaymentHourly())
                     .licensePlate(namedEquipment.getLicensePlate())
                     .carBrand(namedEquipment.getCarBrand())
                     .base(namedEquipment.getBase())
@@ -59,6 +68,8 @@ public class NamedEquipmentService {
         var namedEquipment = namedEquipmentRepository.findById(id).orElseThrow(() -> new EquipmentNotFound());
 
         return NamedEquipmentResponse.builder()
+                .condition(namedEquipment.getCondition())
+                .paymentHourly(namedEquipment.getPaymentHourly())
                 .id(namedEquipment.getId())
                 .licensePlate(namedEquipment.getLicensePlate())
                 .carBrand(namedEquipment.getCarBrand())
@@ -85,6 +96,8 @@ public class NamedEquipmentService {
                         request.getCondition(), request.getPaymentHourly()));
 
         return NamedEquipmentResponse.builder()
+                .condition(namedEquipment.getCondition())
+                .paymentHourly(namedEquipment.getPaymentHourly())
                 .id(namedEquipment.getId())
                 .licensePlate(namedEquipment.getLicensePlate())
                 .carBrand(namedEquipment.getCarBrand())
@@ -125,6 +138,8 @@ public class NamedEquipmentService {
                     .lastWorkPlaceAddress("ADDDRESSS")
                     .finishTime(LocalDateTime.now().toString())
                     .fuelType(namedEquipment.getFuelType())
+                    .condition(namedEquipment.getCondition())
+                    .paymentHourly(namedEquipment.getPaymentHourly())
                     .build());
         });
 
@@ -147,6 +162,8 @@ public class NamedEquipmentService {
                         .lastWorkPlaceAddress("ADDDRESSS")
                         .finishTime(LocalDateTime.now().toString())
                         .fuelType(namedEquipment.getFuelType())
+                        .condition(namedEquipment.getCondition())
+                        .paymentHourly(namedEquipment.getPaymentHourly())
                         .build()
         ).toList();
     }
@@ -201,5 +218,19 @@ public class NamedEquipmentService {
                         ).toList()
                 )
                 .build();
+    }
+
+    public List<ArrivalPointResponse> getTimetableOnDay(Long id, Long timestamp) {
+        Long end = timestamp + 86400000;
+        return arrivalPointRepository.findByAndTimestamp(timestamp, end).stream().filter(point -> {
+                    Track track = trackRepository.findByArrivalPoint(point);
+                    return Objects.equals(id, track.getNamedEquipment().getId());
+                }
+        ).map(point ->
+                ArrivalPointResponse.builder()
+                        .address(point.getAddress())
+                        .planArrivalTime(point.getPlanArrivalTime().toString())
+                        .build()
+        ).toList();
     }
 }
