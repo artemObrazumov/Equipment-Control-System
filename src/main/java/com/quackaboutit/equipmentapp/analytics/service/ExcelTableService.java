@@ -5,6 +5,7 @@ import com.quackaboutit.equipmentapp.bases.repository.BaseRepository;
 import com.quackaboutit.equipmentapp.contractor.entity.Contractor;
 import com.quackaboutit.equipmentapp.contractor.repository.ContractorRepository;
 import com.quackaboutit.equipmentapp.equipment.entity.NamedEquipment;
+import com.quackaboutit.equipmentapp.equipment.exceptions.EquipmentNotFound;
 import com.quackaboutit.equipmentapp.equipment.repository.NamedEquipmentRepository;
 import com.quackaboutit.equipmentapp.users.entity.User;
 import com.quackaboutit.equipmentapp.users.service.JwtService;
@@ -91,6 +92,70 @@ public class ExcelTableService {
             row.createCell(4).setCellValue(item.getFuelType());
             row.createCell(5).setCellValue(item.getBase().getAddress());
         }
+
+        for (int i = 0; i < 6; i++) {
+            sheet.autoSizeColumn(i);
+        }
+
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            workbook.write(outputStream);
+            workbook.close();
+            return outputStream.toByteArray();
+        }
+    }
+
+    public byte[] namedEquipmentReportExcel(Long id) throws IOException {
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Информация");
+
+        Font headerFont = workbook.createFont();
+        headerFont.setBold(true);
+        headerFont.setColor(IndexedColors.WHITE.getIndex());
+
+        CellStyle headerCellStyle = workbook.createCellStyle();
+        headerCellStyle.setFont(headerFont);
+        headerCellStyle.setFillForegroundColor(IndexedColors.GREEN.getIndex());
+        headerCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        headerCellStyle.setBorderBottom(BorderStyle.THIN);
+        headerCellStyle.setBorderTop(BorderStyle.THIN);
+        headerCellStyle.setBorderLeft(BorderStyle.THIN);
+        headerCellStyle.setBorderRight(BorderStyle.THIN);
+
+        Row headerRow = sheet.createRow(0);
+        Cell cell1 = headerRow.createCell(0);
+        cell1.setCellValue("Номер машины");
+        cell1.setCellStyle(headerCellStyle);
+
+        Cell cell2 = headerRow.createCell(1);
+        cell2.setCellValue("Вид техники");
+        cell2.setCellStyle(headerCellStyle);
+
+        Cell cell3 = headerRow.createCell(2);
+        cell3.setCellValue("Тип техники");
+        cell3.setCellStyle(headerCellStyle);
+
+        Cell cell4 = headerRow.createCell(3);
+        cell4.setCellValue("Марка");
+        cell4.setCellStyle(headerCellStyle);
+
+        Cell cell5 = headerRow.createCell(4);
+        cell5.setCellValue("Вид бензина");
+        cell5.setCellStyle(headerCellStyle);
+
+        Cell cell6 = headerRow.createCell(5);
+        cell6.setCellValue("База");
+        cell6.setCellStyle(headerCellStyle);
+
+        var namedEquipment = namedEquipmentRepository.findById(id).
+                orElseThrow(() -> new EquipmentNotFound());
+
+        Row row = sheet.createRow(1);
+        row.createCell(0).setCellValue(namedEquipment.getLicensePlate());
+        row.createCell(1).setCellValue(namedEquipment.getEquipmentType().getEquipment().getName());
+        row.createCell(2).setCellValue(namedEquipment.getEquipmentType().getType());
+        row.createCell(3).setCellValue(namedEquipment.getCarBrand());
+        row.createCell(4).setCellValue(namedEquipment.getFuelType());
+        row.createCell(5).setCellValue(namedEquipment.getBase().getAddress());
 
         for (int i = 0; i < 6; i++) {
             sheet.autoSizeColumn(i);

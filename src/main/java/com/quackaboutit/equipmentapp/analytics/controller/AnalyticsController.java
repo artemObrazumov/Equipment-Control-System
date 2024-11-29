@@ -21,6 +21,22 @@ import java.io.IOException;
 public class AnalyticsController {
 
     private final ExcelTableService excelTableService;
+    
+    @GetMapping("/named_equipment/{id}")
+    public ResponseEntity<byte[]> namedEquipmentRepoer(@PathVariable Long id) throws IOException{
+        try {
+            byte[] excelFile = excelTableService.namedEquipmentReportExcel(id);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            headers.setContentDispositionFormData("attachment", "named_equipment_"+id+".xlsx");
+            headers.setContentLength(excelFile.length);
+
+            return new ResponseEntity<>(excelFile, headers, HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @GetMapping("/named_equipment")
     public ResponseEntity<byte[]> namedEquipmentExcel() throws IOException {
