@@ -42,13 +42,13 @@ public class TrackService {
     private final SummaryRepository summaryRepository;
     private final NamedEquipmentRepository namedEquipmentRepository;
     private final ArrivalPointRepository arrivalPointRepository;
-    
-    public void create(Long summaryId) throws RuntimeException{
+
+    public void create(Long summaryId) throws RuntimeException {
         Summary summary = summaryRepository.findById(summaryId).orElseThrow(
-            () -> new SummaryNotFound()
+                () -> new SummaryNotFound()
         );
 
-        if(summary.getState() != SummaryState.NEW) throw new SummaryHasClosed();
+        if (summary.getState() != SummaryState.NEW) throw new SummaryHasClosed();
         summaryRepository.updateState(SummaryState.CLOSED, summaryId);
         // key = namedEquipment.licensePlate
         Map<String, List<ObjectForTrack>> namedEquipmentMap = new HashMap<>();
@@ -57,22 +57,22 @@ public class TrackService {
         List<Request> requests = summary.getRequests();
         requests.forEach(request -> { // summary -> List<RequestedEquipment> -> NamedEquipment
             List<RequestedEquipment> requestedEquipments = request.getRequestedEquipment();
-            
-            requestedEquipments.forEach(requestedEquipment ->{
+
+            requestedEquipments.forEach(requestedEquipment -> {
                 licensePlates.add(requestedEquipment.getLicensePlateNumber());
-                
-                if(namedEquipmentMap.get(requestedEquipment.getLicensePlateNumber()) == null){ // берём из словаря элемент под ID
+
+                if (namedEquipmentMap.get(requestedEquipment.getLicensePlateNumber()) == null) { // берём из словаря элемент под ID
                     List<ObjectForTrack> tmp = new ArrayList<>();
-                    tmp.add(new ObjectForTrack(requestedEquipment.getArrivalTime(), 
+                    tmp.add(new ObjectForTrack(requestedEquipment.getArrivalTime(),
                             requestedEquipment.getArrivalTime().plusHours(
-                                requestedEquipment.getWorkDuration().toHours()), request, requestedEquipment));
-                    
+                                    requestedEquipment.getWorkDuration().toHours()), request, requestedEquipment));
+
                     namedEquipmentMap.put(requestedEquipment.getLicensePlateNumber(), tmp);
-                }else{
-                    namedEquipmentMap.get(requestedEquipment.getLicensePlateNumber()).add(new ObjectForTrack(requestedEquipment.getArrivalTime(), 
-                    requestedEquipment.getArrivalTime().plusHours(
-                        requestedEquipment.getWorkDuration().toHours()
-                    ), request, requestedEquipment));
+                } else {
+                    namedEquipmentMap.get(requestedEquipment.getLicensePlateNumber()).add(new ObjectForTrack(requestedEquipment.getArrivalTime(),
+                            requestedEquipment.getArrivalTime().plusHours(
+                                    requestedEquipment.getWorkDuration().toHours()
+                            ), request, requestedEquipment));
                 }
             });
 
@@ -82,109 +82,110 @@ public class TrackService {
             NamedEquipment namedEquipment = namedEquipmentRepository.findBylicensePlate(licensePlate);
             List<ArrivalPoint> ArrivalPoins = new ArrayList<>();
 
-            namedEquipmentMap.get(licensePlate).forEach(obj ->{
+            namedEquipmentMap.get(licensePlate).forEach(obj -> {
                 ArrivalPoins.add(
-                    arrivalPointRepository.save(new ArrivalPoint(
-                        null, obj.getRequest().getWorkplace().getLatitude(), obj.getRequest().getWorkplace().getLongitude(),
-                        obj.getRequest().getWorkplace().getAddress(),
-                        obj.getRequest().getDistance(), obj.getTimeOut(),
-                        obj.getTimeArrive(), obj.getRequestedEquipment().getWorkDuration(),
-                        null, null, null, null, 
-                        null, null, null
-                    ))
+                        arrivalPointRepository.save(new ArrivalPoint(
+                                null, obj.getRequest().getWorkplace().getLatitude(), obj.getRequest().getWorkplace().getLongitude(),
+                                obj.getRequest().getWorkplace().getAddress(),
+                                obj.getRequest().getDistance(), obj.getTimeOut(),
+                                obj.getTimeArrive(), obj.getRequestedEquipment().getWorkDuration(),
+                                null, null, null, null,
+                                null, null, null
+                        ))
                 );
             });
 
 
             trackRepository.save(new Track(null, summary.getDate(),
-            namedEquipment, null, true, ArrivalPoins));
+                    namedEquipment, licensePlate, null, true, ArrivalPoins));
         });
 
     }
 
-    public TrackResponse getTrackById(Long id){
+    public TrackResponse getTrackById(Long id) {
         Track track = trackRepository.findById(id).
-                        orElseThrow(() -> new TrackNotFound());
+                orElseThrow(() -> new TrackNotFound());
 
         List<ArrivalPointResponse> arrivalPointResponses = new ArrayList<>();
         track.getArrivalPoint().forEach(point -> {
             arrivalPointResponses.add(ArrivalPointResponse.builder()
-                                                .id(point.getId())
-                                                .address(point.getAddress())
-                                                .baseLatitude(point.getLatitude())
-                                                .baseLongitude(point.getLongitude())
-                                                .planOutTime(point.getPlanOutTime().toString())
-                                                .planArrivalTime(point.getPlanArrivalTime().toString())
-                                                .distanse(point.getDistance())
-                                                .planWorkDuration(point.getPlanWorkDuration())
-                                                .realArrivalTime((point.getRealArrivalTime() == null ? null : point.getRealArrivalTime().toString()))
-                                                .realOutTime((point.getRealOutTime() == null ? null : point.getRealOutTime().toString()))
-                                                .kmOnStart(point.getKmOnStart())
-                                                .kmOnEnd(point.getKmOnEnd())
-                                                .fuelOnStart(point.getFuelOnStart())
-                                                .fuelOnEnd(point.getFuelOnEnd())
-                                                .waitTime((point.getWaitTime() == null ? null : point.getWaitTime().toString()))
-                                                .build()
+                    .id(point.getId())
+                    .address(point.getAddress())
+                    .baseLatitude(point.getLatitude())
+                    .baseLongitude(point.getLongitude())
+                    .planOutTime(point.getPlanOutTime().toString())
+                    .planArrivalTime(point.getPlanArrivalTime().toString())
+                    .distanse(point.getDistance())
+                    .planWorkDuration(point.getPlanWorkDuration())
+                    .realArrivalTime((point.getRealArrivalTime() == null ? null : point.getRealArrivalTime().toString()))
+                    .realOutTime((point.getRealOutTime() == null ? null : point.getRealOutTime().toString()))
+                    .kmOnStart(point.getKmOnStart())
+                    .kmOnEnd(point.getKmOnEnd())
+                    .fuelOnStart(point.getFuelOnStart())
+                    .fuelOnEnd(point.getFuelOnEnd())
+                    .waitTime((point.getWaitTime() == null ? null : point.getWaitTime().toString()))
+                    .build()
             );
         });
 
         return TrackResponse.builder()
-                        .id(id)
-                        .date(track.getDate().toString())
-                        .namedEquipment(track.getNamedEquipment())
-                        .driver(track.getDriver())
-                        .isActive(track.getIsActive())
-                        .arrivalPoints(arrivalPointResponses)
-                        .build();
+                .licensePlateNumber(track.getLicensePlateNumber())
+                .id(id)
+                .date(track.getDate().toString())
+                .namedEquipment(track.getNamedEquipment())
+                .driver(track.getDriver())
+                .isActive(track.getIsActive())
+                .arrivalPoints(arrivalPointResponses)
+                .build();
     }
 
-    public List<ArrivalPointResponse> getAllArrivalPointsByTimeArrival(Long id, Long timestamp){
+    public List<ArrivalPointResponse> getAllArrivalPointsByTimeArrival(Long id, Long timestamp) {
         Track track = trackRepository.findById(id).orElseThrow(
-                            () -> new TrackNotFound());
+                () -> new TrackNotFound());
         List<ArrivalPoint> arrivalPoints = track.getArrivalPoint();
         List<ArrivalPointResponse> arrivalPointResponses = new ArrayList<>();
 
         arrivalPoints.forEach(arrivalPoint -> {
-            if(arrivalPoint.getPlanArrivalTime().
-                toInstant(ZoneOffset.UTC).toEpochMilli() >= timestamp && timestamp <= 
-                arrivalPoint.getPlanArrivalTime().
-                toInstant(ZoneOffset.UTC).toEpochMilli() + 86400000){
-                    arrivalPointResponses.add(ArrivalPointResponse.builder()
-                                                    .id(arrivalPoint.getId())
-                                                    .address(arrivalPoint.getAddress())
-                                                    .baseLatitude(arrivalPoint.getLatitude())
-                                                    .baseLongitude(arrivalPoint.getLongitude())
-                                                    .planOutTime(arrivalPoint.getPlanOutTime().toString())
-                                                    .planArrivalTime(arrivalPoint.getPlanArrivalTime().toString())
-                                                    .distanse(arrivalPoint.getDistance())
-                                                    .planWorkDuration(arrivalPoint.getPlanWorkDuration())
-                                                    .realArrivalTime((arrivalPoint.getRealArrivalTime() == null ? null : arrivalPoint.getRealArrivalTime().toString()))
-                                                    .realOutTime((arrivalPoint.getRealOutTime() == null ? null : arrivalPoint.getRealOutTime().toString()))
-                                                    .kmOnStart(arrivalPoint.getKmOnStart())
-                                                    .kmOnEnd(arrivalPoint.getKmOnEnd())
-                                                    .fuelOnStart(arrivalPoint.getFuelOnStart())
-                                                    .fuelOnEnd(arrivalPoint.getFuelOnEnd())
-                                                    .waitTime((arrivalPoint.getWaitTime() == null ? null : arrivalPoint.getWaitTime().toString()))
-                                                    .build());
-                }
-                
+            if (arrivalPoint.getPlanArrivalTime().
+                    toInstant(ZoneOffset.UTC).toEpochMilli() >= timestamp && timestamp <=
+                    arrivalPoint.getPlanArrivalTime().
+                            toInstant(ZoneOffset.UTC).toEpochMilli() + 86400000) {
+                arrivalPointResponses.add(ArrivalPointResponse.builder()
+                        .id(arrivalPoint.getId())
+                        .address(arrivalPoint.getAddress())
+                        .baseLatitude(arrivalPoint.getLatitude())
+                        .baseLongitude(arrivalPoint.getLongitude())
+                        .planOutTime(arrivalPoint.getPlanOutTime().toString())
+                        .planArrivalTime(arrivalPoint.getPlanArrivalTime().toString())
+                        .distanse(arrivalPoint.getDistance())
+                        .planWorkDuration(arrivalPoint.getPlanWorkDuration())
+                        .realArrivalTime((arrivalPoint.getRealArrivalTime() == null ? null : arrivalPoint.getRealArrivalTime().toString()))
+                        .realOutTime((arrivalPoint.getRealOutTime() == null ? null : arrivalPoint.getRealOutTime().toString()))
+                        .kmOnStart(arrivalPoint.getKmOnStart())
+                        .kmOnEnd(arrivalPoint.getKmOnEnd())
+                        .fuelOnStart(arrivalPoint.getFuelOnStart())
+                        .fuelOnEnd(arrivalPoint.getFuelOnEnd())
+                        .waitTime((arrivalPoint.getWaitTime() == null ? null : arrivalPoint.getWaitTime().toString()))
+                        .build());
+            }
+
         });
 
         return arrivalPointResponses;
     }
-    
-    public void pushRealData(List<ArrivalPointRequest> requests, Long id) throws RuntimeException{
+
+    public void pushRealData(List<ArrivalPointRequest> requests, Long id) throws RuntimeException {
         Track track = trackRepository.findById(id).orElseThrow(
-            () -> new TrackNotFound()
+                () -> new TrackNotFound()
         );
         if (track.getIsActive() == false) throw new TrackIsClosed();
         trackRepository.updateDriver(requests.get(0).getDriver(), id);
-        
+
         trackRepository.closeTrack(track.getId());
         requests.forEach(request -> {
-            arrivalPointRepository.updateTrackByUserData(request.getRealArrivalTime(), request.getRealOutTime(), 
-                request.getKmOnStart(), request.getKmOnEnd(), request.getFuelOnStart(), 
-                request.getFuelOnEnd(), request.getWaitTime(), request.getId());
+            arrivalPointRepository.updateTrackByUserData(request.getRealArrivalTime(), request.getRealOutTime(),
+                    request.getKmOnStart(), request.getKmOnEnd(), request.getFuelOnStart(),
+                    request.getFuelOnEnd(), request.getWaitTime(), request.getId());
         });
     }
 
@@ -194,6 +195,7 @@ public class TrackService {
 
         tracks.forEach(track -> {
             trackResponses.add(TrackResponse.builder()
+                            .licensePlateNumber(track.getLicensePlateNumber())
                                 .id(track.getId())
                                 .date(track.getDate().toString())
                                 .namedEquipment(track.getNamedEquipment())

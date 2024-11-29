@@ -20,5 +20,6 @@ public class TrackResponse {
     private NamedEquipment namedEquipment;
     private String driver;
     private Boolean isActive;
+    private String licensePlateNumber;
     private List<ArrivalPointResponse> arrivalPoints;
 }

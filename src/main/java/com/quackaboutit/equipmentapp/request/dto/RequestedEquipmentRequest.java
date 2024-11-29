@@ -20,8 +20,6 @@ public class RequestedEquipmentRequest {
     @NotNull
     private Long equipmentTypeId;
 
-    @NotNull
-    @NotBlank
     private String licensePlateNumber;
 
     @NotNull
