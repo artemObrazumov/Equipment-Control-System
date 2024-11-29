@@ -191,7 +191,7 @@ public class ExcelTableService {
                         "", ""+(track.getNamedEquipment().getPaymentHourly() * arrialPoint.getPlanWorkDuration().toMillis()/3600000));
             }
 
-            for(int j = 0; j != lines.size(); ++i){
+            for(int j = 0; j != lines.size(); ++j){
                 newRow.createCell(j).setCellValue(params.get(j));
             }
         }
