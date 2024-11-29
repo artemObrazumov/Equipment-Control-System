@@ -187,4 +187,23 @@ public class TrackService {
                 request.getFuelOnEnd(), request.getWaitTime(), request.getId());
         });
     }
+
+    public List<TrackResponse> getAllTracks(){
+        List<Track> tracks = trackRepository.findAll();
+        List<TrackResponse> trackResponses = new ArrayList<>();
+
+        tracks.forEach(track -> {
+            trackResponses.add(TrackResponse.builder()
+                                .id(track.getId())
+                                .date(track.getDate().toString())
+                                .namedEquipment(track.getNamedEquipment())
+                                .driver((track.getDriver()))
+                                .isActive(track.getIsActive())
+                                .arrivalPoints(new ArrayList<>())
+                                .build());
+        });
+        return trackResponses;
+    }
+
+    
 }

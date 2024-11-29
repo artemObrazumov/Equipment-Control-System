@@ -40,4 +40,9 @@ public class TrackController {
     private void pushRealData(@PathVariable Long id, @Valid @RequestBody List<ArrivalPointRequest> requests){
         trackService.pushRealData(requests, id);
     }
+
+    @GetMapping
+    private List<TrackResponse> getAllTracks(){
+        return trackService.getAllTracks();
+    }
 }
