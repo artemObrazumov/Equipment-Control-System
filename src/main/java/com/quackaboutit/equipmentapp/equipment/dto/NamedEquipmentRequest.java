@@ -31,4 +31,10 @@ public class NamedEquipmentRequest {
     @NotNull
     @NotBlank
     private String fuelType;
+
+    @NotNull
+    private Integer condition;
+
+    @NotNull
+    private Integer paymentHourly;
 }
