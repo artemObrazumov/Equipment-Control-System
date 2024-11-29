@@ -194,24 +194,26 @@ public class ExcelTableService {
             });
         });
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm");
+
         for(int i = 0; i != objs.size(); ++i){
             var arrialPoint = objs.get(i).getArrivalPoint();
             var track = objs.get(i).getTrack();
             Row newRow = logisticSheet.createRow(i + 1);
             List<String> params = new ArrayList<>();
             if(!track.getIsActive()){
-                params = List.of(arrialPoint.getAddress(), track.getDate().toString(),
-                            arrialPoint.getPlanOutTime().toString(), arrialPoint.getRealOutTime().toString(),
-                            arrialPoint.getPlanArrivalTime().toString(), arrialPoint.getRealArrivalTime().toString(),
-                            arrialPoint.getWaitTime().toString(), arrialPoint.getPlanWorkDuration().toString(),
+                params = List.of(arrialPoint.getAddress(), track.getDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")),
+                            arrialPoint.getPlanOutTime().format(formatter), arrialPoint.getRealOutTime().format(formatter),
+                            arrialPoint.getPlanArrivalTime().format(formatter), arrialPoint.getRealArrivalTime().format(formatter),
+                            arrialPoint.getWaitTime().format(formatter), String.format("%d:%02d", arrialPoint.getPlanWorkDuration().toHours(), arrialPoint.getPlanWorkDuration().toMinutesPart()),
                             arrialPoint.getFuelOnStart().toString(), arrialPoint.getFuelOnEnd().toString(),
                             arrialPoint.getKmOnStart().toString(), arrialPoint.getKmOnEnd().toString(), 
                             arrialPoint.getDistance().toString(), ""+(namedEquipment.getPaymentHourly() * arrialPoint.getPlanWorkDuration().toMillis()/3600000));
             }else{
-                params = List.of(arrialPoint.getAddress(), track.getDate().toString(),
-                            arrialPoint.getPlanOutTime().toString(), "",
-                            arrialPoint.getPlanArrivalTime().toString(), "",
-                            "", arrialPoint.getPlanWorkDuration().toString(),
+                params = List.of(arrialPoint.getAddress(), track.getDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"),
+                            arrialPoint.getPlanOutTime().format(formatter), "",
+                            arrialPoint.getPlanArrivalTime().format(formatter), "",
+                            "", String.format("%d:%02d", arrialPoint.getPlanWorkDuration().toHours(), arrialPoint.getPlanWorkDuration().toMinutesPart()),
                             "", "",
                             "", "", 
                             arrialPoint.getDistance().toString(), ""+(namedEquipment.getPaymentHourly() * arrialPoint.getPlanWorkDuration().toMillis()/3600000));
@@ -219,6 +221,10 @@ public class ExcelTableService {
                 for(int j = 0; j != lines.size(); ++j){
                     newRow.createCell(j).setCellValue(params.get(j));
             }
+        }
+
+        for (int i = 0; i < lines.size(); i++) {
+            sheet.autoSizeColumn(i);
         }
 
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
