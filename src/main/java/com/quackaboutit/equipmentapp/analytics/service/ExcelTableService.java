@@ -9,10 +9,15 @@ import com.quackaboutit.equipmentapp.equipment.exceptions.EquipmentNotFound;
 import com.quackaboutit.equipmentapp.equipment.repository.NamedEquipmentRepository;
 import com.quackaboutit.equipmentapp.tracks.entity.ArrivalPoint;
 import com.quackaboutit.equipmentapp.tracks.entity.Track;
+import com.quackaboutit.equipmentapp.tracks.repository.ArrivalPointRepository;
 import com.quackaboutit.equipmentapp.tracks.repository.TrackRepository;
 import com.quackaboutit.equipmentapp.users.entity.User;
 import com.quackaboutit.equipmentapp.users.service.JwtService;
 import com.quackaboutit.equipmentapp.utils.ObjectForReport;
+import com.quackaboutit.equipmentapp.utils.ObjectForWorkplaceReport;
+import com.quackaboutit.equipmentapp.workplace.entity.Workplace;
+import com.quackaboutit.equipmentapp.workplace.exceptions.WorkplaceNotFound;
+import com.quackaboutit.equipmentapp.workplace.repository.WorkplaceRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
@@ -35,6 +40,8 @@ public class ExcelTableService {
     private final ContractorRepository contractorRepository;
     private final TrackRepository trackRepository;
     private final JwtService jwtService;
+    private final WorkplaceRepository workplaceRepository;
+    private final ArrivalPointRepository arrivalPointRepository;
 
     public byte[] namedEquipmentExcel() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -101,6 +108,95 @@ public class ExcelTableService {
         }
 
         for (int i = 0; i < 6; i++) {
+            sheet.autoSizeColumn(i);
+        }
+
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            workbook.write(outputStream);
+            workbook.close();
+            return outputStream.toByteArray();
+        }
+    }
+
+    public byte[] workplaceReportExcel(Long id) throws IOException{
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Информация");
+
+        Font headerFont = workbook.createFont();
+        headerFont.setBold(true);
+        headerFont.setColor(IndexedColors.WHITE.getIndex());
+
+        CellStyle headerCellStyle = workbook.createCellStyle();
+        headerCellStyle.setFont(headerFont);
+        headerCellStyle.setFillForegroundColor(IndexedColors.GREEN.getIndex());
+        headerCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        headerCellStyle.setBorderBottom(BorderStyle.THIN);
+        headerCellStyle.setBorderTop(BorderStyle.THIN);
+        headerCellStyle.setBorderLeft(BorderStyle.THIN);
+        headerCellStyle.setBorderRight(BorderStyle.THIN);
+
+
+        Workplace workplace = workplaceRepository.findById(id).orElseThrow(
+            () -> new WorkplaceNotFound()
+        );
+
+        Row preHeaderRow = sheet.createRow(0);
+        Cell preHeaderCell1 = preHeaderRow.createCell(0);
+        preHeaderCell1.setCellValue(workplace.getAddress());
+        Cell preHeaderCell2 = preHeaderRow.createCell(1);
+        preHeaderCell2.setCellValue("по состоянию на:");
+        Cell preHeaderCell3 = preHeaderRow.createCell(2);
+        preHeaderCell3.setCellValue(LocalDateTime.now()
+                .format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"))
+        );
+
+        Row headerRow = sheet.createRow(1);
+
+        // машины + водитель + дата работы +факт въезд/выезд, расстояние, бензин, стоимость
+
+        List<String> lines = List.of("Номер автомобиля", "Водитель",
+                                    "Дата проведения работы", "Время приезда",
+                                    "Время завершения", "Преодолённое расстояние",
+                                    "Затраченный бензин", "Стоимость работ");
+
+        for(int i = 0; i != lines.size(); ++i){
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(lines.get(i));
+            cell.setCellStyle(headerCellStyle);
+        }
+
+        List<ObjectForWorkplaceReport> objs = new ArrayList<>();
+
+        arrivalPointRepository.findByAddress(workplace.getAddress()).forEach(arrivalPoint -> {
+            objs.add(new ObjectForWorkplaceReport(trackRepository.findByArrivalPoint(arrivalPoint), arrivalPoint));
+        });
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm");
+        for(int i = 0; i != objs.size(); ++i){
+            Row newRow = sheet.createRow(i + 2);
+
+            var track = objs.get(i).getTrack();
+            var arrialPoint = objs.get(i).getArrivalPoint();
+
+            List<String> params = new ArrayList<>();
+            if(!track.getIsActive()){
+                params = List.of(track.getLicensePlateNumber(), track.getDriver(),
+                        track.getDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")), arrialPoint.getRealArrivalTime().format(formatter),
+                        arrialPoint.getRealOutTime().format(formatter), (arrialPoint.getKmOnEnd() - arrialPoint.getKmOnStart())+"",
+                        (arrialPoint.getFuelOnStart() - arrialPoint.getFuelOnEnd())+"", ""+(track.getNamedEquipment().getPaymentHourly() * arrialPoint.getPlanWorkDuration().toMillis()/3600000));
+            }else{
+                params = List.of(track.getLicensePlateNumber(), "",
+                        track.getDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")), "",
+                        "", "",
+                        "", ""+(track.getNamedEquipment().getPaymentHourly() * arrialPoint.getPlanWorkDuration().toMillis()/3600000));
+            }
+
+            for(int j = 0; j != lines.size(); ++i){
+                newRow.createCell(j).setCellValue(params.get(j));
+            }
+        }
+
+        for(int i = 0; i != lines.size(); ++i){
             sheet.autoSizeColumn(i);
         }
 

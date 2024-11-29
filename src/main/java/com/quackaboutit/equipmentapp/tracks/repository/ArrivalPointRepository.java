@@ -3,7 +3,6 @@ package com.quackaboutit.equipmentapp.tracks.repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.quackaboutit.equipmentapp.tracks.dto.ArrivalPointResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -24,4 +23,6 @@ public interface ArrivalPointRepository extends JpaRepository<ArrivalPoint, Long
 
     @Query("SELECT p FROM ArrivalPoint p WHERE p.planArrivalTime > :start AND p.planArrivalTime < :end")
     List<ArrivalPoint> findByAndTimestamp(@Param("start")Long start, @Param("end")Long end);
+
+    List<ArrivalPoint> findByAddress(String address);
 }
