@@ -22,4 +22,6 @@ public class NamedEquipmentResponse {
     private String lastWorkPlaceAddress;
     private String finishTime;
     private String fuelType;
+    private Integer paymentHourly;
+    private Integer condition;
 }

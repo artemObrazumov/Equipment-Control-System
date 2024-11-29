@@ -40,4 +40,10 @@ public class NamedEquipment {
     @ManyToOne
     @JoinColumn(name = "equipment_type_id", referencedColumnName = "id")
     private EquipmentType equipmentType;
+
+    @Column(name = "condition")
+    private Integer condition;
+
+    @Column(name = "payment")
+    private Integer paymentHourly;
 }

@@ -81,7 +81,8 @@ public class NamedEquipmentService {
 
         var namedEquipment = namedEquipmentRepository.save(
                 new NamedEquipment(null, request.getLicensePlate(),
-                        request.getCarBrand(), base, request.getFuelType(), null, equipmentType));
+                        request.getCarBrand(), base, request.getFuelType(), null, equipmentType,
+                        request.getCondition(), request.getPaymentHourly()));
 
         return NamedEquipmentResponse.builder()
                 .id(namedEquipment.getId())
@@ -156,11 +157,11 @@ public class NamedEquipmentService {
         List<NamedEquipment> onBaseOptions = namedEquipmentRepository.findAllByEquipmentBase(base)
                 .stream().sorted(
                         (o1, o2) -> {
-                            Integer eq1 = 1;
-                            Integer eq2 = 2;
+                            Integer eq1 = o1.getCondition() * 10 - o1.getPaymentHourly() / 10;
+                            Integer eq2 = o2.getCondition() * 10 - o2.getPaymentHourly() / 10;
                             return eq1.compareTo(eq2);
                         }
-                ).toList();
+                ).toList().reversed();
         List<NamedEquipment> contractorOptions = namedEquipmentRepository.findContractorOptions();
 
         return EquipmentBestOptionsResponse.builder()
@@ -177,6 +178,8 @@ public class NamedEquipmentService {
                                                 .lastWorkPlaceAddress("ADDDRESSS")
                                                 .finishTime(LocalDateTime.now().toString())
                                                 .fuelType(namedEquipment.getFuelType())
+                                                .paymentHourly(namedEquipment.getPaymentHourly())
+                                                .condition(namedEquipment.getCondition())
                                                 .build()
                                 ).toList()
                 )
@@ -192,6 +195,8 @@ public class NamedEquipmentService {
                                         .lastWorkPlaceAddress("ADDDRESSS")
                                         .finishTime(LocalDateTime.now().toString())
                                         .fuelType(namedEquipment.getFuelType())
+                                        .paymentHourly(namedEquipment.getPaymentHourly())
+                                        .condition(namedEquipment.getCondition())
                                         .build()
                         ).toList()
                 )
