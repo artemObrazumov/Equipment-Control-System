@@ -47,7 +47,7 @@ public class ExcelTableService {
     private final WorkplaceRepository workplaceRepository;
     private final ArrivalPointRepository arrivalPointRepository;
 
-    private byte[] trackExcel(Long id) throws IOException{
+    public byte[] trackExcel(Long id) throws IOException{
         Workbook workbook = new XSSFWorkbook();
         Sheet infSheet = workbook.createSheet("Информация");
 
@@ -139,7 +139,8 @@ public class ExcelTableService {
 
         for(int i = 0; i != track.getArrivalPoint().size(); ++i){
             var arrialPoint = track.getArrivalPoint().get(0);
-            Row newRow = logisticSheet.createRow(i + 1);
+            var namedEquipment = track.getNamedEquipment();
+            newRow = logSheet.createRow(i + 1);
 
             List<String> params = new ArrayList<>();
             if(!track.getIsActive()){
@@ -161,8 +162,8 @@ public class ExcelTableService {
             }
                 for(int j = 0; j != lines.size(); ++j){
                     newRow.createCell(j).setCellValue(params.get(j));
-            }
-
+                }
+        }
         for (int i = 0; i < lines.size(); i++) {
             infSheet.autoSizeColumn(i);
         }
