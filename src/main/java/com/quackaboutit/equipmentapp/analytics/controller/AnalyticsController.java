@@ -1,9 +1,7 @@
 package com.quackaboutit.equipmentapp.analytics.controller;
 
 import com.quackaboutit.equipmentapp.analytics.service.ExcelTableService;
-import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
