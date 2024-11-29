@@ -9,6 +9,7 @@ import com.quackaboutit.equipmentapp.equipment.exceptions.EquipmentNotFound;
 import com.quackaboutit.equipmentapp.equipment.repository.NamedEquipmentRepository;
 import com.quackaboutit.equipmentapp.tracks.entity.ArrivalPoint;
 import com.quackaboutit.equipmentapp.tracks.entity.Track;
+import com.quackaboutit.equipmentapp.tracks.exceptions.TrackNotFound;
 import com.quackaboutit.equipmentapp.tracks.repository.ArrivalPointRepository;
 import com.quackaboutit.equipmentapp.tracks.repository.TrackRepository;
 import com.quackaboutit.equipmentapp.users.entity.User;
@@ -42,6 +43,137 @@ public class ExcelTableService {
     private final JwtService jwtService;
     private final WorkplaceRepository workplaceRepository;
     private final ArrivalPointRepository arrivalPointRepository;
+
+    private byte[] trackExcel(Long id) throws IOException{
+        Workbook workbook = new XSSFWorkbook();
+        Sheet infSheet = workbook.createSheet("Информация");
+
+        Font headerFont = workbook.createFont();
+        headerFont.setBold(true);
+        headerFont.setColor(IndexedColors.WHITE.getIndex());
+
+        CellStyle headerCellStyle = workbook.createCellStyle();
+        headerCellStyle.setFont(headerFont);
+        headerCellStyle.setFillForegroundColor(IndexedColors.GREEN.getIndex());
+        headerCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        headerCellStyle.setBorderBottom(BorderStyle.THIN);
+        headerCellStyle.setBorderTop(BorderStyle.THIN);
+        headerCellStyle.setBorderLeft(BorderStyle.THIN);
+        headerCellStyle.setBorderRight(BorderStyle.THIN);
+
+        Row headerRow = infSheet.createRow(0);
+        
+
+        Track track = trackRepository.findById(id).
+                orElseThrow(() -> new TrackNotFound());
+        
+        if(track.getNamedEquipment().getContractor() != null){
+            List<String> contractorLines = List.of("Название", "ИНН",
+                                                    "КПП", "Юридический адрес");
+            List<String> contractorNamedEquipmentLines = List.of(track.getNamedEquipment().getContractor().getName(),
+                                                    track.getNamedEquipment().getContractor().getInn(),
+                                                    track.getNamedEquipment().getContractor().getKpp(),
+                                                    track.getNamedEquipment().getContractor().getLegalAddress());
+            for(int i = 0; i != contractorLines.size(); ++i){
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(contractorLines.get(i));
+                cell.setCellStyle(headerCellStyle);
+            }
+            Row newRow = infSheet.createRow(1);
+
+            for(int i = 0; i != contractorNamedEquipmentLines.size(); ++i){
+                Cell cell = newRow.createCell(i);
+                cell.setCellValue(contractorNamedEquipmentLines.get(i));
+                cell.setCellStyle(headerCellStyle);
+            }
+        }
+
+        List<String> lines = List.of("Дата", "Вид авто",
+                                    "Тип авто", "Марка авто",
+                                    "Горючее", "Номер авто",
+                                    "ФИО водителя", "Стоимость часа работы");
+        List<String> trackParams = List.of(track.getDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")), 
+                                    track.getNamedEquipment().getEquipmentType().getType(),
+                                    track.getNamedEquipment().getEquipmentType().getEquipment().getName(),
+                                    track.getNamedEquipment().getCarBrand(),
+                                    track.getNamedEquipment().getFuelType(),
+                                    track.getLicensePlateNumber(),
+                                    (track.getIsActive() ? "" : track.getDriver()),
+                                    track.getNamedEquipment().getPaymentHourly()+"");
+        Row newRow = infSheet.createRow(3);
+        for(int i = 0; i != lines.size(); ++i){
+            Cell cell = newRow.createCell(i);
+            cell.setCellValue(lines.get(i));
+            cell.setCellStyle(headerCellStyle);
+        }
+
+        newRow = infSheet.createRow(4);
+        for(int i = 0; i != lines.size(); ++i){
+            Cell cell = newRow.createCell(i);
+            cell.setCellValue(trackParams.get(i));
+            cell.setCellStyle(headerCellStyle);
+        }
+
+        Sheet logSheet = workbook.createSheet("Путь");
+
+        headerRow = logSheet.createRow(0);
+
+        List<String> logLines = List.of("Адрес объекта", "Дата работы",
+                                    "Плановое время выезда", "Фактическое время выезда",
+                                    "Плановое время прибытия", "Фактическое время прибытия",
+                                    "Время ожидания", "Время работы",
+                                    "Топливо (нач.)", "Топливо (кон.)",
+                                    "Пробег (нач.)", "Пробег (кон.)",
+                                    "Дистанция", "Стоимость");
+        
+        for(int i = 0; i != logLines.size(); ++i){
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(logLines.get(i));
+            cell.setCellStyle(headerCellStyle);
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm");
+
+        for(int i = 0; i != track.getArrivalPoint().size(); ++i){
+            var arrialPoint = track.getArrivalPoint().get(0);
+            Row newRow = logisticSheet.createRow(i + 1);
+
+            List<String> params = new ArrayList<>();
+            if(!track.getIsActive()){
+                params = List.of(arrialPoint.getAddress(), track.getDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")),
+                            arrialPoint.getPlanOutTime().format(formatter), arrialPoint.getRealOutTime().format(formatter),
+                            arrialPoint.getPlanArrivalTime().format(formatter), arrialPoint.getRealArrivalTime().format(formatter),
+                            arrialPoint.getWaitTime().format(DateTimeFormatter.ofPattern("HH:mm")), String.format("%d:%02d", arrialPoint.getPlanWorkDuration().toHours(), arrialPoint.getPlanWorkDuration().toMinutesPart()),
+                            arrialPoint.getFuelOnStart().toString(), arrialPoint.getFuelOnEnd().toString(),
+                            arrialPoint.getKmOnStart().toString(), arrialPoint.getKmOnEnd().toString(), 
+                            (arrialPoint.getKmOnEnd() - arrialPoint.getKmOnStart())+"", ""+(namedEquipment.getPaymentHourly() * arrialPoint.getPlanWorkDuration().toMillis()/3600000));
+            }else{
+                params = List.of(arrialPoint.getAddress(), track.getDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")),
+                            arrialPoint.getPlanOutTime().format(formatter), "",
+                            arrialPoint.getPlanArrivalTime().format(formatter), "",
+                            "", String.format("%d:%02d", arrialPoint.getPlanWorkDuration().toHours(), arrialPoint.getPlanWorkDuration().toMinutesPart()),
+                            "", "",
+                            "", "", 
+                            arrialPoint.getDistance().toString(), ""+(namedEquipment.getPaymentHourly() * arrialPoint.getPlanWorkDuration().toMillis()/3600000));
+            }
+                for(int j = 0; j != lines.size(); ++j){
+                    newRow.createCell(j).setCellValue(params.get(j));
+            }
+
+        for (int i = 0; i < lines.size(); i++) {
+            infSheet.autoSizeColumn(i);
+        }
+
+        for (int i = 0; i < logLines.size(); i++) {
+            logSheet.autoSizeColumn(i);
+        }
+
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            workbook.write(outputStream);
+            workbook.close();
+            return outputStream.toByteArray();
+        }
+    }
 
     public byte[] namedEquipmentExcel() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -151,8 +283,6 @@ public class ExcelTableService {
         );
 
         Row headerRow = sheet.createRow(1);
-
-        // машины + водитель + дата работы +факт въезд/выезд, расстояние, бензин, стоимость
 
         List<String> lines = List.of("Номер автомобиля", "Водитель",
                                     "Дата проведения работы", "Время приезда",
