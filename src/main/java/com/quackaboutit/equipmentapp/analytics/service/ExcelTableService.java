@@ -224,7 +224,7 @@ public class ExcelTableService {
         }
 
         for (int i = 0; i < lines.size(); i++) {
-            sheet.autoSizeColumn(i);
+            logisticSheet.autoSizeColumn(i);
         }
 
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
