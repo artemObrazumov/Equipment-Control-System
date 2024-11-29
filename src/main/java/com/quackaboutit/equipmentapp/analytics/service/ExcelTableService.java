@@ -107,7 +107,6 @@ public class ExcelTableService {
         for(int i = 0; i != lines.size(); ++i){
             Cell cell = newRow.createCell(i);
             cell.setCellValue(lines.get(i));
-            cell.setCellStyle(headerCellStyle);
         }
 
         newRow = infSheet.createRow(4);
