@@ -7,8 +7,13 @@ import com.quackaboutit.equipmentapp.contractor.repository.ContractorRepository;
 import com.quackaboutit.equipmentapp.equipment.entity.NamedEquipment;
 import com.quackaboutit.equipmentapp.equipment.exceptions.EquipmentNotFound;
 import com.quackaboutit.equipmentapp.equipment.repository.NamedEquipmentRepository;
+import com.quackaboutit.equipmentapp.tracks.entity.ArrivalPoint;
+import com.quackaboutit.equipmentapp.tracks.entity.Track;
+import com.quackaboutit.equipmentapp.tracks.repository.TrackRepository;
 import com.quackaboutit.equipmentapp.users.entity.User;
 import com.quackaboutit.equipmentapp.users.service.JwtService;
+import com.quackaboutit.equipmentapp.utils.ObjectForReport;
+
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -18,6 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,6 +33,7 @@ public class ExcelTableService {
     private final NamedEquipmentRepository namedEquipmentRepository;
     private final BaseRepository baseRepository;
     private final ContractorRepository contractorRepository;
+    private final TrackRepository trackRepository;
     private final JwtService jwtService;
 
     public byte[] namedEquipmentExcel() throws IOException {
@@ -159,6 +166,50 @@ public class ExcelTableService {
 
         for (int i = 0; i < 6; i++) {
             sheet.autoSizeColumn(i);
+        }
+
+        Sheet logisticSheet = workbook.createSheet("Поездки");
+        
+        Row orderHeaderRow = logisticSheet.createRow(0);
+        
+
+        List<String> lines = List.of("Адрес объекта", "Дата работы",
+                                    "Плановое время выезда", "Фактическое время выезда",
+                                    "Плановое время прибытия", "Фактическое время прибытия",
+                                    "Время ожидания", "Время работы",
+                                    "Топливо (нач.)", "Топливо (кон.)",
+                                    "Пробег (нач.)", "Пробег (кон.)",
+                                    "Дистанция", "Стоимость");
+
+        for(int i = 0; i != lines.size(); ++i){
+            Cell cell = orderHeaderRow.createCell(i);
+            cell.setCellValue(lines.get(i));
+            cell.setCellStyle(headerCellStyle);
+        }
+
+        List<ObjectForReport> objs = new ArrayList<>();
+        trackRepository.findByNamedEquipment(namedEquipment).forEach(track -> {
+            track.getArrivalPoint().forEach(arrialPoint -> {
+                objs.add(new ObjectForReport(track, arrialPoint));
+            });
+        });
+
+        for(int i = 0; i != objs.size(); ++i){
+            var arrialPoint = objs.get(i).getArrivalPoint();
+            var track = objs.get(i).getTrack();
+            Row newRow = sheet.createRow(i + 1);
+
+            List<String> params = List.of(arrialPoint.getAddress(), track.getDate().toString(),
+                            arrialPoint.getPlanOutTime().toString(), arrialPoint.getRealOutTime().toString(),
+                            arrialPoint.getPlanArrivalTime().toString(), arrialPoint.getRealArrivalTime().toString(),
+                            arrialPoint.getWaitTime().toString(), arrialPoint.getPlanWorkDuration().toString(),
+                            arrialPoint.getFuelOnStart().toString(), arrialPoint.getFuelOnEnd().toString(),
+                            arrialPoint.getKmOnStart().toString(), arrialPoint.getKmOnEnd().toString(), 
+                            arrialPoint.getDistance().toString(), ""+(namedEquipment.getPaymentHourly() * arrialPoint.getPlanWorkDuration().toMillis()/3600000));
+
+            for(int j = 0; j != lines.size(); ++j){
+                newRow.createCell(j).setCellValue(params.get(j));
+            }
         }
 
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {

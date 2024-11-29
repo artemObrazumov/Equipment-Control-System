@@ -1,11 +1,14 @@
 package com.quackaboutit.equipmentapp.tracks.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.quackaboutit.equipmentapp.equipment.entity.NamedEquipment;
 import com.quackaboutit.equipmentapp.tracks.entity.Track;
 
 import jakarta.websocket.server.PathParam;
@@ -20,4 +23,6 @@ public interface TrackRepository extends JpaRepository<Track, Long> {
     @Modifying
     @Query("UPDATE Track t SET t.driver = :driver WHERE t.id = :id")
     void updateDriver(@PathParam("driver") String driver, @PathParam("id") Long id);
+
+    List<Track> findByNamedEquipment(NamedEquipment namedEquipment);
 }
