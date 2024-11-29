@@ -85,7 +85,8 @@ public class TrackService {
             namedEquipmentMap.get(licensePlate).forEach(obj ->{
                 ArrivalPoins.add(
                     arrivalPointRepository.save(new ArrivalPoint(
-                        null, obj.getRequest().getWorkplace().getAddress(),
+                        null, obj.getRequest().getWorkplace().getLatitude(), obj.getRequest().getWorkplace().getLongitude(),
+                        obj.getRequest().getWorkplace().getAddress(),
                         obj.getRequest().getDistance(), obj.getTimeOut(),
                         obj.getTimeArrive(), obj.getRequestedEquipment().getWorkDuration(),
                         null, null, null, null, 
@@ -110,6 +111,8 @@ public class TrackService {
             arrivalPointResponses.add(ArrivalPointResponse.builder()
                                                 .id(point.getId())
                                                 .address(point.getAddress())
+                                                .baseLatitude(point.getLatitude())
+                                                .baseLongitude(point.getLongitude())
                                                 .planOutTime(point.getPlanOutTime().toString())
                                                 .planArrivalTime(point.getPlanArrivalTime().toString())
                                                 .distanse(point.getDistance())
@@ -147,10 +150,22 @@ public class TrackService {
                 arrivalPoint.getPlanArrivalTime().
                 toInstant(ZoneOffset.UTC).toEpochMilli() + 86400000){
                     arrivalPointResponses.add(ArrivalPointResponse.builder()
-                                                .address(arrivalPoint.getAddress())
-                                                .planArrivalTime(arrivalPoint.getPlanArrivalTime().toString())
-                                                .planOutTime(arrivalPoint.getPlanOutTime().toString())
-                                                .build());
+                                                    .id(arrivalPoint.getId())
+                                                    .address(arrivalPoint.getAddress())
+                                                    .baseLatitude(arrivalPoint.getLatitude())
+                                                    .baseLongitude(arrivalPoint.getLongitude())
+                                                    .planOutTime(arrivalPoint.getPlanOutTime().toString())
+                                                    .planArrivalTime(arrivalPoint.getPlanArrivalTime().toString())
+                                                    .distanse(arrivalPoint.getDistance())
+                                                    .planWorkDuration(arrivalPoint.getPlanWorkDuration())
+                                                    .realArrivalTime((arrivalPoint.getRealArrivalTime() == null ? null : arrivalPoint.getRealArrivalTime().toString()))
+                                                    .realOutTime((arrivalPoint.getRealOutTime() == null ? null : arrivalPoint.getRealOutTime().toString()))
+                                                    .kmOnStart(arrivalPoint.getKmOnStart())
+                                                    .kmOnEnd(arrivalPoint.getKmOnEnd())
+                                                    .fuelOnStart(arrivalPoint.getFuelOnStart())
+                                                    .fuelOnEnd(arrivalPoint.getFuelOnEnd())
+                                                    .waitTime((arrivalPoint.getWaitTime() == null ? null : arrivalPoint.getWaitTime().toString()))
+                                                    .build());
                 }
                 
         });

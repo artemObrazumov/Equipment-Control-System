@@ -31,6 +31,12 @@ public class ArrivalPoint {
     @SequenceGenerator(name = "arrival_point_id_seq", sequenceName = "arrival_point_id_seq", allocationSize = 1)
     private Long id;
 
+    @Column(name = "latitude")
+    private Double latitude;
+
+    @Column(name = "longitude")
+    private Double longitude;
+
     @Column(name = "address")
     private String address;
 

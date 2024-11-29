@@ -28,7 +28,7 @@ public class ContractorController {
     }
 
     @GetMapping("/{id}")
-    private ContractorResponse create(@PathVariable Long id){
+    private ContractorResponse getContractorById(@PathVariable Long id){
         return contractorService.getContractorById(id);
     }
 
@@ -36,4 +36,7 @@ public class ContractorController {
     private List<ContractorResponse> getAllContractors(){
         return contractorService.getAllContractors();
     }
+
+    //@PostMapping("/{id}/create_request")
+    //private 
 }

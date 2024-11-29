@@ -1,8 +1,6 @@
 package com.quackaboutit.equipmentapp.tracks.dto;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,4 +24,6 @@ public class ArrivalPointResponse {
     private Double fuelOnStart;
     private Double fuelOnEnd;
     private String waitTime;
+    private Double baseLatitude;
+    private Double baseLongitude;
 }

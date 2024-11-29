@@ -17,7 +17,6 @@ import com.quackaboutit.equipmentapp.tracks.service.ArrivalPointService;
 import com.quackaboutit.equipmentapp.tracks.service.TrackService;
 
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
 
 @RestController
