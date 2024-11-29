@@ -51,4 +51,7 @@ public class Track { // Трек = одна машина
     @OneToMany
     @JoinColumn(name = "arrival_point_id", referencedColumnName = "id")
     private List<ArrivalPoint> arrivalPoint;
+
+    @Column(name = "price")
+    private Double price;
 }

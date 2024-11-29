@@ -1,8 +1,5 @@
 package com.quackaboutit.equipmentapp.tracks.repository;
 
-
-import java.util.List;
-
 import com.quackaboutit.equipmentapp.tracks.entity.ArrivalPoint;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -14,6 +11,8 @@ import com.quackaboutit.equipmentapp.equipment.entity.NamedEquipment;
 import com.quackaboutit.equipmentapp.tracks.entity.Track;
 
 import jakarta.websocket.server.PathParam;
+
+import java.util.List;
 
 @Repository
 @Transactional
@@ -30,5 +29,12 @@ public interface TrackRepository extends JpaRepository<Track, Long> {
 
     @Query("SELECT t From Track t WHERE :point MEMBER OF t.arrivalPoint")
     Track findByArrivalPoint(@PathParam("point") ArrivalPoint point);
+
+    @Query("SELECT t FROM Track t WHERE t.namedEquipment.contractor.id = :id")
+    List<Track> findByContractor(@PathParam("id") Long id);
+
+    @Modifying
+    @Query("UPDATE Track t SET t.price = :price WHERE t.id = :id")
+    void updatePrice(@PathParam("price") Double price, @PathParam("id") Long id);
 
 }

@@ -1,11 +1,15 @@
 package com.quackaboutit.equipmentapp.contractor.dto;
 
+import com.quackaboutit.equipmentapp.equipment.dto.NamedEquipmentResponse;
+import com.quackaboutit.equipmentapp.tracks.dto.TrackResponse;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -34,4 +38,7 @@ public class ContractorResponse {
     @NotBlank
     @NotNull
     private String phoneNumber;
+
+    private List<NamedEquipmentResponse> equipment;
+    private List<TrackResponse> orders;
 }

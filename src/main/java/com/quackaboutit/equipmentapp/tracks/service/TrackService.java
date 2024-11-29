@@ -97,7 +97,7 @@ public class TrackService {
 
 
             trackRepository.save(new Track(null, summary.getDate(),
-                    namedEquipment, licensePlate, null, true, ArrivalPoins));
+                    namedEquipment, licensePlate, null, true, ArrivalPoins, 0d));
         });
 
     }
@@ -180,6 +180,7 @@ public class TrackService {
         );
         if (track.getIsActive() == false) throw new TrackIsClosed();
         trackRepository.updateDriver(requests.get(0).getDriver(), id);
+        trackRepository.updatePrice(requests.get(0).getPrice(), id);
 
         trackRepository.closeTrack(track.getId());
         requests.forEach(request -> {

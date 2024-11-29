@@ -22,7 +22,7 @@ public interface ArrivalPointRepository extends JpaRepository<ArrivalPoint, Long
     @Param("fuelOnStart") Double fuelOnStart, @Param("fuelOnEnd") Double fuelOnEnd, @Param("waitTime") LocalDateTime waitTime, @Param("id") Long id);
 
     @Query("SELECT p FROM ArrivalPoint p WHERE p.planArrivalTime > :start AND p.planArrivalTime < :end")
-    List<ArrivalPoint> findByAndTimestamp(@Param("start")Long start, @Param("end")Long end);
+    List<ArrivalPoint> findByAndTimestamp(@Param("start")LocalDateTime start, @Param("end")LocalDateTime end);
 
     List<ArrivalPoint> findByAddress(String address);
 }

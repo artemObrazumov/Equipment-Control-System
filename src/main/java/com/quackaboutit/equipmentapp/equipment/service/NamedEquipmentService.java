@@ -1,6 +1,8 @@
 package com.quackaboutit.equipmentapp.equipment.service;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -221,12 +223,14 @@ public class NamedEquipmentService {
     }
 
     public List<ArrivalPointResponse> getTimetableOnDay(Long id, Long timestamp) {
-        Long end = timestamp + 86400000;
-        return arrivalPointRepository.findByAndTimestamp(timestamp, end).stream().filter(point -> {
+        LocalDateTime start = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp * 1000), ZoneId.systemDefault());
+        LocalDateTime end = start.plusDays(1);
+        var points = arrivalPointRepository.findByAndTimestamp(start, end).stream().filter(point -> {
                     Track track = trackRepository.findByArrivalPoint(point);
                     return Objects.equals(id, track.getNamedEquipment().getId());
                 }
-        ).map(point ->
+        ).toList();
+        return points.stream().map(point ->
                 ArrivalPointResponse.builder()
                         .address(point.getAddress())
                         .planArrivalTime(point.getPlanArrivalTime().toString())

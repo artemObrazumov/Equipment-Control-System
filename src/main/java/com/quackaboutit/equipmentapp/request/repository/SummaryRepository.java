@@ -21,7 +21,7 @@ public interface SummaryRepository extends JpaRepository<Summary, Long> {
     List<Summary> findAllSummarysByUnitId(@Param("UnitId") Long unitId);
     
     @Query("SELECT s FROM Summary s ORDER BY s.id DESC")
-    Optional<Summary> findFirstByOrderByIdDesc();
+    List<Summary> findFirstByOrderByIdDesc();
 
     @Modifying
     @Query("UPDATE Summary s SET s.requests = :requests WHERE s.id = :id")

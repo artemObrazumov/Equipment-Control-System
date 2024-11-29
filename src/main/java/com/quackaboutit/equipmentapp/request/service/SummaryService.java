@@ -35,9 +35,9 @@ public class SummaryService {
     private final TrackService trackService;
 
     public SummaryResponse create(User manager) throws RuntimeException{
-        Optional<Summary> lastSummary = summaryRepository.findFirstByOrderByIdDesc();
-        if(lastSummary.isPresent())
-            if(lastSummary.get().getState() == SummaryState.NEW) throw new HasOpenedSummary();
+        var s = summaryRepository.findFirstByOrderByIdDesc();
+        if(!s.isEmpty() && s.getFirst() != null)
+            if(s.getFirst().getState() == SummaryState.NEW) throw new HasOpenedSummary();
         
         var summary = summaryRepository.save(new Summary(null, SummaryState.NEW, 
         manager, LocalDateTime.now(), manager.getUnit(), new ArrayList<>()));
@@ -66,9 +66,15 @@ public class SummaryService {
     }
 
     public void addRequestToSummary(Long id, User manager) throws RuntimeException{
-        Optional<Summary> lastSummary = summaryRepository.findFirstByOrderByIdDesc();
+        var s = summaryRepository.findFirstByOrderByIdDesc();
+        Summary lastSummary;
+        if (!s.isEmpty()) {
+            lastSummary = s.getFirst();
+        } else {
+            lastSummary = null;
+        }
         
-        if(!lastSummary.isPresent() || lastSummary.get().getState() != SummaryState.NEW){
+        if(lastSummary == null || lastSummary.getState() != SummaryState.NEW){
             create(manager);
             addRequestToSummary(id, manager);
             return;
@@ -79,8 +85,8 @@ public class SummaryService {
         
         if(request.getState() == RequestState.SENT){
             requestRepository.updateState(RequestState.PROCESSING, id);
-            lastSummary.get().getRequests().add(request);
-            summaryRepository.save(lastSummary.get());
+            lastSummary.getRequests().add(request);
+            summaryRepository.save(lastSummary);
 
         }else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Request has already been procesed.");
 

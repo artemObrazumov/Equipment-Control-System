@@ -86,6 +86,7 @@ public class AnalyticsController {
         }
     }
 
+
     @GetMapping("/track/{id}")
     public ResponseEntity<byte[]> trackExcel(@PathVariable Long id) throws IOException {
 

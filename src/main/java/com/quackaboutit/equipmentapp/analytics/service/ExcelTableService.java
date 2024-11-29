@@ -21,11 +21,14 @@ import com.quackaboutit.equipmentapp.workplace.exceptions.WorkplaceNotFound;
 import com.quackaboutit.equipmentapp.workplace.repository.WorkplaceRepository;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -230,7 +233,7 @@ public class ExcelTableService {
         List<NamedEquipment> equipment = namedEquipmentRepository.findAllByEquipmentBase(base);
         for (int i = 1; i <= equipment.size(); i++) {
             Row row = sheet.createRow(i + 1);
-            NamedEquipment item = equipment.get(i-1);
+            NamedEquipment item = equipment.get(i - 1);
             row.createCell(0).setCellValue(item.getLicensePlate());
             row.createCell(1).setCellValue(item.getEquipmentType().getEquipment().getName());
             row.createCell(2).setCellValue(item.getEquipmentType().getType());
@@ -309,7 +312,7 @@ public class ExcelTableService {
             var arrialPoint = objs.get(i).getArrivalPoint();
 
             List<String> params = new ArrayList<>();
-            if(!track.getIsActive()){
+            if(track != null && !track.getIsActive()){
                 params = List.of(track.getLicensePlateNumber(), track.getDriver(),
                         track.getDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")), arrialPoint.getRealArrivalTime().format(formatter),
                         arrialPoint.getRealOutTime().format(formatter), (arrialPoint.getKmOnEnd() - arrialPoint.getKmOnStart())+"",
@@ -395,19 +398,19 @@ public class ExcelTableService {
         }
 
         Sheet logisticSheet = workbook.createSheet("Поездки");
-        
+
         Row orderHeaderRow = logisticSheet.createRow(0);
-        
+
 
         List<String> lines = List.of("Адрес объекта", "Дата работы",
-                                    "Плановое время выезда", "Фактическое время выезда",
-                                    "Плановое время прибытия", "Фактическое время прибытия",
-                                    "Время ожидания", "Время работы",
-                                    "Топливо (нач.)", "Топливо (кон.)",
-                                    "Пробег (нач.)", "Пробег (кон.)",
-                                    "Дистанция", "Стоимость");
+                "Плановое время выезда", "Фактическое время выезда",
+                "Плановое время прибытия", "Фактическое время прибытия",
+                "Время ожидания", "Время работы",
+                "Топливо (нач.)", "Топливо (кон.)",
+                "Пробег (нач.)", "Пробег (кон.)",
+                "Дистанция", "Стоимость");
 
-        for(int i = 0; i != lines.size(); ++i){
+        for (int i = 0; i != lines.size(); ++i) {
             Cell cell = orderHeaderRow.createCell(i);
             cell.setCellValue(lines.get(i));
             cell.setCellStyle(headerCellStyle);
@@ -422,30 +425,30 @@ public class ExcelTableService {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm");
 
-        for(int i = 0; i != objs.size(); ++i){
+        for (int i = 0; i != objs.size(); ++i) {
             var arrialPoint = objs.get(i).getArrivalPoint();
             var track = objs.get(i).getTrack();
             Row newRow = logisticSheet.createRow(i + 1);
             List<String> params = new ArrayList<>();
-            if(!track.getIsActive()){
+            if (!track.getIsActive()) {
                 params = List.of(arrialPoint.getAddress(), track.getDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")),
-                            arrialPoint.getPlanOutTime().format(formatter), arrialPoint.getRealOutTime().format(formatter),
-                            arrialPoint.getPlanArrivalTime().format(formatter), arrialPoint.getRealArrivalTime().format(formatter),
-                            arrialPoint.getWaitTime().format(DateTimeFormatter.ofPattern("HH:mm")), String.format("%d:%02d", arrialPoint.getPlanWorkDuration().toHours(), arrialPoint.getPlanWorkDuration().toMinutesPart()),
-                            arrialPoint.getFuelOnStart().toString(), arrialPoint.getFuelOnEnd().toString(),
-                            arrialPoint.getKmOnStart().toString(), arrialPoint.getKmOnEnd().toString(), 
-                            (arrialPoint.getKmOnEnd() - arrialPoint.getKmOnStart())+"", ""+(namedEquipment.getPaymentHourly() * arrialPoint.getPlanWorkDuration().toMillis()/3600000));
-            }else{
+                        arrialPoint.getPlanOutTime().format(formatter), arrialPoint.getRealOutTime().format(formatter),
+                        arrialPoint.getPlanArrivalTime().format(formatter), arrialPoint.getRealArrivalTime().format(formatter),
+                        arrialPoint.getWaitTime().format(DateTimeFormatter.ofPattern("HH:mm")), String.format("%d:%02d", arrialPoint.getPlanWorkDuration().toHours(), arrialPoint.getPlanWorkDuration().toMinutesPart()),
+                        arrialPoint.getFuelOnStart().toString(), arrialPoint.getFuelOnEnd().toString(),
+                        arrialPoint.getKmOnStart().toString(), arrialPoint.getKmOnEnd().toString(),
+                        (arrialPoint.getKmOnEnd() - arrialPoint.getKmOnStart()) + "", "" + (namedEquipment.getPaymentHourly() * arrialPoint.getPlanWorkDuration().toMillis() / 3600000));
+            } else {
                 params = List.of(arrialPoint.getAddress(), track.getDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")),
-                            arrialPoint.getPlanOutTime().format(formatter), "",
-                            arrialPoint.getPlanArrivalTime().format(formatter), "",
-                            "", String.format("%d:%02d", arrialPoint.getPlanWorkDuration().toHours(), arrialPoint.getPlanWorkDuration().toMinutesPart()),
-                            "", "",
-                            "", "", 
-                            arrialPoint.getDistance().toString(), ""+(namedEquipment.getPaymentHourly() * arrialPoint.getPlanWorkDuration().toMillis()/3600000));
+                        arrialPoint.getPlanOutTime().format(formatter), "",
+                        arrialPoint.getPlanArrivalTime().format(formatter), "",
+                        "", String.format("%d:%02d", arrialPoint.getPlanWorkDuration().toHours(), arrialPoint.getPlanWorkDuration().toMinutesPart()),
+                        "", "",
+                        "", "",
+                        arrialPoint.getDistance().toString(), "" + (namedEquipment.getPaymentHourly() * arrialPoint.getPlanWorkDuration().toMillis() / 3600000));
             }
-                for(int j = 0; j != lines.size(); ++j){
-                    newRow.createCell(j).setCellValue(params.get(j));
+            for (int j = 0; j != lines.size(); ++j) {
+                newRow.createCell(j).setCellValue(params.get(j));
             }
         }
 
@@ -578,6 +581,35 @@ public class ExcelTableService {
 //            row.createCell(3).setCellValue(item.getCarBrand());
 //            row.createCell(4).setCellValue(item.getFuelType());
 //        }
+
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            workbook.write(outputStream);
+            workbook.close();
+            return outputStream.toByteArray();
+        }
+    }
+
+    public byte[] trackSheetExcel(Long id) throws IOException {
+        Track track = trackRepository.findById(id).orElseThrow();
+        String excelFilePath = "sheet.xls";
+
+        FileInputStream fis = new FileInputStream(excelFilePath);
+        Workbook workbook = new HSSFWorkbook(fis);
+
+        Sheet sheet = workbook.getSheetAt(1);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH-mm");
+
+        sheet.getRow(10).getCell(12).setCellValue(track.getDriver());
+        sheet.getRow(32).getCell(75).setCellValue(track.getDriver());
+        sheet.getRow(39).getCell(74).setCellValue(track.getDriver());
+        sheet.getRow(62).getCell(28).setCellValue(track.getDriver());
+        sheet.getRow(64).getCell(75).setCellValue(track.getDriver());
+        sheet.getRow(43).getCell(70).setCellValue(track.getNamedEquipment().getFuelType());
+        sheet.getRow(39).getCell(26).setCellValue( formatter.format(track.getArrivalPoint().getFirst().getPlanOutTime()) );
+        sheet.getRow(46).getCell(26).setCellValue( formatter.format(track.getArrivalPoint().getLast().getPlanArrivalTime()) );
+        sheet.getRow(8).getCell(34).setCellValue(track.getNamedEquipment().getLicensePlate());
+        sheet.getRow(7).getCell(21).setCellValue(track.getNamedEquipment().getCarBrand());
 
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             workbook.write(outputStream);
