@@ -23,7 +23,7 @@ public class RequestController {
     @GetMapping
     private List<ResponseRequest> getRequests() {
         return requestService.getRequests(
-                jwtService.getUserFromSecurityContextHolder().getId());
+                jwtService.getUserFromSecurityContextHolder().getUnit().getId());
     }
 
     @PostMapping("/{id}/add_to_summary")

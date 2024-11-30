@@ -181,7 +181,14 @@ public class NamedEquipmentService {
                             return eq1.compareTo(eq2);
                         }
                 ).toList().reversed();
-        List<NamedEquipment> contractorOptions = namedEquipmentRepository.findContractorOptions();
+        List<NamedEquipment> contractorOptions = namedEquipmentRepository.findContractorOptions()
+                .stream().sorted(
+                        (o1, o2) -> {
+                            Integer eq1 = o1.getCondition() * 10 - o1.getPaymentHourly() / 10;
+                            Integer eq2 = o2.getCondition() * 10 - o2.getPaymentHourly() / 10;
+                            return eq1.compareTo(eq2);
+                        }
+                ).toList().reversed();
 
         return EquipmentBestOptionsResponse.builder()
                 .onBaseEquipment(

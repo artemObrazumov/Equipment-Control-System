@@ -41,7 +41,7 @@ public class RequestService {
     private final EquipmentTypeRepository equipmentTypeRepository;
 
     public List<ResponseRequest> getRequests(Long userId) {
-        List<Request> requests = requestRepository.findAllByCreatorId(userId);
+        List<Request> requests = requestRepository.findAllByUnitId(userId);
         ArrayList<ResponseRequest> responseRequest = new ArrayList<>();
         requests.forEach(request -> responseRequest.add(
                 ResponseRequest.fromRequest(request))

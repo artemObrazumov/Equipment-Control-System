@@ -10,6 +10,10 @@ import com.quackaboutit.equipmentapp.equipment.entity.NamedEquipment;
 import com.quackaboutit.equipmentapp.equipment.repository.EquipmentRepository;
 import com.quackaboutit.equipmentapp.equipment.repository.EquipmentTypeRepository;
 import com.quackaboutit.equipmentapp.equipment.repository.NamedEquipmentRepository;
+import com.quackaboutit.equipmentapp.request.entity.Request;
+import com.quackaboutit.equipmentapp.request.entity.RequestedEquipment;
+import com.quackaboutit.equipmentapp.request.repository.RequestEquipmentRepository;
+import com.quackaboutit.equipmentapp.request.repository.RequestRepository;
 import com.quackaboutit.equipmentapp.unit.dto.UnitRequest;
 import com.quackaboutit.equipmentapp.unit.entity.Unit;
 import com.quackaboutit.equipmentapp.unit.repository.UnitRepository;
@@ -33,7 +37,10 @@ import org.springframework.web.filter.CommonsRequestLoggingFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootApplication
 public class EquipmentApplication implements CommandLineRunner {
@@ -77,7 +84,13 @@ public class EquipmentApplication implements CommandLineRunner {
     private ContractorRepository contractorRepository;
 
     @Autowired
+    private RequestRepository requestRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private RequestEquipmentRepository requestEquipmentRepository;
 
     @Bean
     public WebMvcConfigurer configureCors() {
@@ -208,6 +221,26 @@ public class EquipmentApplication implements CommandLineRunner {
 
         unitList.add(unitRepository.save(unitRequest));
 
+        // Adding contractors
+
+        var contractors = new ArrayList<>();
+
+        contractors.add(contractorRepository.save(Contractor.builder()
+                .phoneNumber("8496368890")
+                .inn("3984062227")
+                .kpp("365921061")
+                .name("Камаз International")
+                .legalAddress("Щёлковское ш., 1, стр. 5")
+                .build()));
+
+        contractors.add(contractorRepository.save(Contractor.builder()
+                .phoneNumber("81234567890")
+                .inn("3664069397")
+                .kpp("366601001")
+                .name("Перевозчики")
+                .legalAddress("ул. Октября, вл10, Реутов")
+                .build()));
+
         // Adding base
 
         var baseList = new ArrayList<Base>();
@@ -283,6 +316,66 @@ public class EquipmentApplication implements CommandLineRunner {
         namedEquipmentList.add(namedEquipmentRepository.save(namedEquipmentRequest));
 
         namedEquipmentRequest = NamedEquipment.builder()
+                .licensePlate("H743AA252")
+                .carBrand("MAN")
+                .fuelType("АИ-95")
+                .base(baseList.get(0))
+                .equipmentType(equipmentTypeList.get(5))
+                .paymentHourly(750)
+                .condition(90)
+                .build();
+
+        namedEquipmentList.add(namedEquipmentRepository.save(namedEquipmentRequest));
+
+        namedEquipmentRequest = NamedEquipment.builder()
+                .licensePlate("С612OA177")
+                .carBrand("MAN")
+                .fuelType("АИ-95")
+                .base(baseList.get(0))
+                .equipmentType(equipmentTypeList.get(5))
+                .paymentHourly(700)
+                .condition(80)
+                .build();
+
+        namedEquipmentList.add(namedEquipmentRepository.save(namedEquipmentRequest));
+
+        namedEquipmentRequest = NamedEquipment.builder()
+                .licensePlate("B654EE612")
+                .carBrand("KAMAZ")
+                .fuelType("АИ-95")
+                .contractor((Contractor) contractors.get(0))
+                .equipmentType(equipmentTypeList.get(3))
+                .paymentHourly(600)
+                .condition(50)
+                .build();
+
+        namedEquipmentList.add(namedEquipmentRepository.save(namedEquipmentRequest));
+
+        namedEquipmentRequest = NamedEquipment.builder()
+                .licensePlate("B854AA642")
+                .carBrand("KAMAZ")
+                .fuelType("АИ-92")
+                .contractor((Contractor) contractors.get(0))
+                .equipmentType(equipmentTypeList.get(4))
+                .paymentHourly(1000)
+                .condition(95)
+                .build();
+
+        namedEquipmentList.add(namedEquipmentRepository.save(namedEquipmentRequest));
+
+        namedEquipmentRequest = NamedEquipment.builder()
+                .licensePlate("B855BB642")
+                .carBrand("KAMAZ")
+                .fuelType("АИ-92")
+                .contractor((Contractor) contractors.get(1))
+                .equipmentType(equipmentTypeList.get(4))
+                .paymentHourly(900)
+                .condition(90)
+                .build();
+
+        namedEquipmentList.add(namedEquipmentRepository.save(namedEquipmentRequest));
+
+        namedEquipmentRequest = NamedEquipment.builder()
                 .licensePlate("E169AE777")
                 .carBrand("ZIL")
                 .fuelType("АИ-92")
@@ -308,6 +401,8 @@ public class EquipmentApplication implements CommandLineRunner {
 
         // Adding workplaces
 
+        var workplacesList = new ArrayList<>();
+
         var workplaceRequest = Workplace.builder()
                 .address("Молокозаводская улица, 66, Арзамас, Нижегородская область")
                 .latitude(55.413458)
@@ -316,7 +411,7 @@ public class EquipmentApplication implements CommandLineRunner {
                 .unit(unitList.get(0))
                 .build();
 
-        workplaceRepository.save(workplaceRequest);
+        workplacesList.add(workplaceRepository.save(workplaceRequest));
 
         workplaceRequest = Workplace.builder()
                 .address("деревня Чепелёво, 71, городской округ Чехов, Московская область")
@@ -326,7 +421,7 @@ public class EquipmentApplication implements CommandLineRunner {
                 .state(WorkplaceState.IDLE)
                 .build();
 
-        workplaceRepository.save(workplaceRequest);
+        workplacesList.add(workplaceRepository.save(workplaceRequest));
 
         // Adding Contractors
 
@@ -339,6 +434,53 @@ public class EquipmentApplication implements CommandLineRunner {
                 .build();
 
         contractorRepository.save(contractor);
+
+        // adding requests
+
+//        var requests = new ArrayList<>();
+//        var requestedEquipment = new ArrayList<RequestedEquipment>();
+//        requestedEquipment.add(requestEquipmentRepository.save(RequestedEquipment.builder()
+//                .equipment(equipmentList.get(1))
+//                .equipmentType(equipmentTypeList.get(2))
+//                .workDuration(Duration.ofHours(4).plusMinutes(20))
+//                .arrivalTime(LocalDateTime.now().withHour(8).withMinute(30))
+//                .build()));
+//        requestedEquipment.add(requestEquipmentRepository.save(RequestedEquipment.builder()
+//                .equipment(equipmentList.get(3))
+//                .equipmentType(equipmentTypeList.get(5))
+//                .workDuration(Duration.ofHours(2).plusMinutes(30))
+//                .arrivalTime(LocalDateTime.now().withHour(8).withMinute(30))
+//                .build()));
+//
+//        requests.add(requestRepository.save(Request.builder()
+//                .arrivalDate(LocalDateTime.now().minusDays(2))
+//                .distance(50.0)
+//                .requestedEquipment(requestedEquipment)
+//                .workplace((Workplace) workplacesList.get(0))
+//                .unit(unitList.get(0))
+//                .build()));
+//
+//        requestedEquipment = new ArrayList<RequestedEquipment>();
+//        requestedEquipment.add(requestEquipmentRepository.save(RequestedEquipment.builder()
+//                .equipment(equipmentList.get(1))
+//                .equipmentType(equipmentTypeList.get(2))
+//                .workDuration(Duration.ofHours(4).plusMinutes(20))
+//                .arrivalTime(LocalDateTime.now().withHour(8).withMinute(30))
+//                .build()));
+//        requestedEquipment.add(requestEquipmentRepository.save(RequestedEquipment.builder()
+//                .equipment(equipmentList.get(3))
+//                .equipmentType(equipmentTypeList.get(5))
+//                .workDuration(Duration.ofHours(2).plusMinutes(30))
+//                .arrivalTime(LocalDateTime.now().withHour(8).withMinute(30))
+//                .build()));
+//
+//        requests.add(requestRepository.save(Request.builder()
+//                .arrivalDate(LocalDateTime.now().minusDays(1))
+//                .distance(75.0)
+//                .requestedEquipment(requestedEquipment)
+//                .workplace((Workplace) workplacesList.get(1))
+//                .unit(unitList.get(0))
+//                .build()));
 
         // Adding users
         var manager = User.builder()
